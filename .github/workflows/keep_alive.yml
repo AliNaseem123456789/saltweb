@@ -2,16 +2,22 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    # Runs at 00:00 on Monday and Thursday
     - cron: "0 0 * * 1,4"
-  workflow_dispatch: # Allows you to run it manually for testing
+  workflow_dispatch:
 
 jobs:
   ping_supabase:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Secret Check
+        run: |
+          if [ -z "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" ]; then
+            echo "Error: NEXT_PUBLIC_SUPABASE_URL is empty. Check your GitHub Secrets."
+            exit 1
+          fi
+
       - name: Ping Supabase API
         run: |
-          curl -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/" \
-          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+          curl -i -X GET "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}/rest/v1/" \
+          -H "apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
