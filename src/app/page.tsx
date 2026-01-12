@@ -1,20 +1,22 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import Navbar from '@/components/Navbar'
-import HeroSection from '@/components/HeroSection'
-import AnimatedCard from '@/components/AnimatedCard'
-import AnimatedSection from '@/components/AnimatedSection'
-import Footer from '@/components/footer'
-import { tips } from '@/data/tips'
-import { offerings } from '@/data/offerings'
-import { certifications } from '@/data/certifications'
-import { testimonials } from '@/data/testimonials'
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import PromotionModal from "@/components/PromotionModal";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import AnimatedCard from "@/components/AnimatedCard";
+import AnimatedSection from "@/components/AnimatedSection";
+import Footer from "@/components/footer";
+import { tips } from "@/data/tips";
+import { offerings } from "@/data/offerings";
+import { certifications } from "@/data/certifications";
+import { testimonials } from "@/data/testimonials";
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
+      <PromotionModal />
       <Navbar />
 
       <HeroSection />
@@ -91,17 +93,20 @@ export default function Home() {
                 Himalayan Pink Salt
               </h2>
               <p className="text-lg leading-relaxed text-slate-600">
-                Mined from ancient sea beds deep within the Himalayan mountains, our pink salt 
-                contains 84 essential trace minerals that have been preserved for over 250 million years.
+                Mined from ancient sea beds deep within the Himalayan mountains,
+                our pink salt contains 84 essential trace minerals that have
+                been preserved for over 250 million years.
               </p>
               <p className="text-lg leading-relaxed text-slate-600">
-                Unlike processed table salt, Himalayan pink salt is unrefined and contains no additives, 
-                making it one of the purest forms of salt available. Its distinctive pink hue comes from 
-                the natural iron oxide content.
+                Unlike processed table salt, Himalayan pink salt is unrefined
+                and contains no additives, making it one of the purest forms of
+                salt available. Its distinctive pink hue comes from the natural
+                iron oxide content.
               </p>
               <p className="text-lg leading-relaxed text-slate-600">
-                From enhancing the flavor of your favorite dishes to supporting your body&apos;s natural 
-                mineral balance, Himalayan pink salt is a versatile addition to any wellness-focused lifestyle.
+                From enhancing the flavor of your favorite dishes to supporting
+                your body&apos;s natural mineral balance, Himalayan pink salt is
+                a versatile addition to any wellness-focused lifestyle.
               </p>
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -153,7 +158,9 @@ export default function Home() {
                       <h4 className="font-serif text-lg font-medium text-slate-800">
                         {testimonial.name}
                       </h4>
-                      <p className="text-sm text-slate-500">{testimonial.role}</p>
+                      <p className="text-sm text-slate-500">
+                        {testimonial.role}
+                      </p>
                     </div>
                   </div>
                   <div className="mb-4 flex text-yellow-400">
@@ -250,7 +257,8 @@ export default function Home() {
                   Culinary Excellence
                 </h3>
                 <p className="text-slate-600">
-                  Elevate your dishes with the pure, mineral-rich flavor of Himalayan salt.
+                  Elevate your dishes with the pure, mineral-rich flavor of
+                  Himalayan salt.
                 </p>
               </motion.div>
             </motion.div>
@@ -278,7 +286,8 @@ export default function Home() {
                   Natural Wellness
                 </h3>
                 <p className="text-slate-600">
-                  Support your health journey with nature&apos;s most essential minerals.
+                  Support your health journey with nature&apos;s most essential
+                  minerals.
                 </p>
               </motion.div>
             </motion.div>
@@ -363,14 +372,16 @@ export default function Home() {
                 className="flex flex-col items-center gap-3"
               >
                 <div className="text-5xl">{cert.logo}</div>
-                <span className="text-base font-medium text-slate-700">{cert.name}</span>
+                <span className="text-base font-medium text-slate-700">
+                  {cert.name}
+                </span>
               </motion.div>
             ))}
           </div>
         </div>
       </AnimatedSection>
 
-   <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }
