@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import AnimatedSection from '@/components/AnimatedSection'
-
+import Footer from '@/components/footer'
+import { contactInfo } from '@/data/contactinfo'
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -27,28 +28,6 @@ export default function ContactPage() {
       [e.target.name]: e.target.value,
     })
   }
-
-  const contactInfo = [
-    {
-      icon: '📧',
-      title: 'Email',
-      content: 'info@puresalt.com',
-      link: 'mailto:info@puresalt.com',
-    },
-    {
-      icon: '📞',
-      title: 'Phone',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
-    },
-    {
-      icon: '📍',
-      title: 'Address',
-      content: '123 Salt Street, Himalayan Valley, HV 12345',
-      link: null,
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <Navbar />
@@ -231,65 +210,7 @@ export default function ContactPage() {
           </div>
         </div>
       </AnimatedSection>
-
-      {/* Footer */}
-      <footer className="bg-[#EAE9E3] px-4 py-16 text-slate-800">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">Stay Connected</h3>
-              <p className="mb-4 text-slate-600">
-                Subscribe to receive updates on new products and wellness tips.
-              </p>
-              <form className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="submit"
-                  className="rounded-lg bg-[#CE978C] px-6 py-3 font-medium text-white transition-colors hover:bg-[#B8857A]"
-                >
-                  Subscribe
-                </motion.button>
-              </form>
-            </div>
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">Quick Links</h3>
-              <ul className="space-y-3">
-                <li>
-                  <a href="/products" className="text-slate-600 transition-colors hover:text-[#CE978C]">
-                    Products
-                  </a>
-                </li>
-                <li>
-                  <a href="/login" className="text-slate-600 transition-colors hover:text-[#CE978C]">
-                    Login
-                  </a>
-                </li>
-                <li>
-                  <a href="/register" className="text-slate-600 transition-colors hover:text-[#CE978C]">
-                    Register
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">About Us</h3>
-              <p className="text-slate-600">
-                Dedicated to bringing you the finest Himalayan salt products 
-                for your health, wellness, and culinary journey.
-              </p>
-            </div>
-          </div>
-          <div className="mt-12 border-t border-slate-300 pt-8 text-center text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} PureSalt. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   )
 }

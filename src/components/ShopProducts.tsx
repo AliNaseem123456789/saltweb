@@ -8,12 +8,11 @@ interface Product {
   name: string
   description?: string | null
   price?: number | null
-  image_url?: string | null
   stock_quantity?: number | null
   is_active?: boolean | null
+  image_url?: string | null
   category?: string | null
   created_at?: string
-  [key: string]: unknown
 }
 
 interface ShopProductsProps {
@@ -21,8 +20,12 @@ interface ShopProductsProps {
   wishlistItems?: string[]
 }
 
-export default function ShopProducts({ products, wishlistItems = [] }: ShopProductsProps) {
+export default function ShopProducts({
+  products,
+  wishlistItems = [],
+}: ShopProductsProps) {
   const wishlistSet = new Set(wishlistItems)
+
   return (
     <AnimatedSection className="bg-[#FAF8F5] px-4 py-20">
       <div className="mx-auto max-w-7xl">
@@ -48,4 +51,3 @@ export default function ShopProducts({ products, wishlistItems = [] }: ShopProdu
     </AnimatedSection>
   )
 }
-

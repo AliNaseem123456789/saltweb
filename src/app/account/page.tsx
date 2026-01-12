@@ -5,12 +5,10 @@ import AccountOrders from '@/components/AccountOrders'
 
 async function getUser() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  
+  const { data: { user } } = await supabase.auth.getUser()  
   if (!user) {
     return null
   }
-
   return user
 }
 
@@ -27,18 +25,15 @@ async function getOrders(userId: string) {
     `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
-
   if (error) {
     console.error('Error fetching orders:', error)
     return []
   }
-
   return data || []
 }
 
 export default async function AccountPage() {
   const user = await getUser()
-  
   if (!user) {
     redirect('/login')
   }

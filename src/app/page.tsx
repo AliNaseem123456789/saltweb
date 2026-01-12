@@ -7,88 +7,12 @@ import Navbar from '@/components/Navbar'
 import HeroSection from '@/components/HeroSection'
 import AnimatedCard from '@/components/AnimatedCard'
 import AnimatedSection from '@/components/AnimatedSection'
-
+import Footer from '@/components/footer'
+import { tips } from '@/data/tips'
+import { offerings } from '@/data/offerings'
+import { certifications } from '@/data/certifications'
+import { testimonials } from '@/data/testimonials'
 export default function Home() {
-  const offerings = [
-    {
-      title: 'Fine Grain Salt',
-      description: 'Perfect for everyday cooking',
-      image: 'https://images.unsplash.com/photo-1608039829573-803a9b3d3f0e?w=800&h=600&fit=crop',
-    },
-    {
-      title: 'Coarse Salt',
-      description: 'Ideal for finishing dishes',
-      image: 'https://images.unsplash.com/photo-1584735175097-719d848f8449?w=800&h=600&fit=crop',
-    },
-    {
-      title: 'Salt Lamps',
-      description: 'Natural air purifiers',
-      image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop',
-    },
-    {
-      title: 'Bath Salts',
-      description: 'Luxurious spa experience',
-      image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&h=600&fit=crop',
-    },
-    {
-      title: 'Salt Blocks',
-      description: 'Cooking and serving',
-      image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&h=600&fit=crop',
-    },
-    {
-      title: 'Salt Crystals',
-      description: 'Pure mineral crystals',
-      image: 'https://images.unsplash.com/photo-1608039829573-803a9b3d3f0e?w=800&h=600&fit=crop',
-    },
-  ]
-
-  const testimonials = [
-    {
-      name: 'Sarah Chen',
-      role: 'Wellness Enthusiast',
-      text: 'The quality is exceptional. I can taste the purity in every grain. This salt has transformed my cooking.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
-    },
-    {
-      name: 'Michael Rodriguez',
-      role: 'Professional Chef',
-      text: 'This salt elevates every dish. A true culinary treasure. My customers notice the difference immediately.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
-    },
-    {
-      name: 'Emma Thompson',
-      role: 'Health Coach',
-      text: 'My clients love it. The health benefits are remarkable. I recommend it to everyone seeking natural wellness.',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
-    },
-  ]
-
-  const tips = [
-    {
-      title: 'Cooking with Himalayan Salt',
-      description: 'Learn the best techniques for using pink salt in your kitchen',
-      image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&h=400&fit=crop',
-    },
-    {
-      title: 'Wellness Benefits',
-      description: 'Discover how Himalayan salt can improve your health',
-      image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=400&fit=crop',
-    },
-    {
-      title: 'Salt Therapy Guide',
-      description: 'Everything you need to know about salt therapy at home',
-      image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&h=400&fit=crop',
-    },
-  ]
-
-  const certifications = [
-    { name: 'Halal Certified', logo: '🕌' },
-    { name: 'BRC Certified', logo: '✅' },
-    { name: 'Organic', logo: '🌱' },
-    { name: 'ISO 9001', logo: '⭐' },
-    { name: 'FDA Approved', logo: '🏥' },
-  ]
-
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <Navbar />
@@ -446,79 +370,7 @@ export default function Home() {
         </div>
       </AnimatedSection>
 
-      {/* Footer */}
-      <footer className="bg-[#EAE9E3] px-4 py-16 text-slate-800">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            {/* Newsletter */}
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">Stay Connected</h3>
-              <p className="mb-4 text-slate-600">
-                Subscribe to receive updates on new products and wellness tips.
-              </p>
-              <form className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="submit"
-                  className="rounded-lg bg-[#CE978C] px-6 py-3 font-medium text-white transition-colors hover:bg-[#B8857A]"
-                >
-                  Subscribe
-                </motion.button>
-              </form>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">Quick Links</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/products"
-                    className="text-slate-600 transition-colors hover:text-[#CE978C]"
-                  >
-                    Products
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/login"
-                    className="text-slate-600 transition-colors hover:text-[#CE978C]"
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/register"
-                    className="text-slate-600 transition-colors hover:text-[#CE978C]"
-                  >
-                    Register
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company Info */}
-            <div>
-              <h3 className="mb-4 font-serif text-2xl font-light text-slate-800">About Us</h3>
-              <p className="text-slate-600">
-                Dedicated to bringing you the finest Himalayan salt products 
-                for your health, wellness, and culinary journey.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-12 border-t border-slate-300 pt-8 text-center text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} PureSalt. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+   <Footer/>
     </div>
   )
 }
