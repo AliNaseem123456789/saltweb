@@ -1,108 +1,108 @@
-import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import Navbar from '@/components/Navbar'
-import ShopProducts from '@/components/ShopProducts'
-import Footer from '@/components/footer'
+import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import ShopProducts from "@/components/ShopProducts";
+import Footer from "@/components/footer";
 
-const BUCKET_NAME = 'products' // MUST match your test page bucket
+const BUCKET_NAME = "products"; // MUST match your test page bucket
 
 interface Product {
-  id: string
-  name: string
-  description?: string | null
-  price?: number | null
-  stock_quantity?: number | null
-  is_active?: boolean | null
-  image_folder?: string | null
-  category?: string | null
-  created_at?: string
-  image_url?: string | null
-  [key: string]: unknown
+  id: string;
+  name: string;
+  description?: string | null;
+  price?: number | null;
+  stock_quantity?: number | null;
+  is_active?: boolean | null;
+  image_folder?: string | null;
+  category?: string | null;
+  created_at?: string;
+  image_url?: string | null;
+  [key: string]: unknown;
 }
 
 /* ===============================
    FETCH PRODUCTS + FIRST IMAGE
 =============================== */
 async function getProducts() {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { data: products, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false })
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (error || !products) {
-    console.error('Error fetching products:', error)
-    return []
+    console.error("Error fetching products:", error);
+    return [];
   }
 
   const productsWithImages: Product[] = await Promise.all(
     products.map(async (product) => {
       if (!product.image_folder) {
-        return { ...product, image_url: null }
+        return { ...product, image_url: null };
       }
 
       const { data: files, error: storageError } = await supabase.storage
         .from(BUCKET_NAME)
-        .list(product.image_folder, { limit: 20 })
+        .list(product.image_folder, { limit: 20 });
 
       if (storageError || !files) {
         console.warn(
           `Storage error for folder ${product.image_folder}`,
           storageError
-        )
-        return { ...product, image_url: null }
+        );
+        return { ...product, image_url: null };
       }
 
       const firstImage = files.find((file) =>
         file.name.match(/\.(jpg|jpeg|png|webp)$/i)
-      )
+      );
 
       if (!firstImage) {
-        return { ...product, image_url: null }
+        return { ...product, image_url: null };
       }
 
       const { data } = supabase.storage
         .from(BUCKET_NAME)
-        .getPublicUrl(
-          `${product.image_folder}/${firstImage.name}`
-        )
+        .getPublicUrl(`${product.image_folder}/${firstImage.name}`);
 
       return {
         ...product,
         image_url: data.publicUrl,
-      }
+      };
     })
-  )
+  );
 
-  return productsWithImages
+  return productsWithImages;
 }
 
 /* ===============================
    FETCH WISHLIST ITEMS
 =============================== */
 async function getWishlistItems() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return []
+    return [];
   }
 
   const { data } = await supabase
-    .from('wishlist')
-    .select('product_id')
-    .eq('user_id', user.id)
+    .from("wishlist")
+    .select("product_id")
+    .eq("user_id", user.id);
 
-  return data?.map(item => item.product_id) || []
+  return data?.map((item) => item.product_id) || [];
 }
 
 /* ===============================
    PAGE
 =============================== */
 export default async function ProductsPage() {
-  const products = await getProducts()
-  const wishlistItems = await getWishlistItems()
+  const products = await getProducts();
+  const wishlistItems = await getWishlistItems();
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
@@ -116,7 +116,8 @@ export default async function ProductsPage() {
               Our Products
             </h1>
             <p className="text-xl text-white/90 md:text-2xl">
-              Discover our complete collection of premium Himalayan salt products
+              Discover our complete collection of premium Himalayan salt
+              products
             </p>
           </div>
         </div>
@@ -135,7 +136,8 @@ export default async function ProductsPage() {
                 Premium Quality
               </h3>
               <p className="text-slate-600">
-                Every product is carefully selected and tested to meet our uncompromising standards for purity.
+                Every product is carefully selected and tested to meet our
+                uncompromising standards for purity.
               </p>
             </div>
             <div className="text-center">
@@ -144,7 +146,8 @@ export default async function ProductsPage() {
                 Natural & Pure
               </h3>
               <p className="text-slate-600">
-                Sourced directly from Himalayan mines, containing 84 essential trace minerals.
+                Sourced directly from Himalayan mines, containing 84 essential
+                trace minerals.
               </p>
             </div>
             <div className="text-center">
@@ -153,7 +156,8 @@ export default async function ProductsPage() {
                 Fast Shipping
               </h3>
               <p className="text-slate-600">
-                We deliver your products quickly and safely, ensuring freshness and quality.
+                We deliver your products quickly and safely, ensuring freshness
+                and quality.
               </p>
             </div>
           </div>
@@ -167,7 +171,8 @@ export default async function ProductsPage() {
             Can&apos;t Find What You&apos;re Looking For?
           </h2>
           <p className="mb-8 text-lg text-slate-600">
-            Contact us and we&apos;ll help you find the perfect Himalayan salt product for your needs.
+            Contact us and we&apos;ll help you find the perfect Himalayan salt
+            product for your needs.
           </p>
           <Link
             href="/contact"
@@ -178,7 +183,7 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }

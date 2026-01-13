@@ -1,5 +1,5 @@
-"useClient"
-import Link from 'next/link'
+"use client";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -35,9 +35,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="mb-4 font-serif text-2xl font-light">
-              Quick Links
-            </h3>
+            <h3 className="mb-4 font-serif text-2xl font-light">Quick Links</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -68,12 +66,10 @@ export default function Footer() {
 
           {/* About */}
           <div>
-            <h3 className="mb-4 font-serif text-2xl font-light">
-              About Us
-            </h3>
+            <h3 className="mb-4 font-serif text-2xl font-light">About Us</h3>
             <p className="text-slate-600">
-              Dedicated to bringing you the finest Himalayan salt products
-              for your health, wellness, and culinary journey.
+              Dedicated to bringing you the finest Himalayan salt products for
+              your health, wellness, and culinary journey.
             </p>
           </div>
         </div>
@@ -84,5 +80,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

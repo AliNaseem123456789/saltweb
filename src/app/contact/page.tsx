@@ -1,37 +1,37 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import Navbar from '@/components/Navbar'
-import AnimatedSection from '@/components/AnimatedSection'
-import Footer from '@/components/footer'
-import { contactInfo } from '@/data/contactinfo'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import AnimatedSection from "@/components/AnimatedSection";
+import { contactInfo } from "@/data/contactinfo";
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Handle form submission here
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({ name: '', email: '', subject: '', message: '' })
-  }
+    console.log("Form submitted:", formData);
+    alert("Thank you for your message! We will get back to you soon.");
+    setFormData({ name: "", email: "", subject: "", message: "" });
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative h-[50vh] w-full overflow-hidden bg-gradient-to-br from-[#CE978C] to-[#B8857A]">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -50,7 +50,8 @@ export default function ContactPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl text-white/90 md:text-2xl"
             >
-              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              We'd love to hear from you. Send us a message and we'll respond as
+              soon as possible.
             </motion.p>
           </div>
         </div>
@@ -73,7 +74,10 @@ export default function ContactPage() {
               </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
                     Name
                   </label>
                   <input
@@ -88,7 +92,10 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
                     Email
                   </label>
                   <input
@@ -103,7 +110,10 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
                     Subject
                   </label>
                   <select
@@ -123,7 +133,10 @@ export default function ContactPage() {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
                     Message
                   </label>
                   <textarea
@@ -161,8 +174,9 @@ export default function ContactPage() {
                   Contact Information
                 </h2>
                 <p className="mb-8 text-lg leading-relaxed text-slate-600">
-                  Have questions or need assistance? We're here to help. Reach out to us through 
-                  any of the following channels, and we'll get back to you promptly.
+                  Have questions or need assistance? We're here to help. Reach
+                  out to us through any of the following channels, and we'll get
+                  back to you promptly.
                 </p>
               </div>
 
@@ -210,8 +224,6 @@ export default function ContactPage() {
           </div>
         </div>
       </AnimatedSection>
-      <Footer/>
     </div>
-  )
+  );
 }
-

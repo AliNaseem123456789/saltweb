@@ -3,19 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import AnimatedCard from "@/components/AnimatedCard";
 import AnimatedSection from "@/components/AnimatedSection";
-import Footer from "@/components/footer";
 import { healthCards, values } from "@/data/aboutdata";
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
-      <Navbar />
       {/* Hero Section with Text Box */}
       <section className="relative h-[70vh] w-full overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1608039829573-803a9b3d3f0e?w=1920&h=1080&fit=crop"
+          src="/blogs/science-of-salt.jpg"
           alt="About Us - Himalayan Salt"
           fill
           priority
@@ -57,7 +54,7 @@ export default function AboutPage() {
               className="relative h-96 overflow-hidden rounded-lg lg:h-[500px]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1584735175097-719d848f8449?w=800&h=800&fit=crop"
+                src="/blogs/science-of-salt.jpg"
                 alt="Pink Pantry"
                 fill
                 className="object-cover"
@@ -157,7 +154,7 @@ export default function AboutPage() {
               className="relative h-96 overflow-hidden rounded-lg lg:h-[500px]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1608039829573-803a9b3d3f0e?w=1000&h=1000&fit=crop"
+                src="/blogs/science-of-salt.jpg"
                 alt="Himalayan Salt"
                 fill
                 className="object-cover"
@@ -183,7 +180,6 @@ export default function AboutPage() {
           </div>
         </div>
       </AnimatedSection>
-      <Footer />
     </div>
   );
 }

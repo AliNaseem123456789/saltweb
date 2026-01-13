@@ -1,18 +1,14 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import Navbar from '@/components/Navbar'
-import AnimatedCard from '@/components/AnimatedCard'
-import AnimatedSection from '@/components/AnimatedSection'
-import Footer from '@/components/footer'
-import { blogPosts, categories } from '@/data/blogpost'
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import AnimatedCard from "@/components/AnimatedCard";
+import AnimatedSection from "@/components/AnimatedSection";
+import { blogPosts, categories } from "@/data/blogpost";
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative h-[50vh] w-full overflow-hidden bg-gradient-to-br from-[#CE978C] to-[#B8857A]">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -89,7 +85,9 @@ export default function BlogPage() {
                     <h2 className="mb-3 font-serif text-2xl font-light text-slate-800">
                       {post.title}
                     </h2>
-                    <p className="mb-4 line-clamp-3 text-slate-600">{post.excerpt}</p>
+                    <p className="mb-4 line-clamp-3 text-slate-600">
+                      {post.excerpt}
+                    </p>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -108,8 +106,6 @@ export default function BlogPage() {
           </div>
         </div>
       </AnimatedSection>
-     <Footer/>
     </div>
-  )
+  );
 }
-
