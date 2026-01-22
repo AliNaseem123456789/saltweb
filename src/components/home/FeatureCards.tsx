@@ -6,13 +6,13 @@ const features = [
   {
     title: "Culinary Excellence",
     desc: "Elevate your dishes with the pure, mineral-rich flavor of Himalayan salt.",
-    img: "/blogs/FeaturedVideo1.mp4",
+    img: "/blogs/FeaturedVideo3.mp4",
     Icon: Sparkles,
   },
   {
     title: "Natural Wellness",
     desc: "From the heart of the Himalayas to your home. We prioritize sustainable mining practices to ensure the earth is respected as much as the product.",
-    img: "/blogs/FeaturedVideo2.mp4",
+    img: "/blogs/FeaturedVideo4.mp4",
     Icon: Leaf,
   },
 ];
