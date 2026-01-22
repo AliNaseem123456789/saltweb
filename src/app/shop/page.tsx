@@ -1,189 +1,167 @@
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import ShopProducts from "@/components/ShopProducts";
-import Footer from "@/components/footer";
+"use client";
 
-const BUCKET_NAME = "products"; // MUST match your test page bucket
+import React from "react";
+import { motion } from "framer-motion";
+import { ShoppingBag, Share2, Code2, ArrowUpRight } from "lucide-react";
 
-interface Product {
-  id: string;
-  name: string;
-  description?: string | null;
-  price?: number | null;
-  stock_quantity?: number | null;
-  is_active?: boolean | null;
-  image_folder?: string | null;
-  category?: string | null;
-  created_at?: string;
-  image_url?: string | null;
-  [key: string]: unknown;
-}
+const ServiceCard = ({ title, description, Icon, image }) => {
+  return (
+    <div className="w-full overflow-hidden rounded-[2.5rem] bg-[#121212] p-4 text-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] border border-white/5">
+      {/* 1. IMAGE CONTAINER */}
+      <motion.div
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
+        className="relative h-64 overflow-hidden rounded-[2rem] bg-black cursor-pointer group/img"
+      >
+        {/* THE IMAGE: Uses a spring transition for a more "elastic" feel */}
+        <motion.img
+          src={image}
+          variants={{
+            rest: { scale: 1, filter: "brightness(1) contrast(1)" },
+            hover: { scale: 1.12, filter: "brightness(1.05) contrast(1.05)" },
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 1,
+          }}
+          className="h-full w-full object-cover"
+          alt={title}
+        />
 
-/* ===============================
-   FETCH PRODUCTS + FIRST IMAGE
-=============================== */
-async function getProducts() {
-  const supabase = await createClient();
+        {/* THE REVEAL OVERLAY: Shadow layer + Glass Blur */}
+        <motion.div
+          className="absolute inset-0 h-full w-full backdrop-blur-[2px]"
+          variants={{
+            rest: {
+              opacity: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              WebkitMaskImage:
+                "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+            },
+            hover: {
+              opacity: [0, 1, 1, 0],
+              WebkitMaskImage: [
+                "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+                "radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,1) 60%)",
+                "radial-gradient(circle, rgba(0,0,0,0) 80%, rgba(0,0,0,1) 100%)",
+                "radial-gradient(circle, rgba(0,0,0,0) 100%, rgba(0,0,0,1) 100%)",
+              ],
+            },
+          }}
+          transition={{
+            duration: 1.4,
+            times: [0, 0.2, 0.8, 1],
+            ease: "easeInOut",
+          }}
+        />
 
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false });
+        {/* THE "GLINT": A fast white shine that sweeps across on hover */}
+        <motion.div
+          className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+          variants={{
+            rest: { x: "-100%", skewX: -20 },
+            hover: { x: "200%", skewX: -20 },
+          }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        />
+      </motion.div>
 
-  if (error || !products) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
+      <div className="mt-6 px-3 pb-4">
+        {/* 2. ICON ANIMATION */}
+        <motion.div
+          whileHover={{
+            rotate: [0, -10, 360],
+            color: "#a3e635",
+            scale: 1.1,
+          }}
+          initial={{ color: "#9ca3af" }}
+          transition={{ duration: 0.8, ease: "circOut" }}
+          className="mb-4 inline-block"
+        >
+          <Icon size={34} strokeWidth={1.5} />
+        </motion.div>
 
-  const productsWithImages: Product[] = await Promise.all(
-    products.map(async (product) => {
-      if (!product.image_folder) {
-        return { ...product, image_url: null };
-      }
+        <h3 className="mb-2 text-2xl font-bold tracking-tight text-white/90">
+          {title}
+        </h3>
+        <p className="mb-8 text-[#888888] text-sm leading-relaxed line-clamp-2">
+          {description}
+        </p>
 
-      const { data: files, error: storageError } = await supabase.storage
-        .from(BUCKET_NAME)
-        .list(product.image_folder, { limit: 20 });
-
-      if (storageError || !files) {
-        console.warn(
-          `Storage error for folder ${product.image_folder}`,
-          storageError
-        );
-        return { ...product, image_url: null };
-      }
-
-      const firstImage = files.find((file) =>
-        file.name.match(/\.(jpg|jpeg|png|webp)$/i)
-      );
-
-      if (!firstImage) {
-        return { ...product, image_url: null };
-      }
-
-      const { data } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(`${product.image_folder}/${firstImage.name}`);
-
-      return {
-        ...product,
-        image_url: data.publicUrl,
-      };
-    })
+        {/* 3. FOOTER BUTTON: Premium Independent Hover */}
+        <motion.div
+          whileHover="buttonHover"
+          initial="buttonRest"
+          className="relative cursor-pointer group/btn"
+        >
+          <motion.div
+            variants={{
+              buttonRest: {
+                backgroundColor: "rgba(31,31,31,1)",
+                color: "#ffffff",
+              },
+              buttonHover: { backgroundColor: "#a3e635", color: "#000000" },
+            }}
+            transition={{ duration: 0.3, ease: "backOut" }}
+            className="flex items-center justify-between rounded-2xl p-4 shadow-lg overflow-hidden"
+          >
+            <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+              Read More
+            </span>
+            <motion.div
+              variants={{
+                buttonRest: { x: 0, rotate: 0 },
+                buttonHover: { x: 0, rotate: 45 },
+              }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <ArrowUpRight size={20} />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
+};
 
-  return productsWithImages;
-}
-
-/* ===============================
-   FETCH WISHLIST ITEMS
-=============================== */
-async function getWishlistItems() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return [];
-  }
-
-  const { data } = await supabase
-    .from("wishlist")
-    .select("product_id")
-    .eq("user_id", user.id);
-
-  return data?.map((item) => item.product_id) || [];
-}
-
-/* ===============================
-   PAGE
-=============================== */
-export default async function ProductsPage() {
-  const products = await getProducts();
-  const wishlistItems = await getWishlistItems();
+export default function shop() {
+  const services = [
+    {
+      title: "E-Commerce Management",
+      description:
+        "Streamlining your online store, optimizing and product listings for maximum conversion and scalability.",
+      Icon: ShoppingBag,
+      image:
+        "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?q=80&w=800",
+    },
+    {
+      title: "Social Media Marketing",
+      description:
+        "Optimizing your online presence and managing community engagement across all global social platforms.",
+      Icon: Share2,
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800",
+    },
+    {
+      title: "Web Development",
+      description:
+        "Building high-performance, scalable web applications tailored to your business needs and future growth.",
+      Icon: Code2,
+      image:
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
-      <Navbar />
-
-      {/* Hero Section */}
-      <section className="relative h-[50vh] w-full overflow-hidden bg-gradient-to-br from-[#CE978C] to-[#B8857A]">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="mx-auto max-w-4xl text-center px-4">
-            <h1 className="mb-6 font-serif text-5xl font-light tracking-tight text-white md:text-6xl lg:text-7xl">
-              Our Products
-            </h1>
-            <p className="text-xl text-white/90 md:text-2xl">
-              Discover our complete collection of premium Himalayan salt
-              products
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Products Grid */}
-      <ShopProducts products={products} wishlistItems={wishlistItems} />
-
-      {/* Features Section */}
-      <section className="bg-white px-4 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            <div className="text-center">
-              <div className="mb-4 text-5xl">✨</div>
-              <h3 className="mb-3 font-serif text-2xl font-light text-slate-800">
-                Premium Quality
-              </h3>
-              <p className="text-slate-600">
-                Every product is carefully selected and tested to meet our
-                uncompromising standards for purity.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="mb-4 text-5xl">🌿</div>
-              <h3 className="mb-3 font-serif text-2xl font-light text-slate-800">
-                Natural & Pure
-              </h3>
-              <p className="text-slate-600">
-                Sourced directly from Himalayan mines, containing 84 essential
-                trace minerals.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="mb-4 text-5xl">🚚</div>
-              <h3 className="mb-3 font-serif text-2xl font-light text-slate-800">
-                Fast Shipping
-              </h3>
-              <p className="text-slate-600">
-                We deliver your products quickly and safely, ensuring freshness
-                and quality.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-[#EAE9E3] px-4 py-20">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 font-serif text-4xl font-light text-slate-800 md:text-5xl">
-            Can&apos;t Find What You&apos;re Looking For?
-          </h2>
-          <p className="mb-8 text-lg text-slate-600">
-            Contact us and we&apos;ll help you find the perfect Himalayan salt
-            product for your needs.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block rounded-lg bg-[#CE978C] px-10 py-4 font-sans text-lg font-medium text-white transition-all hover:bg-[#B8857A] hover:shadow-lg"
-          >
-            Contact Us
-          </Link>
-        </div>
-      </section>
-
-      <Footer />
+    <div className="min-h-screen bg-[#080808] py-20 px-6 font-sans flex items-center justify-center selection:bg-lime-400 selection:text-black">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        {services.map((s, i) => (
+          <ServiceCard key={i} {...s} />
+        ))}
+      </div>
     </div>
   );
 }

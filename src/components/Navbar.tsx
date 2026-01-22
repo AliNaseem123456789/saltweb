@@ -1,50 +1,40 @@
-'use client'
-
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { getWishlistCount, getCartCount } from '@/app/actions/cart-wishlist'
-
+"use client";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [wishlistCount, setWishlistCount] = useState(0)
-  const [cartCount, setCartCount] = useState(0)
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
   useEffect(() => {
     async function fetchCounts() {
       const [wishlist, cart] = await Promise.all([
         getWishlistCount(),
-        getCartCount()
-      ])
-      setWishlistCount(wishlist)
-      setCartCount(cart)
+        getCartCount(),
+      ]);
+      setWishlistCount(wishlist);
+      setCartCount(cart);
     }
-    fetchCounts()
-    
-    // Listen for updates
-    window.addEventListener('wishlist-updated', fetchCounts)
-    window.addEventListener('cart-updated', fetchCounts)
-    
+    fetchCounts();
+    window.addEventListener("wishlist-updated", fetchCounts);
+    window.addEventListener("cart-updated", fetchCounts);
     return () => {
-      window.removeEventListener('wishlist-updated', fetchCounts)
-      window.removeEventListener('cart-updated', fetchCounts)
-    }
-  }, [])
-
+      window.removeEventListener("wishlist-updated", fetchCounts);
+      window.removeEventListener("cart-updated", fetchCounts);
+    };
+  }, []);
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] text-2xl">
               🧂
             </div>
             <span className="font-serif text-2xl font-light text-slate-800">
-              PureSalt
+              Apex Global
             </span>
           </Link>
-
-          {/* Desktop Navigation */}
           <div className="hidden items-center gap-8 md:flex">
             <Link
               href="/"
@@ -77,8 +67,6 @@ export default function Navbar() {
               Contact
             </Link>
           </div>
-
-          {/* Right Side Icons */}
           <div className="flex items-center gap-4">
             <button
               className="p-2 text-slate-700 transition-colors hover:text-slate-900"
@@ -118,7 +106,7 @@ export default function Navbar() {
               </svg>
               {wishlistCount > 0 && (
                 <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#CE978C] text-xs font-bold text-white">
-                  {wishlistCount > 9 ? '9+' : wishlistCount}
+                  {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
             </Link>
@@ -142,7 +130,7 @@ export default function Navbar() {
               </svg>
               {cartCount > 0 && (
                 <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#CE978C] text-xs font-bold text-white">
-                  {cartCount > 9 ? '9+' : cartCount}
+                  {cartCount > 9 ? "9+" : cartCount}
                 </span>
               )}
             </Link>
@@ -242,6 +230,5 @@ export default function Navbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }
-

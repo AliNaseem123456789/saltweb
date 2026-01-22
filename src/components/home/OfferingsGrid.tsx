@@ -1,51 +1,88 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import AnimatedSection from "@/components/AnimatedSection";
-import AnimatedCard from "@/components/AnimatedCard";
 import { offerings } from "@/data/offerings";
 
 export default function OfferingsGrid() {
   return (
-    <AnimatedSection className="bg-[#FAF8F5] px-4 py-20">
-      <div className="mx-auto max-w-7xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center font-serif text-4xl font-light text-slate-800 md:text-5xl"
-        >
-          Discover Our Pure Offerings
-        </motion.h2>
+    <div className="mx-auto flex max-w-6xl flex-col bg-[#FAF8F5]">
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 5 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-8 text-center font-serif text-3xl font-light text-slate-800 md:text-4xl"
+      >
+        Pure Offerings
+      </motion.h2>
+
+      <div className="custom-scrollbar h-screen overflow-y-auto px-4">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {offerings.map((offering, index) => (
-            <AnimatedCard key={index} index={index}>
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="group overflow-hidden rounded-lg bg-white shadow-sm transition-all hover:shadow-lg"
-              >
-                <div className="relative h-64 w-full">
+            <motion.div
+              key={index}
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              className="group relative flex flex-col"
+            >
+              {/* SMALLER IMAGE: Height reduced from h-72 to h-56 */}
+              <div className="relative h-56 w-full overflow-hidden rounded-3xl bg-white shadow-md border border-slate-100">
+                <motion.div
+                  variants={{ rest: { scale: 1 }, hover: { scale: 1.05 } }}
+                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                  className="relative h-full w-full"
+                >
                   <Image
                     src={offering.image}
                     alt={offering.title}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                </div>
-                <div className="p-6">
-                  <h3 className="mb-2 font-serif text-2xl font-light text-slate-800">
-                    {offering.title}
-                  </h3>
-                  <p className="text-slate-600">{offering.description}</p>
-                </div>
-              </motion.div>
-            </AnimatedCard>
+                </motion.div>
+
+                {/* Mask Effect */}
+                <motion.div
+                  className="absolute inset-0 z-10 pointer-events-none"
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                    backdropFilter: "blur(2px)",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskSize: "100% 100%",
+                  }}
+                  variants={{
+                    rest: { opacity: 0 },
+                    hover: { opacity: [0, 1, 1, 0] },
+                  }}
+                  transition={{ duration: 1, ease: "easeInOut" }}
+                />
+
+                {/* Shine */}
+                <motion.div
+                  className="absolute inset-0 z-20 bg-gradient-to-tr from-transparent via-white/20 to-transparent pointer-events-none"
+                  variants={{
+                    rest: { x: "-100%", skewX: -20 },
+                    hover: { x: "200%", skewX: -20 },
+                  }}
+                  transition={{ duration: 0.7 }}
+                />
+              </div>
+
+              {/* TIGHTER TEXT CONTENT */}
+              <div className="mt-4 px-2 pb-2">
+                <h3 className="font-serif text-xl font-light text-slate-800 transition-colors group-hover:text-[#CE978C]">
+                  {offering.title}
+                </h3>
+                <p className="mt-1 text-sm text-slate-600 leading-snug line-clamp-2 italic">
+                  {offering.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </AnimatedSection>
+    </div>
   );
 }

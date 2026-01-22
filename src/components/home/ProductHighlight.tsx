@@ -2,58 +2,145 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import AnimatedSection from "@/components/AnimatedSection";
-
+import { ArrowUpRight } from "lucide-react";
 export default function ProductHighlight() {
   return (
-    <AnimatedSection className="bg-white px-4 py-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+    <section className="w-full ">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative h-96 overflow-hidden rounded-lg lg:h-[500px]"
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            className="relative group cursor-none md:cursor-default"
           >
-            <Image
-              src="https://images.unsplash.com/photo-1584735175097-719d848f8449?w=800&h=800&fit=crop"
-              alt="Himalayan Pink Salt"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
+            <div className="relative h-96 overflow-hidden rounded-4xl shadow-2xl lg:h-[600px] border border-slate-100">
+              <motion.div
+                variants={{
+                  rest: { scale: 1, filter: "brightness(1)" },
+                  hover: { scale: 1.1, filter: "brightness(1.05)" },
+                }}
+                transition={{ type: "spring", stiffness: 80, damping: 20 }}
+                className="relative h-full w-full"
+              >
+                <Image
+                  src="/blogs/himaliyansalt.webp"
+                  alt="Himalayan Pink Salt"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </motion.div>
+              <motion.div
+                className="absolute inset-0 z-10 backdrop-blur-[3px] pointer-events-none"
+                variants={{
+                  rest: {
+                    opacity: 0,
+                    ["WebkitMaskImage" as any]:
+                      "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+                    ["maskImage" as any]:
+                      "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+                  },
+                  hover: {
+                    opacity: [0, 1, 1, 0],
+                    ["WebkitMaskImage" as any]: [
+                      "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+                      "radial-gradient(circle, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 65%)",
+                      "radial-gradient(circle, rgba(0,0,0,0) 100%, rgba(0,0,0,1) 100%)",
+                    ],
+                    ["maskImage" as any]: [
+                      "radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%)",
+                      "radial-gradient(circle, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 65%)",
+                      "radial-gradient(circle, rgba(0,0,0,0) 100%, rgba(0,0,0,1) 100%)",
+                    ],
+                  },
+                }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute inset-0 z-20 bg-linear-to-tr from-transparent via-white/30 to-transparent pointer-events-none"
+                variants={{
+                  rest: { x: "-100%", skewX: -20 },
+                  hover: { x: "200%", skewX: -20 },
+                }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+              />
+            </div>
+            <motion.div
+              variants={{
+                rest: { opacity: 0, scale: 0.5 },
+                hover: { opacity: 1, scale: 1 },
+              }}
+              className="absolute -top-4 -right-4 z-30 bg-white p-4 rounded-full shadow-xl hidden md:block"
+            >
+              <span className="text-[#CE978C] font-bold text-xs uppercase tracking-tighter">
+                100% Pure
+              </span>
+            </motion.div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-8"
           >
-            <h2 className="font-serif text-4xl font-light text-slate-800 md:text-5xl">
-              Himalayan Pink Salt
-            </h2>
-            <p className="text-lg leading-relaxed text-slate-600">
+            <div>
+              <span className="text-[#CE978C] uppercase tracking-[0.3em] text-sm font-semibold">
+                Premium Quality
+              </span>
+              <h2 className="mt-4 font-serif text-5xl font-light text-slate-800 md:text-6xl leading-tight">
+                Ancient Earth <br /> Himalayan Salt
+              </h2>
+            </div>
+            <p className="text-xl leading-relaxed text-slate-600 font-light">
               Mined from ancient sea beds deep within the Himalayan mountains,
-              our pink salt contains 84 essential trace minerals that have been
+              our pink salt contains
+              <span className="text-slate-900 font-medium">
+                84 essential trace minerals
+              </span>
               preserved for over 250 million years.
             </p>
-            <p className="text-lg leading-relaxed text-slate-600">
-              Unlike processed table salt, Himalayan pink salt is unrefined and
-              contains no additives...
+
+            <p className="text-lg leading-relaxed text-slate-500 italic">
+              "Experience the difference of unrefined purity, where every
+              crystal tells a story of geological history."
             </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+
+            <motion.div
+              whileHover="btnHover"
+              initial="btnRest"
+              className="pt-4"
+            >
               <Link
                 href="/products"
-                className="inline-block rounded-lg bg-[#CE978C] px-8 py-3 font-sans text-base font-medium text-white transition-all hover:bg-[#B8857A] hover:shadow-lg"
+                className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full bg-[#CE978C] px-10 py-4 text-white shadow-xl transition-all"
               >
-                Explore Products
+                <span className="relative z-10 font-medium tracking-wide">
+                  Explore Our Range
+                </span>
+                <motion.div
+                  variants={{
+                    btnRest: { x: 0, rotate: 0 },
+                    btnHover: { x: 5, rotate: 45 },
+                  }}
+                  className="relative z-10"
+                >
+                  <ArrowUpRight size={22} />
+                </motion.div>
+                <motion.div
+                  className="absolute inset-0 bg-[#B8857A]"
+                  variants={{
+                    btnRest: { y: "100%" },
+                    btnHover: { y: 0 },
+                  }}
+                  transition={{ ease: "circOut" }}
+                />
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 }

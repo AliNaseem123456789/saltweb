@@ -10,7 +10,6 @@ async function checkAdmin() {
   if (!user) {
     return false
   }
-
   const { data: profile } = await supabase
     .from('profiles')
     .select('role, is_admin')
@@ -19,7 +18,6 @@ async function checkAdmin() {
 
   return profile && (profile.role === 'admin' || profile.is_admin === true)
 }
-
 export async function updateProduct(productId: string, data: {
   name: string
   description: string

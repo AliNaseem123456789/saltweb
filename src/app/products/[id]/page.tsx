@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import AddToCartButton from "@/components/Products/AddToCartButton"; // We'll create this next
+import AddToCartButton from "@/components/Products/AddToCartButton";
+import ProductGallery from "@/components/Products/ProductGallery";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -10,7 +11,6 @@ export default async function ProductDetailsPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
 
-  // 1. Fetch Product Data
   const { data: product } = await supabase
     .from("products")
     .select("*")
@@ -21,18 +21,21 @@ export default async function ProductDetailsPage({ params }: Props) {
     notFound();
   }
 
-  // 2. Get Public Image URL
-  let imageUrl = null;
+  // Fetch ALL images in the product folder
+  let imageUrls: string[] = [];
   if (product.image_folder) {
     const { data: files } = await supabase.storage
       .from("products")
-      .list(product.image_folder, { limit: 1 });
+      .list(product.image_folder);
 
     if (files && files.length > 0) {
-      const { data } = supabase.storage
-        .from("products")
-        .getPublicUrl(`${product.image_folder}/${files[0].name}`);
-      imageUrl = data.publicUrl;
+      // Map through all files to get their public URLs
+      imageUrls = files.map((file) => {
+        const { data } = supabase.storage
+          .from("products")
+          .getPublicUrl(`${product.image_folder}/${file.name}`);
+        return data.publicUrl;
+      });
     }
   }
 
@@ -40,22 +43,8 @@ export default async function ProductDetailsPage({ params }: Props) {
     <div className="min-h-screen bg-[#FAF8F5]">
       <main className="mx-auto max-w-7xl px-4 py-12 md:py-24">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Left: Image Gallery */}
-          <div className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-sm">
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center text-8xl bg-slate-100">
-                🧂
-              </div>
-            )}
-          </div>
+          {/* Left: Interactive Image Gallery */}
+          <ProductGallery images={imageUrls} productName={product.name} />
 
           {/* Right: Product Info */}
           <div className="flex flex-col justify-center">
@@ -84,7 +73,6 @@ export default async function ProductDetailsPage({ params }: Props) {
               </p>
             </div>
 
-            {/* Interaction Section */}
             <div className="space-y-4">
               <p className="text-sm text-slate-500">
                 Availability:{" "}
@@ -100,22 +88,14 @@ export default async function ProductDetailsPage({ params }: Props) {
                     : "Out of Stock"}
                 </span>
               </p>
-
               <AddToCartButton product={product} />
             </div>
 
-            {/* Extra Benefits */}
             <div className="mt-12 grid grid-cols-2 gap-4 border-t border-slate-200 pt-8 text-xs text-slate-500">
-              <div className="flex items-center gap-2">
-                ✨ 100% Natural Himalayan Salt
-              </div>
-              <div className="flex items-center gap-2">
-                🚚 Fast Global Shipping
-              </div>
+              <div className="flex items-center gap-2">✨ 100% Natural</div>
+              <div className="flex items-center gap-2">🚚 Fast Shipping</div>
               <div className="flex items-center gap-2">🔒 Secure Payments</div>
-              <div className="flex items-center gap-2">
-                🌱 Sustainably Sourced
-              </div>
+              <div className="flex items-center gap-2">🌱 Sustainable</div>
             </div>
           </div>
         </div>
