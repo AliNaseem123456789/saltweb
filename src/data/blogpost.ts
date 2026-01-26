@@ -15,7 +15,7 @@ export const blogPosts = [
     title: "Cooking with Himalayan Salt: A Chef's Guide",
     excerpt:
       "Learn professional techniques for using Himalayan salt to elevate your culinary creations.",
-    image: "/blogs/cooking-guide.jpg",
+    image: "/blogs/Cooking-With-Himalayan-Salt.jpg",
     date: "March 10, 2024",
     category: "Cooking",
     content:
@@ -37,7 +37,7 @@ export const blogPosts = [
     title: "The Art of Himalayan Salt Mining",
     excerpt:
       "A deep dive into the Khewra Salt Mines and the traditional methods used to harvest 'Pink Gold'.",
-    image: "/blogs/science-of-salt.jpg",
+    image: "/blogs/himaliyansalt copy.webp",
     date: "February 28, 2024",
     category: "Science",
     content:
@@ -48,7 +48,7 @@ export const blogPosts = [
     title: "Sustainable Sourcing: Our Commitment",
     excerpt:
       "Learn about our ethical sourcing practices and commitment to environmental sustainability.",
-    image: "/blogs/sustainable-sourcing.jpg",
+    image: "/blogs/sustainable-sourcing1.jpg",
     date: "February 20, 2024",
     category: "Sustainability",
     content:

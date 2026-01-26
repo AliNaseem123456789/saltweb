@@ -1,76 +1,148 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Send } from "lucide-react";
 
 const PromotionModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Small delay so it doesn't feel jarring immediately on load
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center  backdrop-blur-sm p-4">
-      <div className="relative flex flex-col md:flex-row w-full max-w-3xl bg-white rounded-lg overflow-hidden shadow-2xl">
-        {/* Close Button */}
-        <button
-          onClick={() => setIsOpen(false)}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black z-10"
-        >
-          ✕
-        </button>
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
+          />
 
-        {/* Left Content */}
-        <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-gray-900 leading-tight mb-4">
-            Get Free Samples <br /> from Pure Salt!
-          </h2>
-          <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-            Order your FREE Pure Salt Products Sample now! Be the first to
-            access our latest arrivals and exclusive offers. So what are you
-            waiting for?
-            <br />
-            <br />
-            Enter your email below to get started!
-          </p>
-
-          <form className="space-y-4">
-            <input
-              type="email"
-              placeholder="Email Address"
-              className="w-full border-b border-gray-300 py-2 outline-none focus:border-blue-500 transition-colors"
-              required
-            />
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-[2rem] overflow-hidden shadow-[0_32px_64px_-15px_rgba(0,0,0,0.2)]"
+          >
+            {/* Close Button */}
             <button
-              type="submit"
-              className="w-full border border-slate-800 py-3 text-sm font-semibold hover:bg-slate-800 hover:text-white transition-all uppercase tracking-widest"
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition-colors z-50 p-2 hover:bg-slate-100 rounded-full"
             >
-              Submit
+              <X size={20} />
             </button>
-          </form>
-        </div>
 
-        {/* Right Image Section */}
-        <div className="hidden md:block w-1/3 relative bg-slate-100">
-          {/* Replace with your actual image path */}
-          <div className="h-full w-full relative">
-            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-              {/* Custom blob shape approximation */}
-              <div className="w-[120%] h-[80%] bg-cover bg-center rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-[url('https://images.unsplash.com/photo-1615485290382-441e4d019cb0?auto=format&fit=crop&q=80&w=800')]"></div>
+            {/* Left Content */}
+            <div className="flex-[1.2] p-8 md:p-16 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <span className="text-[#CE978C] font-bold uppercase tracking-[0.3em] text-xs mb-4 block">
+                  Exclusive Invitation
+                </span>
+                <h2 className="text-4xl md:text-5xl font-serif text-slate-900 leading-[1.1] mb-6">
+                  Get Free Samples <br />
+                  <span className="text-[#CE978C] italic">from Pure Salt</span>
+                </h2>
+                <p className="text-slate-500 mb-8 text-base leading-relaxed max-w-sm">
+                  Experience the unrefined purity of the Himalayas. Join our
+                  inner circle for a free sample kit and early access to new
+                  harvests.
+                </p>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setIsOpen(false);
+                  }}
+                  className="space-y-4 relative"
+                >
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Enter your email address"
+                      className="w-full bg-slate-50 border-none rounded-xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#CE978C]/20 transition-all text-slate-900 placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="w-full bg-[#CE978C] py-4 rounded-xl text-white font-bold text-sm hover:bg-[#B8857A] shadow-lg shadow-[#CE978C]/30 transition-all flex items-center justify-center gap-2 uppercase tracking-widest"
+                  >
+                    Send Me Samples
+                    <Send size={16} />
+                  </motion.button>
+                </form>
+
+                <p className="mt-6 text-[10px] text-slate-400 text-center md:text-left">
+                  By subscribing, you agree to our Privacy Policy. No spam,
+                  ever.
+                </p>
+              </motion.div>
             </div>
-            <span className="absolute top-4 right-4 text-xs font-medium text-white mix-blend-difference">
-              Himalayan Alps
-            </span>
-          </div>
+
+            {/* Right Image Section */}
+            <div className="hidden md:block flex-1 relative bg-[#FDF8F6]">
+              <div className="absolute inset-0 flex items-center justify-center p-12">
+                {/* Decorative Blob */}
+                <motion.div
+                  animate={{
+                    borderRadius: [
+                      "40% 60% 70% 30% / 40% 50% 60% 50%",
+                      "60% 40% 30% 70% / 50% 30% 70% 50%",
+                      "40% 60% 70% 30% / 40% 50% 60% 50%",
+                    ],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="relative w-full h-full overflow-hidden shadow-2xl shadow-[#CE978C]/20"
+                >
+                  <Image
+                    src="/blogs/himaliyansalt copy.webp"
+                    alt="Himalayan Salt"
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+
+                {/* Floating Tag */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute bottom-20 -left-4 bg-white px-4 py-2 rounded-lg shadow-xl"
+                >
+                  <span className="text-[10px] font-bold text-slate-800 uppercase tracking-tighter flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    Limited Samples Available
+                  </span>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 };
 

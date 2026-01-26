@@ -1,18 +1,23 @@
 export const tips = [
   {
+    id: "4", // Mining
+    title: "The Himalayan Salt Mining",
+    description:
+      "A deep dive into the Khewra Salt Mines and the traditional methods used to harvest 'Pink Gold'.",
+    image: "/blogs/himaliyansalt copy.webp",
+  },
+  {
+    id: "2", // Cooking
     title: "Cooking with Himalayan Salt",
     description:
-      "Learn the best techniques for using pink salt in your kitchen",
-    image: "/blogs/cooking-guide.jpg",
+      "Learn professional techniques for using Himalayan salt to elevate your culinary creation",
+    image: "/blogs/Cooking-With-Himalayan-Salt.jpg",
   },
   {
-    title: "Wellness Benefits",
-    description: "Discover how Himalayan salt can improve your health",
-    image: "/blogs/salt-bath-recipes.jpg",
-  },
-  {
-    title: "Salt Therapy Guide",
-    description: "Everything you need to know about salt therapy at home",
-    image: "/blogs/salt-therapy.jpg",
+    id: "5", // Sustainability
+    title: "Sustainable Sourcing",
+    description:
+      "Learn about our ethical sourcing practices and commitment to environmental sustainability.",
+    image: "/blogs/sustainable-sourcing1.jpg",
   },
 ];

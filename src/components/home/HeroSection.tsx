@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    /* We use h-[80vh] to give it height without covering the whole screen, 
-       allowing the user to see the video clearly */
     <div className="relative flex min-h-[80vh] w-full items-center justify-center bg-transparent">
       <div className="mx-auto max-w-4xl px-4 text-center">
         <motion.h1
