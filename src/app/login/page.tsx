@@ -1,29 +1,27 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { login } from '@/app/actions/auth'
-
-export default function LoginPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const message = searchParams.get('message')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { login } from "@/app/actions/auth";
+function LoginContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const message = searchParams.get("message");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(formData: FormData) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
-    const result = await login(formData)
+    const result = await login(formData);
 
     if (result?.error) {
-      setError(result.error)
-      setIsLoading(false)
+      setError(result.error);
+      setIsLoading(false);
     }
   }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4 py-12 dark:from-slate-900 dark:to-slate-800">
       <div className="w-full max-w-md">
@@ -36,7 +34,6 @@ export default function LoginPage() {
               Sign in to your account to continue
             </p>
           </div>
-
           {message && (
             <div className="mb-4 rounded-lg bg-blue-50 p-4 text-sm text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
               {message}
@@ -91,13 +88,13 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full rounded-lg bg-slate-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link
                 href="/register"
                 className="font-semibold text-slate-900 hover:text-slate-700 dark:text-white dark:hover:text-slate-300"
@@ -109,6 +106,22 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
+// 2. This is the main page component that Next.js sees
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="animate-pulse text-slate-500 font-serif">
+            Loading Login...
+          </div>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
+  );
+}
