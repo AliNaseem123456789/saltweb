@@ -1,90 +1,105 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { updateProduct, createProduct } from '@/app/actions/admin'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { updateProduct, createProduct } from "@/app/actions/admin";
 
 interface Product {
-  id: string
-  name: string
-  description?: string | null
-  price?: number | null
-  image_url?: string | null
-  stock_quantity?: number | null
-  is_active?: boolean | null
-  category?: string | null
+  id: string;
+  name: string;
+  description?: string | null;
+  price?: number | null;
+  image_url?: string | null;
+  stock_quantity?: number | null;
+  is_active?: boolean | null;
+  category?: string | null;
 }
 
 interface InventoryManagerProps {
-  products: Product[]
+  products: Product[];
 }
 
-export default function InventoryManager({ products: initialProducts }: InventoryManagerProps) {
-  const [products, setProducts] = useState(initialProducts)
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  const [showAddForm, setShowAddForm] = useState(false)
+export default function InventoryManager({
+  products: initialProducts,
+}: InventoryManagerProps) {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    image_url: '',
-    stock_quantity: '',
-    category: '',
+    name: "",
+    description: "",
+    price: "",
+    image_url: "",
+    stock_quantity: "",
+    category: "",
     is_active: true,
-  })
+  });
 
   const handleEdit = (product: Product) => {
-    setEditingProduct(product)
+    setEditingProduct(product);
     setFormData({
-      name: product.name || '',
-      description: product.description || '',
-      price: product.price?.toString() || '',
-      image_url: product.image_url || '',
-      stock_quantity: product.stock_quantity?.toString() || '0',
-      category: product.category || '',
+      name: product.name || "",
+      description: product.description || "",
+      price: product.price?.toString() || "",
+      image_url: product.image_url || "",
+      stock_quantity: product.stock_quantity?.toString() || "0",
+      category: product.category || "",
       is_active: product.is_active ?? true,
-    })
-    setShowAddForm(true)
-  }
+    });
+    setShowAddForm(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
+    // Explicitly cast numeric values to ensure TypeScript compatibility
+    const numericUpdate = {
+      ...formData,
+      price: formData.price === "" ? 0 : parseFloat(formData.price),
+      stock_quantity:
+        formData.stock_quantity === ""
+          ? 0
+          : parseInt(formData.stock_quantity, 10),
+    };
+
     if (editingProduct) {
-      const result = await updateProduct(editingProduct.id, formData)
+      const result = await updateProduct(editingProduct.id, formData);
       if (result.success) {
-        setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...formData } : p))
-        setEditingProduct(null)
-        setShowAddForm(false)
-        setFormData({
-          name: '',
-          description: '',
-          price: '',
-          image_url: '',
-          stock_quantity: '',
-          category: '',
-          is_active: true,
-        })
+        // Update local state using numeric types to match Product interface
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === editingProduct.id
+              ? ({ ...p, ...numericUpdate } as Product)
+              : p,
+          ),
+        );
+        setEditingProduct(null);
+        setShowAddForm(false);
+        resetForm();
       }
     } else {
-      const result = await createProduct(formData)
+      const result = await createProduct(formData);
       if (result.success && result.product) {
-        setProducts([result.product, ...products])
-        setShowAddForm(false)
-        setFormData({
-          name: '',
-          description: '',
-          price: '',
-          image_url: '',
-          stock_quantity: '',
-          category: '',
-          is_active: true,
-        })
+        setProducts((prev) => [result.product as Product, ...prev]);
+        setShowAddForm(false);
+        resetForm();
       }
     }
-  }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      image_url: "",
+      stock_quantity: "",
+      category: "",
+      is_active: true,
+    });
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12">
@@ -101,17 +116,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
           </Link>
           <button
             onClick={() => {
-              setEditingProduct(null)
-              setShowAddForm(true)
-              setFormData({
-                name: '',
-                description: '',
-                price: '',
-                image_url: '',
-                stock_quantity: '',
-                category: '',
-                is_active: true,
-              })
+              setEditingProduct(null);
+              setShowAddForm(true);
+              resetForm();
             }}
             className="rounded-lg bg-[#CE978C] px-6 py-2 text-white transition-colors hover:bg-[#B8857A]"
           >
@@ -124,10 +131,10 @@ export default function InventoryManager({ products: initialProducts }: Inventor
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8 rounded-lg bg-white p-6 shadow-sm"
+          className="mb-8 rounded-lg bg-white p-6 shadow-sm border border-slate-100"
         >
           <h2 className="mb-4 font-serif text-2xl font-light text-slate-800">
-            {editingProduct ? 'Edit Product' : 'Add New Product'}
+            {editingProduct ? "Edit Product" : "Add New Product"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -139,7 +146,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
@@ -152,7 +161,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                   step="0.01"
                   required
                   value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
@@ -164,7 +175,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                   type="number"
                   required
                   value={formData.stock_quantity}
-                  onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, stock_quantity: e.target.value })
+                  }
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
@@ -175,7 +188,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                 <input
                   type="text"
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
@@ -186,7 +201,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                 <input
                   type="url"
                   value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, image_url: e.target.value })
+                  }
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
@@ -196,7 +213,9 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   rows={3}
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
@@ -206,27 +225,29 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                   <input
                     type="checkbox"
                     checked={formData.is_active}
-                    onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                    className="rounded border-slate-300"
+                    onChange={(e) =>
+                      setFormData({ ...formData, is_active: e.target.checked })
+                    }
+                    className="rounded border-slate-300 accent-[#CE978C]"
                   />
                   <span className="text-sm text-slate-700">Active</span>
                 </label>
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <button
                 type="submit"
                 className="rounded-lg bg-[#CE978C] px-6 py-2 text-white transition-colors hover:bg-[#B8857A]"
               >
-                {editingProduct ? 'Update Product' : 'Create Product'}
+                {editingProduct ? "Update Product" : "Create Product"}
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setShowAddForm(false)
-                  setEditingProduct(null)
+                  setShowAddForm(false);
+                  setEditingProduct(null);
                 }}
-                className="rounded-lg bg-slate-300 px-6 py-2 text-slate-700 transition-colors hover:bg-slate-400"
+                className="rounded-lg bg-slate-200 px-6 py-2 text-slate-700 transition-colors hover:bg-slate-300"
               >
                 Cancel
               </button>
@@ -239,7 +260,7 @@ export default function InventoryManager({ products: initialProducts }: Inventor
         {products.map((product) => (
           <div
             key={product.id}
-            className="overflow-hidden rounded-lg bg-white shadow-sm"
+            className="overflow-hidden rounded-lg bg-white shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
           >
             {product.image_url ? (
               <div className="relative h-48 w-full">
@@ -252,32 +273,43 @@ export default function InventoryManager({ products: initialProducts }: Inventor
                 />
               </div>
             ) : (
-              <div className="flex h-48 items-center justify-center bg-slate-100">
+              <div className="flex h-48 items-center justify-center bg-slate-50">
                 <span className="text-4xl">📦</span>
               </div>
             )}
             <div className="p-6">
-              <h3 className="mb-2 text-xl font-semibold text-slate-800">{product.name}</h3>
-              <p className="mb-2 text-sm text-slate-600">${Number(product.price || 0).toFixed(2)}</p>
-              <p className="mb-2 text-sm text-slate-600">
-                Stock: <span className="font-medium">{product.stock_quantity || 0}</span>
+              <h3 className="mb-2 text-xl font-semibold text-slate-800">
+                {product.name}
+              </h3>
+              <p className="mb-2 text-sm text-slate-600 font-medium">
+                ${Number(product.price || 0).toFixed(2)}
               </p>
-              <p className="mb-4 text-sm text-slate-600">
-                Status: <span className={`font-medium ${product.is_active ? 'text-green-600' : 'text-red-600'}`}>
-                  {product.is_active ? 'Active' : 'Inactive'}
-                </span>
-              </p>
+              <div className="space-y-1 mb-4">
+                <p className="text-sm text-slate-500">
+                  Stock:{" "}
+                  <span className="text-slate-700 font-medium">
+                    {product.stock_quantity || 0}
+                  </span>
+                </p>
+                <p className="text-sm text-slate-500">
+                  Status:{" "}
+                  <span
+                    className={`font-medium ${product.is_active ? "text-green-600" : "text-red-500"}`}
+                  >
+                    {product.is_active ? "Active" : "Inactive"}
+                  </span>
+                </p>
+              </div>
               <button
                 onClick={() => handleEdit(product)}
-                className="w-full rounded-lg bg-[#CE978C] px-4 py-2 text-sm text-white transition-colors hover:bg-[#B8857A]"
+                className="w-full rounded-lg border border-[#CE978C] text-[#CE978C] px-4 py-2 text-sm font-medium transition-colors hover:bg-[#CE978C] hover:text-white"
               >
-                Edit Product
+                Edit Details
               </button>
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
-
