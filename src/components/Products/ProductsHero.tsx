@@ -4,7 +4,6 @@ import ReactPlayer from "react-player";
 export default function ProductsHero() {
   return (
     <section className="relative h-[50vh] w-full overflow-hidden bg-[#B8857A]">
-      {/* --- Background Video Container --- */}
       <div className="absolute inset-0 z-0">
         <ReactPlayer
           url="https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/bc50fd9b-0393-44f9-a8de-158d807bddbc/default.jobtemplate.hls1080.m3u8"
