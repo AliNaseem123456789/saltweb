@@ -31,7 +31,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] text-2xl">
               <Image
-                src="/logo/logo.jfif"
+                src="/logo/logo.jpg"
                 alt="Apex Global Logo"
                 width={40} // Use numbers, not strings
                 height={40} // Use numbers, not strings
