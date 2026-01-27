@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
 export default function Navbar() {
@@ -29,7 +30,14 @@ export default function Navbar() {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] text-2xl">
-              🧂
+              <Image
+                src="/logo/logo.jfif"
+                alt="Apex Global Logo"
+                width={40} // Use numbers, not strings
+                height={40} // Use numbers, not strings
+                className="rounded-full object-cover"
+                priority // Recommended for logos/above-the-fold content
+              />
             </div>
             <span className="font-serif text-2xl font-light text-slate-800">
               Apex Global

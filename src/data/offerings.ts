@@ -1,17 +1,19 @@
 export const offerings = [
   {
-    title: "Bath Salts",
-    description: "Luxurious spa experience",
+    title: "Authentic Salt Wooden Basket",
+    description:
+      "A magnificent 13 lb. collection of raw salt crystals in a handcrafted wooden frame.",
     image: "/blogs/wooden-basket.webp",
   },
   {
-    title: "Himalayan Salt Heart Lamp",
-    description: "Natural Air purifiers",
+    title: "Himalayan Heart Glow Lamp",
+    description:
+      "Meticulously hand-sculpted 6-inch heart on a premium natural wood base.",
     image: "/blogs/heart-salt-lamp.webp",
   },
   {
-    title: "Salt Crystals",
-    description: "Pure mineral crystals",
+    title: "Cylinder Salt Night Light",
+    description: "Hand-carved geometric glow, perfect for gifting.",
     image: "/blogs/Cylinder_lamp.webp",
   },
   {
@@ -21,13 +23,14 @@ export const offerings = [
   },
 
   {
-    title: "Salt Lamps",
-    description: "Natural air purifiers",
+    title: "Geometric Salt Cube Lamps",
+    description:
+      "A solid 10 lb. hand-cut crystal for modern, clean-lined decor",
     image: "/blogs/salt-lamp.webp",
   },
   {
-    title: "Salt Blocks",
-    description: "Cooking and serving",
+    title: "Himalayan Salt Detox Bowl",
+    description: "Includes 6 round salt massage stones for ultimate relaxation",
     image: "/blogs/salt_bowl.webp",
   },
 ];

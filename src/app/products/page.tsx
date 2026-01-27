@@ -4,34 +4,31 @@ import ProductsCTA from "@/components/Products/ProductsCTA";
 import ProductsHero from "@/components/Products/ProductsHero";
 import ProductFeatures from "@/components/Products/ProductFeatures";
 import Pagination from "@/components/Pagination";
+import CategoriesTabs from "@/components/CatgeoriesTabs";
 
 export const revalidate = 3600;
 
-async function getProducts(page: number = 1) {
+async function getProducts(page: number = 1, category?: string) {
   const supabase = await createClient();
   const ITEMS_PER_PAGE = 10;
   const from = (page - 1) * ITEMS_PER_PAGE;
   const to = from + ITEMS_PER_PAGE - 1;
-
-  const { data: products, count } = await supabase
+  let query = supabase
     .from("products")
     .select("*", { count: "exact" })
-    .order("created_at", { ascending: false })
-    .range(from, to);
-
+    .order("created_at", { ascending: false });
+  if (category && category !== "All") {
+    query = query.eq("category", category);
+  }
+  const { data: products, count } = await query.range(from, to);
   if (!products) return { items: [], totalPages: 0 };
-
   const enriched = products.map((product) => {
     if (!product.image_folder) return { ...product, image_url: null };
-
     const { data } = supabase.storage
       .from("products")
       .getPublicUrl(`${product.image_folder}/image_1.avif`);
 
-    return {
-      ...product,
-      image_url: data.publicUrl,
-    };
+    return { ...product, image_url: data.publicUrl };
   });
 
   return {
@@ -54,25 +51,32 @@ async function getWishlistItems(userId: string | undefined) {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; category?: string }>;
 }) {
   const supabase = await createClient();
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
+  const currentCategory = params.category || "All"; // Default to All
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // 3. Pass currentCategory to the fetcher
   const [{ items: products, totalPages }, wishlistItems] = await Promise.all([
-    getProducts(currentPage),
+    getProducts(currentPage, currentCategory),
     getWishlistItems(user?.id),
   ]);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <ProductsHero />
+
+      {/* 4. Added Categories Navigation */}
+      <CategoriesTabs currentCategory={currentCategory} />
+
       <ProductsGrid products={products} wishlistItems={wishlistItems} />
+
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} />
       )}

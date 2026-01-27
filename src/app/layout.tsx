@@ -24,14 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>
-        {/* 2. Place Navbar at the top */}
+      <body
+        className={`${geistSans.variable} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <Navbar />
-
-        {/* This renders your individual pages */}
         <main>{children}</main>
-
-        {/* 3. Place Footer at the bottom */}
         <Footer />
       </body>
     </html>
