@@ -25,75 +25,43 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="relative flex min-h-[80vh] w-full items-center justify-center overflow-hidden">
-      {/* --- VIDEO BACKGROUND --- */}
+    <section className="relative w-full overflow-hidden bg-black">
+      {/* VIDEO CONTAINER 
+        We use 'relative' here so the video occupies actual space on the page.
+        This prevents the "hidden text" issue caused by forcing a fixed height.
+      */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
-        className="absolute inset-0 z-0"
+        className="relative z-0 w-full"
       >
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="h-full w-full object-cover"
+          className="w-full h-auto block" // h-auto ensures the entire frame (and text) is visible
           poster="/blogs/HeroSectionVideo.jpg"
         >
           <source src="/blogs/Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute inset-0 bg-black/30" />
+
+        {/* Dark Overlay to help top-layer text pop */}
+        <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      {/* --- CONTENT CONTAINER --- */}
+      {/* CONTENT OVERLAY
+        This sits on top of the video. Because the video container above 
+        has a real height, this content will always be centered over the footage.
+      */}
       <motion.div
-        className="relative z-10 mx-auto max-w-4xl px-4 text-center"
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-      >
-        {/* TEXT AND BUTTONS COMMENTED OUT BELOW 
-          Note: We comment out the logic AND the tags to avoid syntax errors.
-        */}
-
-        {/* <motion.h1
-          variants={itemVariants}
-          className="mb-6 font-serif text-6xl font-light tracking-tight text-white drop-shadow-2xl md:text-8xl lg:text-9xl"
-        >
-          Himalayan Salt
-        </motion.h1>
-
-        <motion.p
-          variants={itemVariants}
-          className="mb-10 font-light uppercase tracking-[0.3em] text-white/90 md:text-2xl"
-        >
-          Pure • Natural • Ancient
-        </motion.p>
-
-        <motion.div variants={itemVariants}>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <Link
-              href="/products"
-              className="group relative inline-block overflow-hidden rounded-full border border-white/40 px-12 py-4 text-lg font-medium text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white hover:text-black"
-            >
-              <span className="relative z-10">Shop Now</span>
-              <motion.div
-                className="absolute inset-0 bg-white"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-              />
-            </Link>
-          </motion.div>
-        </motion.div> 
-        */}
-      </motion.div>
-    </div>
+      ></motion.div>
+    </section>
   );
 }

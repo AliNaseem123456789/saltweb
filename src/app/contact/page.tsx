@@ -1,224 +1,182 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import { contactInfo } from "@/data/contactinfo";
 export default function ContactPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  useEffect(() => {
+    setIsVideoReady(true);
 
+    const playVideo = () => {
+      if (videoRef.current) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            console.log("Autoplay blocked. Waiting for interaction.");
+          });
+        }
+      }
+    };
+    const timeoutId = setTimeout(playVideo, 100);
+    return () => clearTimeout(timeoutId);
+  }, []);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message! We will get back to you soon.");
     setFormData({ name: "", email: "", subject: "", message: "" });
+    alert("Message sent!");
   };
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       {/* Hero Section */}
-      <section className="relative h-[50vh] w-full overflow-hidden bg-gradient-to-br from-[#CE978C] to-[#B8857A]">
-        <div className="absolute inset-0 flex items-center justify-center">
+      <section className="relative h-[50vh] w-full overflow-hidden bg-[#B8857A]">
+        <div className="absolute inset-0 z-0">
+          {/* We only render the video if the client is ready to prevent hydration mismatch */}
+          {isVideoReady && (
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              // Add a poster image if you have one - it helps the first load feel instant
+              // poster="/blogs/FeaturedVideo4-poster.jpg"
+              className="h-full w-full object-cover opacity-60 transition-opacity duration-1000"
+              style={{ opacity: isVideoReady ? 0.6 : 0 }}
+            >
+              <source src="/blogs/FeaturedVideo4.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+
+        <div className="relative z-10 flex h-full items-center justify-center">
           <div className="mx-auto max-w-4xl text-center px-4">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="mb-6 font-serif text-5xl font-light tracking-tight text-white md:text-6xl lg:text-7xl"
+              className="mb-6 font-serif text-5xl font-light text-white md:text-6xl lg:text-7xl drop-shadow-lg"
             >
               Get in Touch
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-white/90 md:text-2xl"
+              transition={{ delay: 0.2 }}
+              className="text-xl text-white/90 md:text-2xl drop-shadow-md"
             >
-              We'd love to hear from you. Send us a message and we'll respond as
-              soon as possible.
+              We&apos;d love to hear from you.
             </motion.p>
           </div>
         </div>
       </section>
 
-      {/* Contact Form and Info */}
+      {/* Form Section */}
       <AnimatedSection className="bg-[#FAF8F5] px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="rounded-lg bg-white p-8 shadow-sm"
+              className="rounded-lg bg-white p-8 shadow-sm border border-slate-100"
             >
               <h2 className="mb-6 font-serif text-3xl font-light text-slate-800">
                 Send us a Message
               </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-slate-700 mb-2"
-                  >
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Name
                   </label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
                     placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-slate-700 mb-2"
-                  >
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Email
                   </label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
-                    placeholder="your.email@example.com"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
+                    placeholder="email@example.com"
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-slate-700 mb-2"
-                  >
-                    Subject
-                  </label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="general">General Inquiry</option>
-                    <option value="product">Product Question</option>
-                    <option value="order">Order Support</option>
-                    <option value="wholesale">Wholesale Inquiry</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-slate-700 mb-2"
-                  >
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Message
                   </label>
                   <textarea
-                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={6}
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
-                    placeholder="Your message..."
+                    rows={5}
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
+                    placeholder="How can we help?"
                   />
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   type="submit"
-                  className="w-full rounded-lg bg-[#CE978C] px-6 py-3 font-medium text-white transition-colors hover:bg-[#B8857A]"
+                  className="w-full rounded-lg bg-[#CE978C] px-6 py-3 text-white hover:bg-[#B8857A] transition-colors"
                 >
                   Send Message
-                </motion.button>
+                </button>
               </form>
             </motion.div>
 
-            {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
+              className="space-y-8"
             >
-              <div>
-                <h2 className="mb-6 font-serif text-3xl font-light text-slate-800">
-                  Contact Information
-                </h2>
-                <p className="mb-8 text-lg leading-relaxed text-slate-600">
-                  Have questions or need assistance? We're here to help. Reach
-                  out to us through any of the following channels, and we'll get
-                  back to you promptly.
-                </p>
-              </div>
-
-              <div className="space-y-6">
+              <h2 className="font-serif text-3xl font-light text-slate-800">
+                Contact Information
+              </h2>
+              <div className="space-y-4">
                 {contactInfo.map((info, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="flex items-start gap-4 rounded-lg bg-white p-6 shadow-sm"
+                    className="flex items-start gap-4 rounded-lg bg-white p-6 border border-slate-100"
                   >
-                    <div className="text-3xl">{info.icon}</div>
+                    <div className="text-2xl">{info.icon}</div>
                     <div>
-                      <h3 className="mb-1 font-serif text-xl font-light text-slate-800">
+                      <h3 className="font-serif text-xl text-slate-800">
                         {info.title}
                       </h3>
-                      {info.link ? (
-                        <a
-                          href={info.link}
-                          className="text-slate-600 transition-colors hover:text-[#CE978C]"
-                        >
-                          {info.content}
-                        </a>
-                      ) : (
-                        <p className="text-slate-600">{info.content}</p>
-                      )}
+                      <p className="text-slate-600">{info.content}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </div>
-
-              <div className="rounded-lg bg-[#EAE9E3] p-6">
-                <h3 className="mb-3 font-serif text-xl font-light text-slate-800">
-                  Business Hours
-                </h3>
-                <div className="space-y-2 text-slate-600">
-                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                  <p>Saturday: 10:00 AM - 4:00 PM</p>
-                  <p>Sunday: Closed</p>
-                </div>
               </div>
             </motion.div>
           </div>

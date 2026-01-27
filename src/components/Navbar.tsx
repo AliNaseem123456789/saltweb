@@ -33,10 +33,10 @@ export default function Navbar() {
               <Image
                 src="/logo/logo.jpg"
                 alt="Apex Global Logo"
-                width={40} // Use numbers, not strings
-                height={40} // Use numbers, not strings
+                width={40}
+                height={40}
                 className="rounded-full object-cover"
-                priority // Recommended for logos/above-the-fold content
+                priority
               />
             </div>
             <span className="font-serif text-2xl font-light text-slate-800">
