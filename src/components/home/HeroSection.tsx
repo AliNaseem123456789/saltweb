@@ -44,7 +44,7 @@ export default function HeroSection() {
           className="w-full h-auto block" // h-auto ensures the entire frame (and text) is visible
           poster="/blogs/HeroSectionVideo.jpg"
         >
-          <source src="/blogs/Video.mp4" type="video/mp4" />
+          <source src="/blogs/HeroSectionVideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
