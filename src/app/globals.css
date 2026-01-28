@@ -18,7 +18,8 @@
     --foreground: #ededed;
   }
 }
-
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 body {
   background: var(--background);
   color: var(--foreground);

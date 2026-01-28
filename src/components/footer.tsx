@@ -73,8 +73,6 @@ export default function Footer() {
             </p>
           </div>
         </div>
-
-        {/* Bottom Bar */}
         <div className="mt-12 border-t border-slate-300 pt-8 text-center text-sm text-slate-500">
           © {new Date().getFullYear()} Apex Global. All rights reserved.
         </div>

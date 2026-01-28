@@ -106,7 +106,7 @@ export default function BlogPage() {
                       whileTap={{ scale: 0.95 }}
                     >
                       <Link
-                        href={`/blog/${post.id}`}
+                        href={`/blog/${post.slug}`}
                         className="inline-block rounded-lg bg-[#CE978C] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B8857A]"
                       >
                         Read More
