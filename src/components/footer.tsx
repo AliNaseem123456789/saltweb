@@ -76,7 +76,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 border-t border-slate-300 pt-8 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} PureSalt. All rights reserved.
+          © {new Date().getFullYear()} Apex Global. All rights reserved.
         </div>
       </div>
     </footer>
