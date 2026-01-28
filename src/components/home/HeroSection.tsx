@@ -26,10 +26,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full overflow-hidden bg-black">
-      {/* VIDEO CONTAINER 
-        We use 'relative' here so the video occupies actual space on the page.
-        This prevents the "hidden text" issue caused by forcing a fixed height.
-      */}
+      {/* VIDEO CONTAINER */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -41,27 +38,66 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          className="w-full h-auto block" // h-auto ensures the entire frame (and text) is visible
+          className="w-full h-auto block"
           poster="/blogs/HeroSectionVideo.jpg"
         >
           <source src="/blogs/HeroSectionVideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* Dark Overlay to help top-layer text pop */}
+        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      {/* CONTENT OVERLAY
-        This sits on top of the video. Because the video container above 
-        has a real height, this content will always be centered over the footage.
-      */}
+      {/* CONTENT OVERLAY */}
       <motion.div
         className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-      ></motion.div>
+      >
+        {/* Main Title */}
+        <motion.h1
+          variants={itemVariants}
+          className="mb-6 font-serif text-5xl font-light tracking-tight text-white drop-shadow-2xl md:text-8xl lg:text-9xl"
+        >
+          Himalayan Salt
+        </motion.h1>
+
+        {/* Subtitle / Tagline */}
+        <motion.p
+          variants={itemVariants}
+          className="mb-10 font-light uppercase tracking-[0.3em] text-white/90 md:text-2xl"
+        >
+          Pure • Natural • Ancient
+        </motion.p>
+
+        {/* Animated Button Container */}
+        <motion.div variants={itemVariants}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <Link
+              href="/products"
+              className="group relative inline-block overflow-hidden rounded-full border border-white/40 px-12 py-4 text-lg font-medium text-white backdrop-blur-sm transition-all hover:border-white hover:text-black"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
+                Shop Now
+              </span>
+
+              {/* This is the sliding background animation from your previous commit */}
+              <motion.div
+                className="absolute inset-0 bg-white"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              />
+            </Link>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
