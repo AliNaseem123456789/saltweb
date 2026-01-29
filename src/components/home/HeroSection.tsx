@@ -30,10 +30,9 @@ export default function HeroSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] },
+      transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] as const },
     },
   };
-
   return (
     <section className="relative w-full overflow-hidden bg-black">
       <motion.div
