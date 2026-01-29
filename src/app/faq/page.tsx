@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, Search } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
@@ -11,24 +11,44 @@ const faqs = [
       "Yes. Our salt is hand-mined directly from the Khewra Salt Mine at the base of the Himalayan Mountains. We ensure every batch is 100% natural, unrefined, and free from modern-day pollutants or additives.",
   },
   {
-    question: "What makes Himalayan salt different from regular table salt?",
+    question: "What is your Minimum Order Quantity (MOQ)?",
     answer:
-      "Unlike processed table salt, Himalayan salt is unrefined and contains 84 different trace minerals, including calcium, magnesium, and iron. These minerals give the salt its characteristic pink hue and a more complex flavor profile.",
+      "We offer flexible ordering options. While MOQs vary by SKU, we specialize in Less than Container Load (LCL) shipments. You can mix various products—such as edible salts, lamps, candle holders, and detox stones—within a single shipment to meet your specific inventory needs.",
+  },
+  {
+    question: "Can I request product samples before placing a bulk order?",
+    answer:
+      "Certainly. We provide complimentary product samples to qualified businesses worldwide. To request a sample, please email us at sales@rmsalt.com using your official corporate email address with your specific requirements.",
+  },
+  {
+    question: "What information is required to process a sample request?",
+    answer:
+      "To ensure a smooth delivery, please provide your company name, contact person, designation, and a valid business postal address including the zip code and a contact number with your country code.",
+  },
+  {
+    question: "How can I track the status of my samples?",
+    answer:
+      "Once your samples are dispatched, we will provide you with a DHL tracking code so you can monitor the shipment's progress in real-time until it reaches your doorstep.",
+  },
+  {
+    question: "What are your standard shipping and payment terms?",
+    answer:
+      "We typically operate on a 30% advance payment basis, with the remaining 70% balance due upon surrender of the Bill of Lading copy. We offer negotiable pricing based on FOB (Karachi Port) or CNF (to your nearest seaport) terms.",
+  },
+  {
+    question: "What documentation is provided to confirm and clear my order?",
+    answer:
+      "To finalize an order, we require a formal Purchase Order (PO) and branding/labeling instructions. Upon final payment, we provide all necessary legal documentation, including the Commercial Invoice, Certificate of Origin, FDA-USA Certification, and relevant HACCP/ISO analysis reports.",
+  },
+  {
+    question: "What is your weight and quality tolerance level?",
+    answer:
+      "We maintain a strict (5+/-) tolerance level regarding weight, value, and quality to ensure that the cargo you receive aligns perfectly with the specifications agreed upon in your purchase order.",
   },
   {
     question: "How should I store my salt lamps?",
     answer:
       "Salt lamps are hygroscopic (they attract moisture). To prevent 'sweating,' keep your lamp in a dry room and leave it turned on as much as possible; the warmth from the bulb keeps the salt dry and active.",
-  },
-  {
-    question: "Are your mining practices ethical?",
-    answer:
-      "Absolutely. We work directly with family-owned mines that prioritize fair wages, safe working conditions, and traditional hand-carving methods that minimize environmental impact.",
-  },
-  {
-    question: "Do you offer wholesale or bulk pricing?",
-    answer:
-      "Yes, we partner with wellness centers, spas, and retailers worldwide. Please reach out via our Contact page for our current wholesale catalog and volume pricing.",
   },
 ];
 
@@ -50,7 +70,7 @@ export default function FAQPage() {
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 font-serif text-5xl text-slate-900"
+            className="mt-4 font-serif text-5xl text-slate-900 leading-tight"
           >
             Frequently Asked <br />{" "}
             <span className="italic font-light">Questions</span>
@@ -71,10 +91,10 @@ export default function FAQPage() {
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="flex w-full items-center justify-between p-6 text-left transition-colors hover:bg-slate-50"
               >
-                <span className="font-serif text-xl text-slate-800">
+                <span className="font-serif text-xl text-slate-800 pr-4">
                   {faq.question}
                 </span>
-                <div className="ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-[#FAF8F5] text-[#CE978C]">
+                <div className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-[#FAF8F5] text-[#CE978C]">
                   {openIndex === index ? (
                     <Minus size={18} />
                   ) : (
@@ -112,7 +132,8 @@ export default function FAQPage() {
             Still have questions?
           </h3>
           <p className="mt-2 text-slate-600">
-            We’re here to help you choose the right product.
+            We’re here to help you choose the right product or discuss bulk
+            logistics.
           </p>
           <button className="mt-6 rounded-full bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-slate-900 shadow-sm transition-all hover:bg-[#CE978C] hover:text-white">
             Contact Support

@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import AddToCartButton from "@/components/Products/AddToCartButton";
 import ProductGallery from "@/components/Products/ProductGallery";
-import ProductReviews from "@/components/Products/Reviews"; // Ensure this path is correct
+import { MessageSquare } from "lucide-react";
+import ProductInquirySection from "@/components/Products/ProductInquirySection";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -11,6 +11,7 @@ interface Props {
 export default async function ProductDetailsPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+
   const { data: product } = await supabase
     .from("products")
     .select("*, reviews(*)")
@@ -20,6 +21,7 @@ export default async function ProductDetailsPage({ params }: Props) {
   if (!product) {
     notFound();
   }
+
   let imageUrls: string[] = [];
   if (product.image_folder) {
     const { data: files } = await supabase.storage
@@ -37,64 +39,37 @@ export default async function ProductDetailsPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
+    <div className="min-h-screen bg-white">
       <main className="mx-auto max-w-7xl px-4 py-12 md:py-24">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <ProductGallery images={imageUrls} productName={product.name} />
-          <div className="flex flex-col justify-center">
-            <nav className="mb-4 text-sm text-slate-500">
-              <span className="hover:text-[#CE978C] cursor-pointer">
-                Products
-              </span>{" "}
-              / {product.category || "General"}
-            </nav>
-            <h1 className="mb-4 font-serif text-4xl font-light text-slate-900 md:text-5xl">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          {/* LEFT: Product Visuals */}
+          <div className="bg-[#F3F4F6] rounded-sm flex items-center justify-center p-8">
+            <ProductGallery images={imageUrls} productName={product.name} />
+          </div>
+
+          {/* RIGHT: Wholesale Specifications */}
+          <div className="flex flex-col pt-4">
+            <h1 className="text-5xl font-bold text-slate-900 mb-4 tracking-tight">
               {product.name}
             </h1>
-            <p className="mb-6 text-2xl font-medium text-[#CE978C]">
-              ${Number(product.price ?? 0).toFixed(2)}
+
+            <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg">
+              {product.description ||
+                "Our Himalayan salt products are all natural and authentic, mined directly from the Khewra salt mine in Pakistan."}
             </p>
-            <div className="mb-8 border-t border-slate-200 pt-8">
-              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-900">
-                Description
-              </h3>
-              <p className="leading-relaxed text-slate-600">
-                {product.description ||
-                  "No description available for this premium Himalayan salt product."}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <p className="text-sm text-slate-500">
-                Availability:{" "}
-                <span
-                  className={
-                    product.stock_quantity > 0
-                      ? "text-green-600"
-                      : "text-red-500"
-                  }
-                >
-                  {product.stock_quantity > 0
-                    ? `In Stock (${product.stock_quantity})`
-                    : "Out of Stock"}
-                </span>
-              </p>
-              <AddToCartButton product={product} />
-            </div>
-            <div className="mt-12 grid grid-cols-2 gap-4 border-t border-slate-200 pt-8 text-xs text-slate-500">
-              <div className="flex items-center gap-2">✨ 100% Natural</div>
-              <div className="flex items-center gap-2">🚚 Fast Shipping</div>
-              <div className="flex items-center gap-2">🔒 Secure Payments</div>
-              <div className="flex items-center gap-2">🌱 Sustainable</div>
-            </div>
+
+            {/* Client-side Interactive Section */}
+            <ProductInquirySection sku={product.sku} />
           </div>
         </div>
-        <div className="mt-24 border-t border-slate-200 pt-16">
-          <h2 className="text-3xl font-serif text-slate-900 mb-8">
-            What our customers say
-          </h2>
-          <ProductReviews reviews={product.reviews || []} />
-        </div>
       </main>
+
+      {/* Floating Inquiry Button */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <button className="bg-[#0D54A0] p-4 rounded-full text-white shadow-2xl hover:scale-110 transition-transform active:scale-95">
+          <MessageSquare size={32} />
+        </button>
+      </div>
     </div>
   );
 }

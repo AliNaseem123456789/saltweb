@@ -5,8 +5,18 @@ import { useState, useEffect } from "react";
 import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isConnectOpen, setIsConnectOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
+  const productCategories = [
+    { name: "Edible Salt", slug: "Edible Salt" },
+    { name: "Culinary", slug: "culinary" },
+    { name: "Health & Wellness", slug: "Health Wellness" },
+    { name: "Home Decor", slug: "Salt Lamp" },
+    { name: "Animal Salt", slug: "animal-salt" },
+    { name: "Construction Products", slug: "construction-products" },
+  ];
   useEffect(() => {
     async function fetchCounts() {
       const [wishlist, cart] = await Promise.all([
@@ -29,13 +39,13 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] text-2xl">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] overflow-hidden">
               <Image
                 src="/logo/logo.jpg"
                 alt="Apex Global Logo"
                 width={40}
                 height={40}
-                className="rounded-full object-cover"
+                className="object-cover"
                 priority
               />
             </div>
@@ -43,43 +53,120 @@ export default function Navbar() {
               Apex Global
             </span>
           </Link>
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-8 md:flex text-sm lg:text-base">
             <Link
               href="/"
-              className="text-slate-700 transition-colors hover:text-slate-900"
+              className="text-slate-700 hover:text-slate-900 transition-colors"
             >
               Home
             </Link>
-            <Link
-              href="/products"
-              className="text-slate-700 transition-colors hover:text-slate-900"
+            <div
+              className="relative"
+              onMouseEnter={() => setIsProductsOpen(true)}
+              onMouseLeave={() => setIsProductsOpen(false)}
             >
-              Shop
-            </Link>
+              <button className="flex items-center gap-1 text-slate-700 hover:text-slate-900 transition-colors py-2">
+                Products
+                <svg
+                  className={`h-4 w-4 transition-transform ${isProductsOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              {isProductsOpen && (
+                <div className="absolute left-0 w-56 rounded-xl border border-slate-100 bg-white p-2 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  {productCategories.map((category) => (
+                    <Link
+                      key={category.slug}
+                      href={`/products?category=${category.slug}`}
+                      className="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#CE978C] transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  ))}
+                  <div className="my-1 border-t border-slate-100" />
+                  <Link
+                    href="/products"
+                    className="block px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#CE978C] hover:underline"
+                  >
+                    View All Products
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link
-              href="/blog"
-              className="text-slate-700 transition-colors hover:text-slate-900"
+              href="/private-label"
+              className="text-slate-700 hover:text-slate-900 transition-colors"
             >
-              Blog
+              Private Label
             </Link>
             <Link
               href="/about"
-              className="text-slate-700 transition-colors hover:text-slate-900"
+              className="text-slate-700 hover:text-slate-900 transition-colors"
             >
               About Us
             </Link>
-            <Link
-              href="/contact"
-              className="text-slate-700 transition-colors hover:text-slate-900"
+            <div
+              className="relative"
+              onMouseEnter={() => setIsConnectOpen(true)}
+              onMouseLeave={() => setIsConnectOpen(false)}
             >
-              Contact
-            </Link>
+              <button className="flex items-center gap-1 text-slate-700 hover:text-slate-900 transition-colors py-2">
+                Connect With Us
+                <svg
+                  className={`h-4 w-4 transition-transform ${isConnectOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              {isConnectOpen && (
+                <div className="absolute left-0 w-48 rounded-xl border border-slate-100 bg-white p-2 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  <Link
+                    href="/contact"
+                    className="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#CE978C]"
+                  >
+                    Contact Us
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#CE978C]"
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/faq"
+                    className="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#CE978C]"
+                  >
+                    FAQs
+                  </Link>
+                  <Link
+                    href="/news"
+                    className="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#CE978C]"
+                  >
+                    News Feed
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              className="p-2 text-slate-700 transition-colors hover:text-slate-900"
-              aria-label="Search"
-            >
+          <div className="flex items-center gap-2">
+            <button className="p-2 text-slate-700 hover:text-slate-900 transition-colors">
               <svg
                 className="h-6 w-6"
                 fill="none"
@@ -96,8 +183,7 @@ export default function Navbar() {
             </button>
             <Link
               href="/wishlist"
-              className="relative p-2 text-slate-700 transition-colors hover:text-slate-900"
-              aria-label="Wishlist"
+              className="relative p-2 text-slate-700 hover:text-slate-900 transition-colors"
             >
               <svg
                 className="h-6 w-6"
@@ -113,15 +199,14 @@ export default function Navbar() {
                 />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#CE978C] text-xs font-bold text-white">
-                  {wishlistCount > 9 ? "9+" : wishlistCount}
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#CE978C] text-[10px] font-bold text-white">
+                  {wishlistCount}
                 </span>
               )}
             </Link>
             <Link
               href="/cart"
-              className="relative p-2 text-slate-700 transition-colors hover:text-slate-900"
-              aria-label="Cart"
+              className="relative p-2 text-slate-700 hover:text-slate-900 transition-colors"
             >
               <svg
                 className="h-6 w-6"
@@ -137,36 +222,14 @@ export default function Navbar() {
                 />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#CE978C] text-xs font-bold text-white">
-                  {cartCount > 9 ? "9+" : cartCount}
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#CE978C] text-[10px] font-bold text-white">
+                  {cartCount}
                 </span>
               )}
             </Link>
-            <Link
-              href="/account"
-              className="p-2 text-slate-700 transition-colors hover:text-slate-900"
-              aria-label="Account"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </Link>
-
-            {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 text-slate-700"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Menu"
             >
               <svg
                 className="h-6 w-6"
@@ -193,45 +256,65 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="border-t border-slate-200 py-4 md:hidden">
-            <div className="flex flex-col gap-4">
-              <Link
-                href="/"
-                className="text-slate-700 transition-colors hover:text-slate-900"
-                onClick={() => setIsMenuOpen(false)}
-              >
+          <div className="border-t border-slate-200 py-6 md:hidden">
+            <div className="flex flex-col gap-4 text-slate-700">
+              <Link href="/" onClick={() => setIsMenuOpen(false)}>
                 Home
               </Link>
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Products
+              </div>
+              {productCategories.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/products?category=${category.slug}`}
+                  className="pl-4"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {category.name}
+                </Link>
+              ))}
               <Link
-                href="/products"
-                className="text-slate-700 transition-colors hover:text-slate-900"
+                href="/private-label"
+                className="pt-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Shop
+                Private Label
+              </Link>
+              <Link href="/about" onClick={() => setIsMenuOpen(false)}>
+                About Us
+              </Link>
+              <div className="pt-2 pb-1 text-xs font-bold uppercase tracking-wider text-slate-400">
+                Connect
+              </div>
+              <Link
+                href="/contact"
+                className="pl-4"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact Us
               </Link>
               <Link
                 href="/blog"
-                className="text-slate-700 transition-colors hover:text-slate-900"
+                className="pl-4"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog
               </Link>
               <Link
-                href="/about"
-                className="text-slate-700 transition-colors hover:text-slate-900"
+                href="/faq"
+                className="pl-4"
                 onClick={() => setIsMenuOpen(false)}
               >
-                About Us
+                FAQs
               </Link>
               <Link
-                href="/contact"
-                className="text-slate-700 transition-colors hover:text-slate-900"
+                href="/news"
+                className="pl-4"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Contact
+                News Feed
               </Link>
             </div>
           </div>
