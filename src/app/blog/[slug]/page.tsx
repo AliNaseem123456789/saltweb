@@ -58,7 +58,7 @@ export default function BlogDetailPage() {
             </div>
             <div className="flex items-center gap-2">
               <User size={16} className="text-[#CE978C]" />
-              By SaltWeb Editorial
+              By Apex Global Editorial
             </div>
             <div className="flex items-center gap-2">
               <Tag size={16} className="text-[#CE978C]" />
