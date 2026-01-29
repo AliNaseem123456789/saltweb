@@ -13,7 +13,7 @@ export default function ProductInquirySection({
 }: ProductInquirySectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [moq, setMoq] = useState(100);
-
+  const productMoq = 500;
   return (
     <>
       {/* Specification: Weight/Variant */}
@@ -74,6 +74,7 @@ export default function ProductInquirySection({
       <InquiryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        moq={productMoq}
         title="Inquiry Form"
       />
     </>
