@@ -13,40 +13,31 @@ async function getProducts(page: number = 1, category?: string) {
   const ITEMS_PER_PAGE = 12;
   const from = (page - 1) * ITEMS_PER_PAGE;
   const to = from + ITEMS_PER_PAGE - 1;
-
   let query = supabase
     .from("products")
     .select("*", { count: "exact" })
     .order("created_at", { ascending: false });
-
   if (category && category !== "All") {
     query = query.eq("category", category);
   }
-
   const { data: products, count } = await query.range(from, to);
-
   if (!products) return { items: [], totalPages: 0 };
-
   const enriched = products.map((product) => {
     if (!product.image_folder) {
       return { ...product, image_url: null, hover_image_url: null };
     }
-
     const { data: mainImg } = supabase.storage
       .from("products")
       .getPublicUrl(`${product.image_folder}/image_1.avif`);
-
     const { data: hoverImg } = supabase.storage
       .from("products")
       .getPublicUrl(`${product.image_folder}/image_2.avif`);
-
     return {
       ...product,
       image_url: mainImg.publicUrl,
       hover_image_url: hoverImg.publicUrl,
     };
   });
-
   return {
     items: enriched,
     totalPages: Math.ceil((count || 0) / ITEMS_PER_PAGE),
@@ -59,21 +50,17 @@ async function getWishlistItems(userId: string | undefined) {
     .from("wishlist")
     .select("product_id")
     .eq("user_id", userId);
-
   return data?.map((item) => item.product_id) || [];
 }
-
 export default async function ProductsPage({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; category?: string }>;
 }) {
   const supabase = await createClient();
-
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const currentCategory = params.category || "All";
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
