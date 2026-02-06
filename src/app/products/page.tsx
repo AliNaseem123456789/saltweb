@@ -97,11 +97,7 @@ export default async function ProductsPage({
             </h1>
             <CategoriesTabs currentCategory={currentCategory} />
           </div>
-          <ProductsGrid
-            products={products}
-            wishlistItems={wishlistItems}
-            columns={4}
-          />
+          <ProductsGrid products={products} wishlistItems={wishlistItems} />
           {totalPages > 1 && (
             <div className="mt-12">
               <Pagination currentPage={currentPage} totalPages={totalPages} />
