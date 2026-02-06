@@ -10,12 +10,12 @@ export default function Navbar() {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const productCategories = [
-    { name: "Edible Salt", slug: "Edible Salt" },
-    { name: "Culinary", slug: "culinary" },
-    { name: "Health & Wellness", slug: "Health Wellness" },
     { name: "Home Decor", slug: "Salt Lamp" },
+    { name: "Health & Wellness", slug: "Health Wellness" },
+    { name: "Edible Salt", slug: "Edible Salt" },
     { name: "Animal Salt", slug: "animal-salt" },
     { name: "Construction Products", slug: "construction-products" },
+    { name: "Culinary", slug: "culinary" },
   ];
   useEffect(() => {
     async function fetchCounts() {
@@ -181,7 +181,7 @@ export default function Navbar() {
                 />
               </svg>
             </button>
-            <Link
+            {/* <Link
               href="/wishlist"
               className="relative p-2 text-slate-700 hover:text-slate-900 transition-colors"
             >
@@ -197,14 +197,14 @@ export default function Navbar() {
                   strokeWidth={2}
                   d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                 />
-              </svg>
-              {wishlistCount > 0 && (
+              </svg> */}
+            {/* {wishlistCount > 0 && (
                 <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#CE978C] text-[10px] font-bold text-white">
                   {wishlistCount}
                 </span>
               )}
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               href="/cart"
               className="relative p-2 text-slate-700 hover:text-slate-900 transition-colors"
             >
@@ -226,7 +226,7 @@ export default function Navbar() {
                   {cartCount}
                 </span>
               )}
-            </Link>
+            </Link> */}
             <button
               className="md:hidden p-2 text-slate-700"
               onClick={() => setIsMenuOpen(!isMenuOpen)}

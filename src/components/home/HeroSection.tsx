@@ -1,19 +1,18 @@
 "use client";
 
-import { useState, useRef } from "react"; // Added hooks
+import { useState, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function HeroSection() {
   const [showUI, setShowUI] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Sync logic: Trigger when video hits 3 seconds
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       const time = videoRef.current.currentTime;
-      // Show UI only after 3 seconds AND before 53 seconds
-      setShowUI(time >= 3 && time < 53);
+
+      setShowUI(time >= 4.5 && time < 53);
     }
   };
 
@@ -43,7 +42,7 @@ export default function HeroSection() {
       >
         <video
           ref={videoRef}
-          onTimeUpdate={handleTimeUpdate} // The "Magic" trigger
+          onTimeUpdate={handleTimeUpdate}
           autoPlay
           loop
           muted
@@ -54,11 +53,11 @@ export default function HeroSection() {
           <source src="/blogs/HeroSectionVideo.mp4" type="video/mp4" />
         </video>
 
-        {/* Dark Overlay helps text pop */}
+        {}
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      {/* CONTENT OVERLAY */}
+      {}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center pointer-events-none">
         <AnimatePresence>
           {showUI && (

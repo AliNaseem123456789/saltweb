@@ -5,12 +5,12 @@ import ProductsHero from "@/components/Products/ProductsHero";
 import ProductFeatures from "@/components/Products/ProductFeatures";
 import Pagination from "@/components/Pagination";
 import CategoriesTabs from "@/components/CatgeoriesTabs";
-
+import ProductSidebar from "@/components/Products/SideCategories";
 export const revalidate = 3600;
 
 async function getProducts(page: number = 1, category?: string) {
   const supabase = await createClient();
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 12;
   const from = (page - 1) * ITEMS_PER_PAGE;
   const to = from + ITEMS_PER_PAGE - 1;
 
@@ -28,12 +28,23 @@ async function getProducts(page: number = 1, category?: string) {
   if (!products) return { items: [], totalPages: 0 };
 
   const enriched = products.map((product) => {
-    if (!product.image_folder) return { ...product, image_url: null };
-    const { data } = supabase.storage
+    if (!product.image_folder) {
+      return { ...product, image_url: null, hover_image_url: null };
+    }
+
+    const { data: mainImg } = supabase.storage
       .from("products")
       .getPublicUrl(`${product.image_folder}/image_1.avif`);
 
-    return { ...product, image_url: data.publicUrl };
+    const { data: hoverImg } = supabase.storage
+      .from("products")
+      .getPublicUrl(`${product.image_folder}/image_2.avif`);
+
+    return {
+      ...product,
+      image_url: mainImg.publicUrl,
+      hover_image_url: hoverImg.publicUrl,
+    };
   });
 
   return {
@@ -41,7 +52,6 @@ async function getProducts(page: number = 1, category?: string) {
     totalPages: Math.ceil((count || 0) / ITEMS_PER_PAGE),
   };
 }
-
 async function getWishlistItems(userId: string | undefined) {
   if (!userId) return [];
   const supabase = await createClient();
@@ -76,13 +86,29 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <ProductsHero />
-      <CategoriesTabs currentCategory={currentCategory} />
-      <ProductsGrid products={products} wishlistItems={wishlistItems} />
-
-      {totalPages > 1 && (
-        <Pagination currentPage={currentPage} totalPages={totalPages} />
-      )}
-
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-6">
+        <aside className="w-full lg:w-72 shrink-0">
+          <ProductSidebar currentCategory={currentCategory} />
+        </aside>
+        <main className="flex-1">
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-4xl font-bold text-slate-800 capitalize ">
+              {currentCategory}
+            </h1>
+            <CategoriesTabs currentCategory={currentCategory} />
+          </div>
+          <ProductsGrid
+            products={products}
+            wishlistItems={wishlistItems}
+            columns={4}
+          />
+          {totalPages > 1 && (
+            <div className="mt-12">
+              <Pagination currentPage={currentPage} totalPages={totalPages} />
+            </div>
+          )}
+        </main>
+      </div>
       <ProductFeatures />
       <ProductsCTA />
     </div>

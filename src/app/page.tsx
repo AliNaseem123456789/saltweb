@@ -5,9 +5,13 @@ import OfferingsGrid from "@/components/home/OfferingsGrid";
 import TipsGrid from "@/components/home/TipsGrid";
 import ProductHighlight from "@/components/home/ProductHighlight";
 import EssenceGallery from "@/components/home/EssenceGallery";
+import PromotionModal from "@/components/home/PromotionModal";
+import FloatingGalleryHero from "@/components/FloatingGallery";
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
+      {/* <FloatingGalleryHero /> */}
+      <PromotionModal />
       <HeroSection />
       <OfferingsGrid />
 

@@ -1,36 +1,38 @@
 export const offerings = [
   {
-    title: "Authentic Salt Wooden Basket",
+    title: "Authentic Himalayan Wooden Basket",
     description:
-      "A magnificent 13 lb. collection of raw salt crystals in a handcrafted wooden frame.",
-    image: "/blogs/wooden-basket.webp",
+      "A magnificent 13 lb. collection of raw salt crystals presented in a handcrafted artisanal wooden frame.",
+    image: "/Landingpage/wooden-basket.webp",
   },
   {
-    title: "Himalayan Heart Glow Lamp",
+    title: "Gourmet Food-Grade Salt",
     description:
-      "Meticulously hand-sculpted 6-inch heart on a premium natural wood base.",
-    image: "/blogs/heart-salt-lamp.webp",
+      "Pure, high-mineral pink salt crystals, refined to the highest food-safety standards for seasoning and gourmet cooking.",
+    image: "/Landingpage/Food-Grade-Salt.jpeg",
   },
   {
-    title: "Cylinder Salt Night Light",
-    description: "Hand-carved geometric glow, perfect for gifting.",
-    image: "/blogs/Cylinder_lamp.webp",
-  },
-  {
-    title: "Himalayan Salt - Natural Lamp Large ",
-    description: "Ideal for finishing dishes",
-    image: "/blogs/salt-lamp-2.webp",
-  },
-
-  {
-    title: "Geometric Salt Cube Lamps",
+    title: "Geometric Salt Massage Stone",
     description:
-      "A solid 10 lb. hand-cut crystal for modern, clean-lined decor",
-    image: "/blogs/salt-lamp.webp",
+      "A precision hand-carved geometric massage stone, designed for therapeutic use and elegant gifting.",
+    image: "/Landingpage/Massage.jpeg",
+  },
+  {
+    title: "Natural Himalayan Salt Lamps",
+    description:
+      "A majestic, raw-cut salt crystal lamp that emits a warm, ambient glow to purify and soothe any room.",
+    image: "/Landingpage/NaturalLamp-2.jpeg",
+  },
+  {
+    title: "Premium Fine Edible Salt",
+    description:
+      "Pure, mineral-rich Himalayan pink salt, ethically sourced and perfectly ground for gourmet culinary use.",
+    image: "/Landingpage/Edible-Salt.jpeg",
   },
   {
     title: "Himalayan Salt Detox Bowl",
-    description: "Includes 6 round salt massage stones for ultimate relaxation",
-    image: "/blogs/salt_bowl.webp",
+    description:
+      "A therapeutic warming bowl set, including 6 hand-smoothed round massage stones for ultimate relaxation.",
+    image: "/Landingpage/salt_bowl.webp",
   },
 ];
