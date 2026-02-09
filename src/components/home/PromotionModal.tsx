@@ -4,6 +4,7 @@ import { X, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { submitSampleRequest } from "@/app/actions/sample-actions";
+
 const PromotionModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,22 +14,34 @@ const PromotionModal = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSubmit = async (e) => {
+  // FIXED: Added React.FormEvent type to handle Vercel/TypeScript build errors
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
+    const email = formData.get("email") as string; // FIXED: Explicitly cast to string
 
-    const result = await submitSampleRequest(email);
-
-    if (result.success) {
-      alert("Success! Check your inbox for details.");
-      setIsOpen(false);
-    } else {
-      alert("Error: " + result.error);
+    if (!email) {
+      setIsSubmitting(false);
+      return;
     }
-    setIsSubmitting(false);
+
+    try {
+      const result = await submitSampleRequest(email);
+
+      if (result.success) {
+        alert("Success! Check your inbox for details.");
+        setIsOpen(false);
+      } else {
+        alert("Error: " + (result.error || "Something went wrong"));
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,14 +83,14 @@ const PromotionModal = () => {
                   name="email"
                   type="email"
                   placeholder="Enter your email address"
-                  className="w-full bg-slate-50 border-none rounded-xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#CE978C]/20"
+                  className="w-full bg-slate-50 border-none rounded-xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#CE978C]/20 text-slate-900"
                   required
                 />
                 <motion.button
                   disabled={isSubmitting}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-[#CE978C] py-4 rounded-xl text-white font-bold flex items-center justify-center gap-2 uppercase tracking-widest disabled:opacity-70"
+                  className="w-full bg-[#CE978C] py-4 rounded-xl text-white font-bold flex items-center justify-center gap-2 uppercase tracking-widest disabled:opacity-70 transition-colors hover:bg-[#b8857a]"
                 >
                   {isSubmitting ? (
                     <Loader2 className="animate-spin" />
@@ -96,6 +109,7 @@ const PromotionModal = () => {
                 alt="Salt"
                 fill
                 className="object-cover"
+                priority
               />
             </div>
           </motion.div>
