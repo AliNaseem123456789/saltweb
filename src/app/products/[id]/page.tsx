@@ -11,7 +11,6 @@ interface Props {
 export default async function ProductDetailsPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
-
   const { data: product } = await supabase
     .from("products")
     .select("*, reviews(*)")
@@ -53,14 +52,12 @@ export default async function ProductDetailsPage({ params }: Props) {
               {product.name}
             </h1>
 
-            {/* Weight Section */}
-            <div className="flex items-center gap-2 mb-6">
+            {/* <div className="flex items-center gap-2 mb-6">
               <span className="flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-full text-slate-700 font-semibold shadow-sm">
                 <Weight size={20} className="text-[#0D54A0]" />
-                {/* Fallback to 10 kg if product.weight is null or empty */}
-                {product.weight || "10 kg"}
+                {product.weight || "NA"}
               </span>
-            </div>
+            </div> */}
 
             <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg border-l-4 border-slate-100 pl-6">
               {product.description ||
@@ -82,7 +79,7 @@ export default async function ProductDetailsPage({ params }: Props) {
                   Standard Packaging
                 </span>
                 <span className="text-slate-900 font-semibold">
-                  {product.weight || "10 kg Bag"}
+                  {product.weight || "NA"}
                 </span>
               </div>
               <div>
@@ -100,7 +97,12 @@ export default async function ProductDetailsPage({ params }: Props) {
                 </span>
               </div>
             </div>
-
+            <div className="mb-8">
+              <h3 className="text-xl font-bold mb-4 text-slate-900">Weight</h3>
+              <button className="bg-[#0D54A0] text-white px-6 py-3 rounded-md font-medium text-sm transition-hover hover:bg-blue-800">
+                {product.weight || "NA"}
+              </button>
+            </div>
             {/* Client-side Interactive Section */}
             <ProductInquirySection sku={product.sku || product.id} />
           </div>

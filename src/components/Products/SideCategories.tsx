@@ -11,7 +11,7 @@ interface Category {
   name: string;
   slug: string;
   subCategories: SubCategory[];
-  href: string; // Added to handle your specific URL requirements
+  href: string;
 }
 
 const CATEGORIES: Category[] = [
@@ -85,9 +85,9 @@ export default function ProductSidebar({
   currentCategory: string;
 }) {
   return (
-    <aside className="w-full lg:w-72 bg-[#0A0E1A] text-white rounded-lg shadow-2xl sticky top-24 overflow-hidden">
+    <aside className="w-full lg:w-72 bg-[#FAF8F5] text-slate-800 rounded-2xl border border-slate-200 shadow-sm sticky top-24 overflow-hidden">
       {/* Sidebar Header */}
-      <div className="p-6 border-b border-white/10 bg-[#0F1425]">
+      <div className="p-6 border-b border-slate-200 bg-[#F3EEE7]">
         <h2 className="text-[#E07A5F] text-xl font-bold tracking-tight">
           Product categories
         </h2>
@@ -96,7 +96,7 @@ export default function ProductSidebar({
       <div className="p-6 space-y-8">
         {CATEGORIES.map((cat) => (
           <div key={cat.slug} className="space-y-4">
-            {/* Main Category Label - Now Clickable */}
+            {/* Main Category Label - Clickable */}
             <Link
               href={cat.href}
               className="group flex items-center justify-between"
@@ -105,22 +105,36 @@ export default function ProductSidebar({
                 className={`font-bold text-md transition-colors duration-200 ${
                   currentCategory === cat.name
                     ? "text-[#E07A5F]"
-                    : "text-white group-hover:text-[#E07A5F]"
+                    : "text-slate-700 group-hover:text-[#E07A5F]"
                 }`}
               >
                 {cat.name}
               </h3>
-              <span className="w-2 h-2 rounded-full bg-[#E07A5F]/40 group-hover:bg-[#E07A5F] transition-all" />
+              <span
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentCategory === cat.name
+                    ? "bg-[#E07A5F] scale-110"
+                    : "bg-[#E07A5F]/20 group-hover:bg-[#E07A5F]"
+                }`}
+              />
             </Link>
 
-            {/* Subcategories List - Static (Non-clickable) */}
-            <ul className="space-y-4 ml-1">
+            {/* Subcategories List */}
+            <ul className="space-y-3 ml-1">
               {cat.subCategories.map((sub) => (
-                <li key={sub.slug} className="flex items-center">
-                  {/* The Signature Dash */}
-                  <div className="w-5 h-[1.5px] bg-gray-600 mr-3" />
+                <li key={sub.slug} className="flex items-center group/sub">
+                  {/* Subtle Dash */}
+                  <div
+                    className={`w-4 h-[1.5px] mr-3 transition-all duration-300 ${
+                      currentCategory === cat.name
+                        ? "bg-[#E07A5F]/50"
+                        : "bg-slate-300 group-hover/sub:bg-[#E07A5F]"
+                    }`}
+                  />
 
-                  <span className="text-sm text-gray-400">{sub.name}</span>
+                  <span className="text-sm text-slate-500 font-medium">
+                    {sub.name}
+                  </span>
                 </li>
               ))}
             </ul>

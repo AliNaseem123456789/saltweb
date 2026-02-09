@@ -48,7 +48,7 @@ export default function HeroSection() {
           muted
           playsInline
           className="w-full h-auto block"
-          poster="/blogs/HeroSectionVideo.jpg"
+          // poster="/blogs/HeroSectionVideo.jpg"
         >
           <source src="/blogs/HeroSectionVideo.mp4" type="video/mp4" />
         </video>
@@ -83,14 +83,14 @@ export default function HeroSection() {
                 directly to your home.
               </motion.p>
 
-              <motion.div variants={itemVariants}>
+              {/* <motion.div variants={itemVariants}>
                 <Link
                   href="/shop"
                   className="bg-[#CE978C] text-white px-10 py-4 rounded-full text-lg font-medium hover:bg-[#B8857A] transition-all shadow-xl"
                 >
                   Shop Now
                 </Link>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           )}
         </AnimatePresence>

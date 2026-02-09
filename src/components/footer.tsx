@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react"; // Optional: npm install lucide-react
+import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -75,34 +75,34 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Resources & Trust */}
+          {/* Column 3: Customer Care (New Links Added Here) */}
           <div>
             <h3 className="mb-6 font-serif text-xl font-light italic">
-              Resources
+              Customer Care
             </h3>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
-                  href="/blog"
+                  href="/privacy-policy"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
-                  Wellness Blog
+                  Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/news"
+                  href="/refund-policy"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
-                  News Feed
+                  Refund Policy
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/certifications"
-                  className="text-slate-600 hover:text-[#CE978C] transition-colors font-medium"
+                  href="/shipping-policy"
+                  className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
-                  Quality Certifications
+                  Shipping Policy
                 </Link>
               </li>
               <li>
@@ -116,17 +116,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Company & Contact */}
+          {/* Column 4: Company & Social */}
           <div>
             <h3 className="mb-6 font-serif text-xl font-light italic">
               Our Story
             </h3>
             <p className="mb-4 text-sm text-slate-600 leading-relaxed">
-              Dedicated to bringing you the finest Himalayan salt products
+              Apex Global Enterprise is a diverse North American company
+              dedicated to bringing you the finest Himalayan salt products
               directly from the source.
             </p>
             <div className="flex gap-4">
-              {/* Using Lucide icons, replace with simple text/images if not installed */}
               <Link
                 href="https://www.facebook.com/"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
@@ -161,11 +161,14 @@ export default function Footer() {
             © {new Date().getFullYear()} Apex Global. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-slate-800">
-              Privacy Policy
+            <Link href="/privacy-policy" className="hover:text-slate-800">
+              Privacy
             </Link>
-            <Link href="/terms" className="hover:text-slate-800">
-              Terms of Service
+            <Link href="/refund-policy" className="hover:text-slate-800">
+              Returns
+            </Link>
+            <Link href="/shipping-policy" className="hover:text-slate-800">
+              Shipping
             </Link>
           </div>
         </div>

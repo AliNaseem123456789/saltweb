@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import InquiryModal from "./InquiryModal"; // Path to the modal created previously
+import InquiryModal from "./InquiryModal";
 
 interface ProductInquirySectionProps {
   sku: string;
@@ -17,12 +17,12 @@ export default function ProductInquirySection({
   return (
     <>
       {/* Specification: Weight/Variant */}
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <h3 className="text-xl font-bold mb-4 text-slate-900">Weight</h3>
         <button className="bg-[#0D54A0] text-white px-6 py-3 rounded-md font-medium text-sm transition-hover hover:bg-blue-800">
           10 KG – {sku || "N/A"}
         </button>
-      </div>
+      </div> */}
 
       {/* Specification: MOQ Selection */}
       <div className="mb-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">

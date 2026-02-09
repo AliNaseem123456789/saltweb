@@ -2,19 +2,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
 export default function ProductCard({
   product,
   index = 0,
-  isInWishlist = false, // 1. Added prop here
+  isInWishlist = false,
 }: {
   product: any;
   index?: number;
-  isInWishlist?: boolean; // 2. Added type definition here
+  isInWishlist?: boolean;
 }) {
-  // Determine if we actually have a second image to flip to
   const hasHoverImage = Boolean(product.hover_image_url);
-
   return (
     <motion.div
       initial="initial"
@@ -33,14 +30,12 @@ export default function ProductCard({
     >
       <Link href={`/products/${product.id}`} className="block h-full">
         <div className="relative h-72 w-full overflow-hidden bg-slate-100">
-          {/* Wishlist Indicator (Optional visual feedback) */}
+          {}
           {isInWishlist && (
             <div className="absolute top-3 right-3 z-30 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-sm">
               <span className="text-red-500 text-xs">❤️</span>
             </div>
           )}
-
-          {/* BACKGROUND LAYER: The Hover Image */}
           {hasHoverImage && (
             <div className="absolute inset-0 z-10 h-full w-full">
               <Image
@@ -52,7 +47,6 @@ export default function ProductCard({
               />
             </div>
           )}
-
           <motion.div
             className="absolute inset-0 z-20 h-full w-full"
             initial={{ opacity: 1, scale: 1 }}
@@ -79,15 +73,11 @@ export default function ProductCard({
             )}
           </motion.div>
         </div>
-
         <div className="p-6">
           <h2 className="mb-2 line-clamp-1 text-lg font-bold text-slate-800 transition-colors group-hover:text-[#CE978C]">
             {product.name}
           </h2>
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold text-slate-400">
-              {product.weight || "10 kg"}
-            </span>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#CE978C]">
               View Details →
             </span>
