@@ -27,7 +27,7 @@ export const offerings = [
     title: "Premium Fine Edible Salt",
     description:
       "Pure, mineral-rich Himalayan pink salt, ethically sourced and perfectly ground for gourmet culinary use.",
-    image: "/Landingpage/Edible-Salt.jpeg",
+    image: "/Landingpage/Edible-salt.jpeg",
   },
   {
     title: "Himalayan Salt Detox Bowl",
