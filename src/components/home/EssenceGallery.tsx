@@ -16,13 +16,13 @@ export default function EssenceGallery() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 px-4">
         {[
           {
-            src: "/blogs/essense_imag1.jpg",
-            hover: "/blogs/essense_imag1-1.jpg",
+            src: "/Landingpage/essense_imag1.jpg",
+            hover: "/Landingpage/essense_imag1-1.jpg",
             alt: "Crystals",
           },
           {
-            src: "/blogs/essense_image2.jpg",
-            hover: "/blogs/essense_image2-1.jpg",
+            src: "/Landingpage/essense_image2.jpg",
+            hover: "/Landingpage/essense_image2-1.jpg",
             alt: "Salt Lamp",
             delay: 0.2,
           },
