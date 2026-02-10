@@ -42,36 +42,36 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
-                  href="/products"
+                  href="/products?category=Salt%20Lamp"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
                   All Products
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/products?category=Edible+Salt"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
                   Edible Salt
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/products?category=Salt%20Lamp"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
-                  Himalayan Salt Lamps
+                  Home Decor
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/products?category=Health+Wellness"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
                   Health & Wellness
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

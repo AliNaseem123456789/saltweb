@@ -12,6 +12,6 @@ export const config = {
      * - static files, images, favicon
      * - AND your public policy pages
      */
-    "/((?!_next/static|_next/image|favicon.ico|privacy-policy|shipping-policy|refund-policy|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|faq|privacy-policy|shipping-policy|refund-policy|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

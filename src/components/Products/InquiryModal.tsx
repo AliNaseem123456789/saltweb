@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, CheckCircle2, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { submitInquiry } from "@/app/actions/inquiry"; // Ensure this path is correct
+import { submitInquiry } from "@/app/actions/inquiry";
 
 interface InquiryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string; // The Product Name
-  moq: number; // The Quantity from the details page
+  title: string;
+  moq: number;
 }
 
 export default function InquiryModal({
@@ -21,7 +21,18 @@ export default function InquiryModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Form State
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,7 +64,6 @@ export default function InquiryModal({
 
     if (result.success) {
       setIsSuccess(true);
-      // Reset form or close after delay
       setTimeout(() => {
         setIsSuccess(false);
         onClose();
@@ -73,51 +83,53 @@ export default function InquiryModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+      {/* FIX 1: added 'overflow-y-auto' and 'py-10' to the backdrop 
+          This allows the user to scroll the modal like a page on small screens 
+      */}
+      <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-sm p-4 py-8 md:items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden"
+          className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 md:mb-0"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100">
+          {/* Header - Sticky on mobile so you don't lose the X button */}
+          <div className="sticky top-0 z-20 bg-white flex items-center justify-between px-6 py-4 md:px-8 md:py-6 border-b border-slate-100">
             <div>
-              <h2 className="text-2xl font-semibold text-slate-800">
+              <h2 className="text-xl md:text-2xl font-semibold text-slate-800">
                 {isSuccess ? "Success!" : "Personal Information"}
               </h2>
-              <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">
-                Inquiry for: {title} ({moq} Units)
+              <p className="text-[10px] md:text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">
+                Inquiry: {title.slice(0, 20)}... ({moq} Units)
               </p>
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-slate-100 rounded-full transition-colors"
+              className="p-2 hover:bg-slate-100 rounded-full transition-colors"
             >
-              <X className="w-6 h-6 text-slate-400" />
+              <X className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
             </button>
           </div>
 
-          <div className="p-8">
+          <div className="p-6 md:p-8">
             {isSuccess ? (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="flex flex-col items-center justify-center py-12 text-center"
               >
-                <CheckCircle2 className="w-20 h-20 text-green-500 mb-4" />
+                <CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-green-500 mb-4" />
                 <h3 className="text-xl font-bold text-slate-900">
-                  Request Sent Successfully
+                  Request Sent
                 </h3>
-                <p className="text-slate-600 mt-2">
-                  Our team has received your inquiry for{" "}
-                  <strong>{title}</strong>. <br />
-                  We will contact you via email or phone shortly.
+                <p className="text-slate-600 mt-2 text-sm md:text-base">
+                  Our team has received your inquiry. <br />
+                  We will contact you shortly.
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <FormField
                     label="Name"
                     name="name"
@@ -141,12 +153,11 @@ export default function InquiryModal({
                     required
                   />
 
-                  {/* Phone with Country Code */}
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-slate-700">
                       Phone
                     </label>
-                    <div className="flex border border-slate-200 rounded overflow-hidden">
+                    <div className="flex border border-slate-200 rounded-lg overflow-hidden">
                       <select
                         name="countryCode"
                         value={formData.countryCode}
@@ -164,7 +175,7 @@ export default function InquiryModal({
                         value={formData.phone}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-2.5 bg-[#FAF8F5] outline-none"
+                        className="w-full px-4 py-2.5 bg-[#FAF8F5] outline-none text-sm"
                       />
                     </div>
                   </div>
@@ -195,24 +206,22 @@ export default function InquiryModal({
                   />
                 </div>
 
-                {/* Footer Buttons */}
-                <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-100">
+                <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-3 pt-4 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-12 py-2.5 bg-slate-100 text-slate-600 font-medium rounded hover:bg-slate-200 transition-colors"
+                    className="w-full md:w-auto px-12 py-3 bg-slate-100 text-slate-600 font-medium rounded-xl hover:bg-slate-200 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex items-center justify-center gap-2 px-12 py-2.5 bg-[#CE978C] hover:bg-[#b8857a] text-white font-medium rounded hover:bg-blue-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full md:w-auto flex items-center justify-center gap-2 px-12 py-3 bg-[#CE978C] hover:bg-[#b8857a] text-white font-bold rounded-xl shadow-lg shadow-[#CE978C]/20 transition-all disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing...
+                        <Loader2 className="w-4 h-4 animate-spin" /> Processing
                       </>
                     ) : (
                       "Submit Inquiry"
@@ -228,7 +237,6 @@ export default function InquiryModal({
   );
 }
 
-// Helper component for cleaner code
 function FormField({
   label,
   name,
@@ -246,7 +254,7 @@ function FormField({
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-slate-200 rounded outline-none focus:border-[#0D54A0] transition-colors"
+        className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-slate-200 rounded-lg outline-none focus:border-[#CE978C] transition-colors text-sm"
       />
     </div>
   );

@@ -47,8 +47,6 @@ export default function ProductInquirySection({
           </button>
         </div>
       </div>
-
-      {/* Wholesale Call to Actions */}
       <div className="flex flex-wrap gap-4">
         <button
           onClick={() => setIsModalOpen(true)}
@@ -70,7 +68,6 @@ export default function ProductInquirySection({
         </button>
       </div>
 
-      {/* The Modal */}
       <InquiryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

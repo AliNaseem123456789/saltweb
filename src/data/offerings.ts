@@ -6,10 +6,10 @@ export const offerings = [
     image: "/Landingpage/wooden-basket.webp",
   },
   {
-    title: "Gourmet Food-Grade Salt",
+    title: "Himalayan Salt - Tea Light Heart Shape",
     description:
-      "Pure, high-mineral pink salt crystals, refined to the highest food-safety standards for seasoning and gourmet cooking.",
-    image: "/Landingpage/Food-Grade-Salt.jpeg",
+      "Hand-carved from authentic pink salt, this heart-shaped holder creates a warm, romantic glow while naturally ionizing the air—perfect for wellness spaces and home ambiance.",
+    image: "/Landingpage/heart-candle.webp",
   },
   {
     title: "Geometric Salt Massage Stone",
