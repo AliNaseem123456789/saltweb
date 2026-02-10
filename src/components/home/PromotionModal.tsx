@@ -1,26 +1,24 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { X, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { submitSampleRequest } from "@/app/actions/sample-actions";
 
-const PromotionModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface PromotionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const PromotionModal = ({ isOpen, onClose }: PromotionModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsOpen(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // FIXED: Added React.FormEvent type to handle Vercel/TypeScript build errors
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string; // FIXED: Explicitly cast to string
+    const email = formData.get("email") as string;
 
     if (!email) {
       setIsSubmitting(false);
@@ -29,10 +27,9 @@ const PromotionModal = () => {
 
     try {
       const result = await submitSampleRequest(email);
-
       if (result.success) {
         alert("Success! Check your inbox for details.");
-        setIsOpen(false);
+        onClose(); // Close modal on success
       } else {
         alert("Error: " + (result.error || "Something went wrong"));
       }
@@ -52,7 +49,7 @@ const PromotionModal = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
+            onClick={onClose} // Close on backdrop click
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
           />
 
@@ -63,13 +60,12 @@ const PromotionModal = () => {
             className="relative flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-[2rem] overflow-hidden shadow-2xl"
           >
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               className="absolute top-6 right-6 z-50 p-2 hover:bg-slate-100 rounded-full"
             >
               <X size={20} />
             </button>
 
-            {/* Left Content */}
             <div className="flex-[1.2] p-8 md:p-16">
               <span className="text-[#CE978C] font-bold uppercase tracking-[0.3em] text-xs mb-4 block">
                 Exclusive Invitation
@@ -102,7 +98,6 @@ const PromotionModal = () => {
               </form>
             </div>
 
-            {/* Right Image Section */}
             <div className="hidden md:block flex-1 relative bg-[#FDF8F6]">
               <Image
                 src="/blogs/himaliyansalt copy.webp"

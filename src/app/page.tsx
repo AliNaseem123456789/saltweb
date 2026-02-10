@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       {/* <FloatingGalleryHero /> */}
-      <PromotionModal />
+      {/* <PromotionModal /> */}
       <HeroSection />
       <OfferingsGrid />
 
