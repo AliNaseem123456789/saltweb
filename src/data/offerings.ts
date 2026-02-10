@@ -21,7 +21,7 @@ export const offerings = [
     title: "Natural Himalayan Salt Lamps",
     description:
       "A majestic, raw-cut salt crystal lamp that emits a warm, ambient glow to purify and soothe any room.",
-    image: "/Landingpage/NaturalLamp-2.jpeg",
+    image: "/Landingpage/salt-lamp-2.webp",
   },
   {
     title: "Premium Fine Edible Salt",

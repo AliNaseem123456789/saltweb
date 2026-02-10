@@ -207,7 +207,7 @@ export default function InquiryModal({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex items-center justify-center gap-2 px-12 py-2.5 bg-[#0D54A0] text-white font-medium rounded hover:bg-blue-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-2 px-12 py-2.5 bg-[#CE978C] hover:bg-[#b8857a] text-white font-medium rounded hover:bg-blue-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>

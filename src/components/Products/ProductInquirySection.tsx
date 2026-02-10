@@ -32,7 +32,7 @@ export default function ProductInquirySection({
         <div className="flex items-center border border-slate-200 rounded-md overflow-hidden w-fit">
           <button
             onClick={() => setMoq(Math.max(1, moq - 10))}
-            className="p-3 bg-[#0D54A0] text-white hover:bg-blue-700 transition-colors"
+            className="p-3 bg-[#CE978C] hover:bg-[#b8857a] text-white transition-colors"
           >
             <Minus size={20} />
           </button>
@@ -41,7 +41,7 @@ export default function ProductInquirySection({
           </div>
           <button
             onClick={() => setMoq(moq + 10)}
-            className="p-3 bg-[#0D54A0] text-white hover:bg-blue-700 transition-colors"
+            className="p-3  bg-[#CE978C] hover:bg-[#b8857a] text-white transition-colors"
           >
             <Plus size={20} />
           </button>

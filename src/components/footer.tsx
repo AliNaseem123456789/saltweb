@@ -58,7 +58,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products?category=Salt+Lamps"
+                  href="/products?category=Salt%20Lamp"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
                   Himalayan Salt Lamps
@@ -107,7 +107,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/faqs"
+                  href="/faq"
                   className="text-slate-600 hover:text-[#CE978C] transition-colors"
                 >
                   FAQs
