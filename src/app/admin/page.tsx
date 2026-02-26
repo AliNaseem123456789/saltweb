@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-
 async function checkAdmin() {
   const supabase = await createClient();
   const {
@@ -12,13 +11,15 @@ async function checkAdmin() {
     return false;
   }
 
+  // Only select the column you actually have
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, is_admin")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  return profile && (profile.role === "admin" || profile.is_admin === true);
+  // Return true only if the profile exists and is_admin is true
+  return !!(profile && profile.is_admin);
 }
 
 export default async function AdminDashboard() {
@@ -166,10 +167,10 @@ export default async function AdminDashboard() {
                             order.status === "delivered"
                               ? "bg-green-100 text-green-800"
                               : order.status === "shipped"
-                              ? "bg-blue-100 text-blue-800"
-                              : order.status === "processing"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-slate-100 text-slate-800"
+                                ? "bg-blue-100 text-blue-800"
+                                : order.status === "processing"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-slate-100 text-slate-800"
                           }`}
                         >
                           {order.status}

@@ -1,8 +1,50 @@
 "use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Linkedin, Loader2 } from "lucide-react";
+import { subscribeToNewsletter } from "@/app/actions/newsletter";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setIsPending(true);
+    setStatus({ type: null, message: "" });
+
+    const formData = new FormData();
+    formData.append("email", email);
+
+    try {
+      const result = await subscribeToNewsletter(formData);
+      if (result.success) {
+        setStatus({
+          type: "success",
+          message: result.message || "Thank you for subscribing!",
+        });
+        setEmail(""); // Clear input on success
+      } else {
+        setStatus({
+          type: "error",
+          message: result.error || "Something went wrong. Please try again.",
+        });
+      }
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: "Network error. Please try again later.",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
+
   return (
     <footer className="bg-[#EAE9E3] px-4 py-16 text-slate-800 border-t border-slate-200">
       <div className="mx-auto max-w-7xl">
@@ -16,21 +58,42 @@ export default function Footer() {
               Subscribe to receive updates on new products, mineral research,
               and wellness tips.
             </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="flex flex-col gap-2"
-            >
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="rounded-lg border border-slate-300 bg-white/50 px-4 py-2.5 text-sm text-slate-800 focus:border-[#CE978C] focus:outline-none"
+                className="rounded-lg border border-slate-300 bg-white/50 px-4 py-2.5 text-sm text-slate-800 focus:border-[#CE978C] focus:outline-none transition-colors"
               />
               <button
                 type="submit"
-                className="rounded-lg bg-[#CE978C] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#B8857A] shadow-sm"
+                disabled={isPending}
+                className="flex items-center justify-center rounded-lg bg-[#CE978C] px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-[#B8857A] shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Subscribe
+                {isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  "Subscribe"
+                )}
               </button>
+
+              {/* Status Messages */}
+              {status.type && (
+                <p
+                  className={`text-xs mt-1 animate-in fade-in slide-in-from-top-1 ${
+                    status.type === "success"
+                      ? "text-green-600"
+                      : "text-red-500"
+                  }`}
+                >
+                  {status.message}
+                </p>
+              )}
             </form>
           </div>
 
@@ -48,14 +111,6 @@ export default function Footer() {
                   All Products
                 </Link>
               </li>
-              {/* <li>
-                <Link
-                  href="/products?category=Edible+Salt"
-                  className="text-slate-600 hover:text-[#CE978C] transition-colors"
-                >
-                  Edible Salt
-                </Link>
-              </li> */}
               <li>
                 <Link
                   href="/products?category=Salt%20Lamp"
@@ -64,18 +119,10 @@ export default function Footer() {
                   Home Decor
                 </Link>
               </li>
-              {/* <li>
-                <Link
-                  href="/products?category=Health+Wellness"
-                  className="text-slate-600 hover:text-[#CE978C] transition-colors"
-                >
-                  Health & Wellness
-                </Link>
-              </li> */}
             </ul>
           </div>
 
-          {/* Column 3: Customer Care (New Links Added Here) */}
+          {/* Column 3: Customer Care */}
           <div>
             <h3 className="mb-6 font-serif text-xl font-light italic">
               Customer Care
@@ -122,31 +169,35 @@ export default function Footer() {
               Our Story
             </h3>
             <p className="mb-4 text-sm text-slate-600 leading-relaxed">
-              Apex Global Enterprise is a diverse North American company
+              Apex Universal Exports is a diverse North American company
               dedicated to bringing you the finest Himalayan salt products
               directly from the source.
             </p>
             <div className="flex gap-4">
               <Link
                 href="https://www.facebook.com/"
+                target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Facebook size={20} />
               </Link>
               <Link
                 href="https://www.instagram.com/"
+                target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Instagram size={20} />
               </Link>
               <Link
                 href="https://www.twitter.com/"
+                target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Twitter size={20} />
               </Link>
               <Link
                 href="https://www.linkedin.com/"
+                target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Linkedin size={20} />
@@ -158,7 +209,8 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 border-t border-slate-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 uppercase tracking-widest">
           <div>
-            © {new Date().getFullYear()} Apex Global. All rights reserved.
+            © {new Date().getFullYear()} Apex Universal Exports. All rights
+            reserved.
           </div>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-800">

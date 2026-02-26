@@ -154,7 +154,7 @@ export default function CinematicHero() {
                 className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none"
               >
                 <p className="text-[#E07A5F] tracking-[0.8em] text-[10px] md:text-xs font-bold mb-4 uppercase">
-                  Apex Global Operations
+                  Apex Universal Operations
                 </p>
                 <h2 className="text-white text-3xl md:text-5xl font-light italic tracking-tight">
                   {gallerySequences[index].text}

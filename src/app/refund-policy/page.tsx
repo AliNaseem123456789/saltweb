@@ -171,10 +171,10 @@ export default function RefundPolicyPage() {
               </p>
             </div>
             <a
-              href="mailto:care@apexglobal.io"
+              href="mailto:apexexports7090@gmail.com"
               className="px-6 py-3 bg-[#CE978C] rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2"
             >
-              <Mail className="w-4 h-4" /> care@apexglobal.io
+              <Mail className="w-4 h-4" /> apexexports7090@gmail.com
             </a>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -8,10 +8,29 @@ export default function HeroSection() {
   const [showUI, setShowUI] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Set initial start time once video metadata is loaded
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 5;
+    }
+  }, []);
+
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       const time = videoRef.current.currentTime;
 
+      // Logic to "Cut" the video:
+      // If the video exceeds 53 seconds, loop it back to the 4.5s mark
+      if (time >= 53) {
+        videoRef.current.currentTime = 4.5;
+      }
+
+      // If for any reason it goes before 4.5s (like a manual seek), skip to 4.5s
+      if (time < 4.5) {
+        videoRef.current.currentTime = 4.5;
+      }
+
+      // Show UI during the valid playback window
       setShowUI(time >= 4.5 && time < 53);
     }
   };
@@ -32,6 +51,7 @@ export default function HeroSection() {
       transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] as const },
     },
   };
+
   return (
     <section className="relative w-full overflow-hidden bg-black">
       <motion.div
@@ -48,16 +68,13 @@ export default function HeroSection() {
           muted
           playsInline
           className="w-full h-auto block"
-          // poster="/blogs/HeroSectionVideo.jpg"
         >
           <source src="/blogs/HeroSectionVideo.mp4" type="video/mp4" />
         </video>
 
-        {}
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      {}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center pointer-events-none">
         <AnimatePresence>
           {showUI && (
@@ -82,15 +99,6 @@ export default function HeroSection() {
                 Experience the ancient minerals of the Himalayas, delivered
                 directly to your home.
               </motion.p>
-
-              {/* <motion.div variants={itemVariants}>
-                <Link
-                  href="/shop"
-                  className="bg-[#CE978C] text-white px-10 py-4 rounded-full text-lg font-medium hover:bg-[#B8857A] transition-all shadow-xl"
-                >
-                  Shop Now
-                </Link>
-              </motion.div> */}
             </motion.div>
           )}
         </AnimatePresence>

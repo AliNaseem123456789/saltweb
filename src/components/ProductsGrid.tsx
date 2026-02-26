@@ -29,12 +29,12 @@ export default function ProductsGrid({
   const wishlistSet = new Set(wishlistItems);
 
   return (
-    // We keep the background consistent, but allow the section to be wider
     <AnimatedSection className="bg-[#FAF8F5] px-4 md:px-6 lg:px-8 py-10">
-      {/* Increased from max-w-7xl (1280px) to max-w-[1500px]. 
-          This gives the grid "room to breathe" alongside your sidebar.
+      {/* Reduced max-width slightly from 1500px to 1400px. 
+          With 3 columns, this ensures each card is significantly wider/larger 
+          without becoming stretched on ultra-wide screens.
       */}
-      <div className="mx-auto max-w-[1500px]">
+      <div className="mx-auto max-w-[1400px]">
         {products.length === 0 ? (
           <div className="rounded-2xl bg-white p-20 text-center shadow-sm border border-slate-100">
             <p className="text-xl text-slate-500 font-light">
@@ -42,20 +42,15 @@ export default function ProductsGrid({
             </p>
           </div>
         ) : (
-          /* GRID LOGIC:
-             - gap-8: More space between cards for a premium feel
-             - lg:grid-cols-3: Standard with sidebar
-             - xl:grid-cols-4: Takes advantage of the new 1500px width
+          /* GRID LOGIC UPDATED:
+             - gap-10: Increased gap to separate the now-larger cards.
+             - lg:grid-cols-3 & xl:grid-cols-3: Forces 3 items per row on all large screens.
           */
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                index={index}
-                // Ensure your ProductCard is set up to receive these props
-                // isInWishlist={wishlistSet.has(product.id)}
-              />
+              <div key={product.id} className="flex justify-center">
+                <ProductCard product={product} index={index} />
+              </div>
             ))}
           </div>
         )}

@@ -3,15 +3,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
-import PromotionModal from "./home/PromotionModal"; // Import your modal
+import PromotionModal from "./home/PromotionModal";
+import { createClient } from "@/lib/supabase/client"; // Ensure this path is correct
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isConnectOpen, setIsConnectOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controls the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
+
+  // Auth States
+  const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const productCategories = [
     { name: "Home Decor", slug: "Salt Lamp" },
@@ -23,6 +28,23 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
+    const supabase = createClient();
+
+    async function getUserData() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("is_admin")
+          .eq("id", user.id)
+          .single();
+        setIsAdmin(!!profile?.is_admin);
+      }
+    }
+
     async function fetchCounts() {
       const [wishlist, cart] = await Promise.all([
         getWishlistCount(),
@@ -31,7 +53,10 @@ export default function Navbar() {
       setWishlistCount(wishlist);
       setCartCount(cart);
     }
+
+    getUserData();
     fetchCounts();
+
     window.addEventListener("wishlist-updated", fetchCounts);
     window.addEventListener("cart-updated", fetchCounts);
     return () => {
@@ -58,7 +83,7 @@ export default function Navbar() {
                 />
               </div>
               <span className="font-serif text-2xl font-light text-slate-800">
-                Apex Global
+                Apex Universal Exports
               </span>
             </Link>
 
@@ -176,10 +201,69 @@ export default function Navbar() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-4 border-r border-slate-200 pr-4 mr-2">
+                {user ? (
+                  <Link
+                    href={isAdmin ? "/admin" : "/profile"}
+                    className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700"
+                    title={isAdmin ? "Admin Dashboard" : "My Profile"}
+                  >
+                    {isAdmin ? (
+                      /* Admin Icon (Shield) */
+                      /* Admin Icon (Dashboard Grid) */
+                      <svg
+                        className="w-6 h-6 text-[#CE978C]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                        />
+                      </svg>
+                    ) : (
+                      /* Customer Icon (User) */
+                      <svg
+                        className="w-6 h-6 text-slate-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    )}
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C] transition-colors"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C] transition-colors"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+              </div>
+
               <button
-                onClick={() => setIsModalOpen(true)} // OPEN MODAL ON CLICK
-                className="hidden md:block bg-[#CE978C] hover:bg-[#b8857a] text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all mr-2 shadow-sm"
+                onClick={() => setIsModalOpen(true)}
+                className="hidden md:block bg-[#CE978C] hover:bg-[#b8857a] text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all shadow-sm"
               >
                 Free samples
               </button>
@@ -221,9 +305,34 @@ export default function Navbar() {
                 <Link href="/" onClick={() => setIsMenuOpen(false)}>
                   Home
                 </Link>
+
+                <div className="flex flex-col gap-4 py-2 border-y border-slate-50">
+                  {user ? (
+                    <Link
+                      href={isAdmin ? "/admin" : "/profile"}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-2 text-[#CE978C] font-semibold"
+                    >
+                      {isAdmin ? "Admin Dashboard" : "My Account"}
+                    </Link>
+                  ) : (
+                    <>
+                      <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                        Login
+                      </Link>
+                      <Link
+                        href="/register"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sign Up
+                      </Link>
+                    </>
+                  )}
+                </div>
+
                 <button
                   onClick={() => {
-                    setIsModalOpen(true); // OPEN MODAL ON MOBILE
+                    setIsModalOpen(true);
                     setIsMenuOpen(false);
                   }}
                   className="mt-6 w-full bg-[#CE978C] text-white py-5 px-8 rounded-xl font-bold text-lg uppercase tracking-wide shadow-lg"
@@ -236,7 +345,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MODAL COMPONENT */}
       <PromotionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

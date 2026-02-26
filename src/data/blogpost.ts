@@ -4,7 +4,7 @@ export const blogPosts = [
     title: "The Health Benefits of Himalayan Salt",
     slug: "himalayan-salt-health-benefits",
     excerpt:
-      "Discover how Himalayan pink salt can improve your health and wellness with its 84 essential minerals.",
+      "Discover how Himalayan pink salt improves your health and wellness with its 84 essential minerals.",
     metaDescription:
       "Explore the 84 trace minerals in Himalayan pink salt that support hydration, pH balance, and respiratory health naturally.",
     image: "/blogs/himaliyansalt.webp",
@@ -143,7 +143,7 @@ Sustainability isn't a destination; it's a continuous journey. We are currently 
   },
   {
     id: "6",
-    title: "Salt Bath Recipes for Relaxation",
+    title: "Salt Bath Recipes and benefits for Relaxation",
     slug: "himalayan-salt-bath-recipes",
     excerpt:
       "Discover luxurious salt bath recipes to create a spa-like experience in your own home.",
@@ -221,4 +221,3 @@ export const categories = [
   "Science",
   "Sustainability",
 ];
-

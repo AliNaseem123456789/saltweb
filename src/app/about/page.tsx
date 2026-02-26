@@ -87,8 +87,8 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-lg text-slate-600 font-light leading-relaxed">
                 <p>
-                  Apex Global is a premier wholesale supplier and exporter
-                  specializing in the extraction, manufacturing, and
+                  Apex Universal Exports is a premier wholesale supplier and
+                  exporter specializing in the extraction, manufacturing, and
                   distribution of 100% natural Himalayan Pink Salt.
                 </p>
                 <p>

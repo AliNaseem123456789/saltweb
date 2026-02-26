@@ -4,14 +4,17 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { updateProduct, createProduct } from "@/app/actions/admin";
-
+import {
+  updateProduct,
+  createProduct,
+  deleteProduct,
+} from "@/app/actions/admin";
 interface Product {
   id: string;
   name: string;
   description?: string | null;
   price?: number | null;
-  image_url?: string | null;
+  image_folder?: string | null;
   stock_quantity?: number | null;
   is_active?: boolean | null;
   category?: string | null;
@@ -27,15 +30,20 @@ export default function InventoryManager({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // State for text fields
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
-    image_url: "",
     stock_quantity: "",
     category: "",
     is_active: true,
   });
+
+  // State for files
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
@@ -43,50 +51,100 @@ export default function InventoryManager({
       name: product.name || "",
       description: product.description || "",
       price: product.price?.toString() || "",
-      image_url: product.image_url || "",
       stock_quantity: product.stock_quantity?.toString() || "0",
       category: product.category || "",
       is_active: product.is_active ?? true,
     });
+    setSelectedFiles([]); // Reset files on edit (optional, depending on if you allow editing images)
     setShowAddForm(true);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!editingProduct) return;
+
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this product? This will also remove all images.",
+    );
+    if (!confirmDelete) return;
+
+    setIsUploading(true); // Reusing the loading state
+    const result = await deleteProduct(
+      editingProduct.id,
+      editingProduct.image_folder || null,
+    );
+
+    if (result.success) {
+      setProducts((prev) => prev.filter((p) => p.id !== editingProduct.id));
+      closeForm();
+    } else {
+      alert(result.error);
+    }
+    setIsUploading(false);
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUploading(true);
 
-    // Explicitly cast numeric values to ensure TypeScript compatibility
-    const numericUpdate = {
-      ...formData,
-      price: formData.price === "" ? 0 : parseFloat(formData.price),
-      stock_quantity:
-        formData.stock_quantity === ""
-          ? 0
-          : parseInt(formData.stock_quantity, 10),
-    };
+    try {
+      // Create FormData to handle files and text
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("price", formData.price);
+      data.append("stock_quantity", formData.stock_quantity);
+      data.append("category", formData.category);
+      data.append("is_active", String(formData.is_active));
 
-    if (editingProduct) {
-      const result = await updateProduct(editingProduct.id, formData);
-      if (result.success) {
-        // Update local state using numeric types to match Product interface
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.id === editingProduct.id
-              ? ({ ...p, ...numericUpdate } as Product)
-              : p,
-          ),
-        );
-        setEditingProduct(null);
-        setShowAddForm(false);
-        resetForm();
+      // Append all selected files to the "images" key
+      selectedFiles.forEach((file) => {
+        data.append("images", file);
+      });
+
+      if (editingProduct) {
+        // Note: You may need to update updateProduct to accept FormData if you want to update images
+        const result = await updateProduct(editingProduct.id, formData as any);
+        if (result.success) {
+          setProducts((prev) =>
+            prev.map((p) =>
+              p.id === editingProduct.id
+                ? ({
+                    ...p,
+                    ...formData,
+                    price: parseFloat(formData.price),
+                    stock_quantity: parseInt(formData.stock_quantity),
+                  } as Product)
+                : p,
+            ),
+          );
+          closeForm();
+        }
+      } else {
+        const result = await createProduct(data);
+        if (result.success && result.product) {
+          setProducts((prev) => [result.product as Product, ...prev]);
+          closeForm();
+        } else {
+          alert(result.error || "Failed to create product");
+        }
       }
-    } else {
-      const result = await createProduct(formData);
-      if (result.success && result.product) {
-        setProducts((prev) => [result.product as Product, ...prev]);
-        setShowAddForm(false);
-        resetForm();
-      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred during submission.");
+    } finally {
+      setIsUploading(false);
     }
+  };
+
+  const closeForm = () => {
+    setShowAddForm(false);
+    setEditingProduct(null);
+    resetForm();
   };
 
   const resetForm = () => {
@@ -94,11 +152,11 @@ export default function InventoryManager({
       name: "",
       description: "",
       price: "",
-      image_url: "",
       stock_quantity: "",
       category: "",
       is_active: true,
     });
+    setSelectedFiles([]);
   };
 
   return (
@@ -194,19 +252,26 @@ export default function InventoryManager({
                   className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
                 />
               </div>
+
+              {/* Multi-Image Upload Field */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Image URL
+                  Product Images (image_1, image_2, etc.)
                 </label>
                 <input
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) =>
-                    setFormData({ ...formData, image_url: e.target.value })
-                  }
-                  className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:border-[#CE978C] focus:outline-none focus:ring-2 focus:ring-[#CE978C]"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FAF8F5] file:text-[#CE978C] hover:file:bg-[#CE978C] hover:file:text-white"
                 />
+                {selectedFiles.length > 0 && (
+                  <p className="mt-2 text-xs text-slate-500 font-medium">
+                    {selectedFiles.length} files staged for upload.
+                  </p>
+                )}
               </div>
+
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Description
@@ -237,20 +302,33 @@ export default function InventoryManager({
             <div className="flex gap-4 pt-4">
               <button
                 type="submit"
-                className="rounded-lg bg-[#CE978C] px-6 py-2 text-white transition-colors hover:bg-[#B8857A]"
+                disabled={isUploading}
+                className="rounded-lg bg-[#CE978C] px-6 py-2 text-white transition-colors hover:bg-[#B8857A] disabled:opacity-50"
               >
-                {editingProduct ? "Update Product" : "Create Product"}
+                {isUploading
+                  ? "Uploading..."
+                  : editingProduct
+                    ? "Update Product"
+                    : "Create Product"}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setShowAddForm(false);
-                  setEditingProduct(null);
-                }}
+                onClick={closeForm}
                 className="rounded-lg bg-slate-200 px-6 py-2 text-slate-700 transition-colors hover:bg-slate-300"
               >
                 Cancel
               </button>
+
+              {editingProduct && (
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={isUploading}
+                  className="rounded-lg border border-red-200 bg-red-50 px-6 py-2 text-red-600 transition-colors hover:bg-red-100 disabled:opacity-50"
+                >
+                  Delete Product
+                </button>
+              )}
             </div>
           </form>
         </motion.div>
@@ -262,21 +340,26 @@ export default function InventoryManager({
             key={product.id}
             className="overflow-hidden rounded-lg bg-white shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
           >
-            {product.image_url ? (
-              <div className="relative h-48 w-full">
+            <div className="relative h-48 w-full bg-slate-50 flex items-center justify-center">
+              {product.image_folder ? (
                 <Image
-                  src={product.image_url}
+                  src={
+                    // Check if the image_folder already contains a full URL
+                    product.image_folder.startsWith("http")
+                      ? product.image_folder
+                      : `https://ykbzvxnqnlidvmxpkonv.supabase.co/storage/v1/object/public/products/${product.image_folder}/image_1.avif`
+                  }
                   alt={product.name}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  // Added unoptimized if you are having issues with Next.js Image optimization limits
+                  unoptimized
                 />
-              </div>
-            ) : (
-              <div className="flex h-48 items-center justify-center bg-slate-50">
+              ) : (
                 <span className="text-4xl">📦</span>
-              </div>
-            )}
+              )}
+            </div>
             <div className="p-6">
               <h3 className="mb-2 text-xl font-semibold text-slate-800">
                 {product.name}

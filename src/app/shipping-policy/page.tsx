@@ -47,7 +47,7 @@ export default function ShippingPolicyPage() {
               </h2>
             </div>
             <p className="text-slate-500 italic">
-              Apex Global Enterprise is a diverse North American company engaged
+              Apex Universal Exports is a diverse North American company engaged
               in e-Commerce, trade, import, distribution, and export activities.
             </p>
           </div>

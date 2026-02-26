@@ -16,47 +16,38 @@ import {
 } from "lucide-react";
 
 const COOKIE_FUNCTIONAL = [
-  { name: "_ab", function: "Used in connection with access to admin." },
   {
-    name: "_secure_session_id",
-    function: "Used in connection with navigation through a storefront.",
-  },
-  { name: "cart", function: "Used in connection with shopping cart." },
-  { name: "cart_sig", function: "Used in connection with checkout." },
-  { name: "cart_ts", function: "Used in connection with checkout." },
-  { name: "checkout_token", function: "Used in connection with checkout." },
-  { name: "secret", function: "Used in connection with checkout." },
-  {
-    name: "secure_customer_sig",
-    function: "Used in connection with customer login.",
+    name: "sb-access-token",
+    function: "Used by Supabase to maintain your secure login session.",
   },
   {
-    name: "storefront_digest",
-    function: "Used in connection with customer login.",
+    name: "sb-refresh-token",
+    function: "Used by Supabase to keep you logged in securely.",
   },
   {
-    name: "_shopify_u",
-    function: "Used to facilitate updating customer account information.",
+    name: "cart-storage",
+    function: "Local storage used to remember the items in your shopping cart.",
+  },
+  {
+    name: "next-auth.callback-url",
+    function: "Used to redirect you to the correct page after signing in.",
   },
 ];
 
 const COOKIE_ANALYTICS = [
-  { name: "_tracking_consent", function: "Tracking preferences." },
-  { name: "_landing_page", function: "Track landing pages." },
-  { name: "_orig_referrer", function: "Track landing pages." },
-  { name: "_s", function: "Shopify analytics." },
-  { name: "_shopify_fs", function: "Shopify analytics." },
-  { name: "_shopify_s", function: "Shopify analytics." },
   {
-    name: "_shopify_sa_p",
-    function: "Shopify analytics relating to marketing & referrals.",
+    name: "_ga / _gid",
+    function:
+      "Google Analytics (if applicable) used to understand site traffic.",
   },
   {
-    name: "_shopify_sa_t",
-    function: "Shopify analytics relating to marketing & referrals.",
+    name: "vercel-insights",
+    function: "Used by our hosting provider to monitor site performance.",
   },
-  { name: "_shopify_y", function: "Shopify analytics." },
-  { name: "_y", function: "Shopify analytics." },
+  {
+    name: "stripe_mid / stripe_sid",
+    function: "Used by Stripe to process secure payments and prevent fraud.",
+  },
 ];
 
 export default function PrivacyPolicyPage() {
@@ -128,29 +119,31 @@ export default function PrivacyPolicyPage() {
                 {
                   title: "Device Information",
                   items:
-                    "Web browser version, IP address, time zone, cookie info, search terms.",
+                    "Web browser version, IP address, time zone, cookie info, and how you interact with the Site.",
                   purpose:
-                    "To load the Site accurately and perform usage analytics.",
+                    "To load the Site accurately and perform usage analytics to improve our user experience.",
                   source:
-                    "Collected automatically via cookies, log files, web beacons, tags, or pixels.",
-                  disclosure: "Shared with our processor Shopify.",
+                    "Collected automatically via cookies, log files, and web beacons.",
+                  disclosure: "Used internally for site optimization.",
                 },
                 {
                   title: "Order Information",
                   items:
-                    "Name, billing/shipping address, payment info (credit cards), email, and phone number.",
+                    "Name, billing/shipping address, payment info (processed via Stripe/secure providers), email, and phone number.",
                   purpose:
                     "To fulfill contracts, process payments, arrange shipping, and provide invoices.",
-                  source: "Collected directly from you.",
-                  disclosure: "Shared with our processor Shopify.",
+                  source: "Collected directly from you at checkout.",
+                  disclosure:
+                    "Shared with our database provider (Supabase) and payment processors.",
                 },
                 {
-                  title: "Customer Support Information",
+                  title: "Account Information",
                   items:
-                    "Contact details and payment info provided during support sessions.",
-                  purpose: "To provide high-quality customer support.",
-                  source: "Collected from you during interaction.",
-                  disclosure: "Internal use for support resolution.",
+                    "Email address, encrypted password, and profile details.",
+                  purpose:
+                    "To manage your user account and provide secure access to order history.",
+                  source: "Collected from you during registration.",
+                  disclosure: "Stored securely via Supabase Auth.",
                 },
               ].map((box, idx) => (
                 <div
@@ -235,8 +228,8 @@ export default function PrivacyPolicyPage() {
             <div className="space-y-10">
               <div>
                 <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#CE978C] rounded-full" /> Store
-                  Functionality
+                  <span className="w-2 h-2 bg-[#CE978C] rounded-full" />{" "}
+                  Platform Functionality
                 </h4>
                 <div className="overflow-x-auto rounded-xl border border-slate-100">
                   <table className="w-full text-left text-sm">
@@ -305,25 +298,26 @@ export default function PrivacyPolicyPage() {
                 <Mail className="text-[#CE978C] w-6 h-6" />
                 <p className="font-bold">Email Us</p>
                 <a
-                  href="mailto:care@apexglobal.io"
+                  href="mailto:apexexports7090@gmail.com"
                   className="text-sm hover:text-[#CE978C] transition-colors"
                 >
-                  care@apexglobal.io
+                  apexexports7090@gmail.com
                 </a>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <MapPin className="text-[#CE978C] w-6 h-6" />
                 <p className="font-bold">Visit Us</p>
                 <p className="text-sm leading-relaxed text-slate-500">
-                  5170 Dixie Road, 203,
-                  <br /> Mississauga ON L4W 1E3, Canada
+                  Kacha Pakka Noor Shah Rd,
+                  <br />
+                  sahiwal, Pakistan
                 </p>
               </div>
             </div>
             <div className="mt-12 pt-8 border-t border-slate-200">
               <p className="text-xs text-slate-400">
-                Last Updated: 23/11/2020. Apex Global reserves the right to
-                update this policy at any time.
+                Last Updated: {new Date().toLocaleDateString()}. Apex Global
+                reserves the right to update this policy at any time.
               </p>
             </div>
           </section>

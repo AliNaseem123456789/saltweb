@@ -12,13 +12,15 @@ async function checkAdmin() {
     return false;
   }
 
+  // Only select the column you actually have
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, is_admin")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  return profile && (profile.role === "admin" || profile.is_admin === true);
+  // Return true only if the profile exists and is_admin is true
+  return !!(profile && profile.is_admin);
 }
 
 async function getProducts() {

@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import AdvertisementsManager from "@/components/AdvertisementsManager";
-
 async function checkAdmin() {
   const supabase = await createClient();
   const {
@@ -11,16 +10,13 @@ async function checkAdmin() {
   if (!user) {
     return false;
   }
-
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, is_admin")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
-
-  return profile && (profile.role === "admin" || profile.is_admin === true);
+  return !!(profile && profile.is_admin);
 }
-
 async function getAdvertisements() {
   const supabase = await createClient();
   const { data, error } = await supabase
