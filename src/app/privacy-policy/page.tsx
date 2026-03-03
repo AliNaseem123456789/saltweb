@@ -40,10 +40,10 @@ const COOKIE_ANALYTICS = [
     function:
       "Google Analytics (if applicable) used to understand site traffic.",
   },
-  {
-    name: "vercel-insights",
-    function: "Used by our hosting provider to monitor site performance.",
-  },
+  // {
+  //   name: "vercel-insights",
+  //   function: "Used by our hosting provider to monitor site performance.",
+  // },
   {
     name: "stripe_mid / stripe_sid",
     function: "Used by Stripe to process secure payments and prevent fraud.",
@@ -86,18 +86,18 @@ export default function PrivacyPolicyPage() {
             <div className="flex items-center gap-4 mb-6 text-[#CE978C]">
               <Globe className="w-10 h-10" />
               <h2 className="text-3xl font-bold tracking-tight">
-                About Apex Global
+                About Apex Universal Exports
               </h2>
             </div>
             <p className="text-lg bg-[#FAF8F5] p-6 rounded-2xl border-l-4 border-[#CE978C] mb-8">
-              Apex Global Enterprise is a diverse North American company engaged
+              Apex Universal Exports is a diverse North American company engaged
               in e-Commerce, trade, import, distribution, and export activities.
             </p>
             <p className="text-slate-600">
               This Privacy Policy describes how{" "}
-              <strong>www.apexglobal.io</strong> (the “Site” or “we”) collects,
-              uses, and discloses your Personal Information when you visit or
-              make a purchase from the Site.
+              <strong>www.apexUniversalExports.com</strong> (the “Site” or “we”)
+              collects, uses, and discloses your Personal Information when you
+              visit or make a purchase from the Site.
             </p>
           </section>
 

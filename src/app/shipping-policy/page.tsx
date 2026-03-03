@@ -43,7 +43,7 @@ export default function ShippingPolicyPage() {
             <div className="flex items-center gap-3 mb-4 text-[#CE978C]">
               <Globe className="w-6 h-6" />
               <h2 className="text-xl font-bold uppercase tracking-wider">
-                About Apex Global
+                About Apex Universal Exports
               </h2>
             </div>
             <p className="text-slate-500 italic">
@@ -121,7 +121,7 @@ export default function ShippingPolicyPage() {
               href="mailto:care@apexglobal.io"
               className="px-8 py-3 bg-[#CE978C] rounded-xl font-bold hover:bg-[#b87d71] transition-all flex items-center gap-2 shadow-lg active:scale-95"
             >
-              <Mail className="w-4 h-4" /> care@apexglobal.io
+              <Mail className="w-4 h-4" /> apexexports7090@gmail.com
             </a>
           </div>
         </div>

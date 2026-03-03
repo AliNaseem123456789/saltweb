@@ -1,10 +1,12 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import nodemailer from "nodemailer";
 
 export async function submitSampleRequest(userEmail: string) {
   const supabase = await createClient();
 
+  // 1. Save to Database
   const { error: dbError } = await supabase
     .from("sample_requests")
     .insert([{ email: userEmail, status: "pending", created_at: new Date() }]);
@@ -14,33 +16,35 @@ export async function submitSampleRequest(userEmail: string) {
     return { success: false, error: "Failed to process request." };
   }
 
+  // 2. Setup Nodemailer Transporter (Gmail)
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER, // Your Gmail
+      pass: process.env.EMAIL_PASS, // Your 16-character App Password
+    },
+  });
+
   try {
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: "Apex Global <onboarding@resend.dev>",
-        to: [userEmail],
-        subject: `Your Apex Global Sample Kit is on the way!`,
-        html: `
-          <div style="font-family: 'serif'; padding: 30px; line-height: 1.6; color: #333; border: 1px solid #CE978C;">
-            <h2 style="color: #CE978C;">Hello from Apex Global</h2>
-            <p>Thank you for requesting a free sample of our premium Himalayan Salt.</p>
-            <p>At <strong>Apex Global</strong>, we take pride in sourcing the purest, unrefined salt directly from the heart of the Himalayas. Our mission is to bring the natural minerals and therapeutic benefits of salt crystals to your doorstep.</p>
-            <p>Our team is currently preparing your sample kit. You will receive another notification once your package has been dispatched.</p>
-            <br />
-            <p>Best Regards,</p>
-            <p><strong>The Apex Global Team</strong></p>
-          </div>
-        `,
-      }),
+    // 3. Send the Confirmation Email to the Customer
+    await transporter.sendMail({
+      from: `"Apex Global" <${process.env.EMAIL_USER}>`,
+      to: userEmail, // Sends to the person who requested the sample
+      subject: `Your Apex Global Sample Kit is on the way!`,
+      html: `
+        <div style="font-family: 'serif', 'Times New Roman', serif; padding: 30px; line-height: 1.6; color: #333; border: 1px solid #CE978C; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+          <h2 style="color: #CE978C; border-bottom: 1px solid #FAF8F5; padding-bottom: 10px;">Hello from Apex Global</h2>
+          <p>Thank you for requesting a free sample of our premium Himalayan Salt.</p>
+          <p>At <strong>Apex Global</strong>, we take pride in sourcing the purest, unrefined salt directly from the heart of the Himalayas. Our mission is to bring the natural minerals and therapeutic benefits of salt crystals to your doorstep.</p>
+          <p>Our team is currently preparing your sample kit. You will receive another notification once your package has been dispatched.</p>
+          <br />
+          <p>Best Regards,</p>
+          <p><strong>The Apex Global Team</strong></p>
+          <hr style="border: none; border-top: 1px solid #FAF8F5; margin-top: 20px;" />
+          <p style="font-size: 11px; color: #999; text-align: center;">Apex Global - Himalayan Salt Excellence</p>
+        </div>
+      `,
     });
-
-    if (!res.ok) throw new Error("Failed to send email");
 
     return { success: true };
   } catch (error) {

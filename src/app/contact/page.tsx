@@ -3,18 +3,25 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import { contactInfo } from "@/data/contactinfo";
+import { sendContactEmail } from "@/app/actions/contact";
+
 export default function ContactPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [status, setStatus] = useState<{
+    type: "success" | "error" | null;
+    msg: string;
+  }>({ type: null, msg: "" });
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
+
   useEffect(() => {
     setIsVideoReady(true);
-
     const playVideo = () => {
       if (videoRef.current) {
         const playPromise = videoRef.current.play();
@@ -28,15 +35,36 @@ export default function ContactPage() {
     const timeoutId = setTimeout(playVideo, 100);
     return () => clearTimeout(timeoutId);
   }, []);
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    alert("Message sent!");
+    setIsPending(true);
+    setStatus({ type: null, msg: "" });
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("message", formData.message);
+
+    const result = await sendContactEmail(data);
+
+    setIsPending(false);
+    if (result.success) {
+      setStatus({
+        type: "success",
+        msg: "Message sent successfully! We will get back to you soon.",
+      });
+      setFormData({ name: "", email: "", message: "" }); // Reset form
+    } else {
+      setStatus({
+        type: "error",
+        msg: result.error || "Something went wrong.",
+      });
+    }
   };
+
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -46,7 +74,6 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative h-[50vh] w-full overflow-hidden bg-[#B8857A]">
         <div className="absolute inset-0 z-0">
-          {/* We only render the video if the client is ready to prevent hydration mismatch */}
           {isVideoReady && (
             <video
               ref={videoRef}
@@ -55,8 +82,6 @@ export default function ContactPage() {
               muted
               playsInline
               preload="auto"
-              // Add a poster image if you have one - it helps the first load feel instant
-              // poster="/blogs/FeaturedVideo4-poster.jpg"
               className="h-full w-full object-cover opacity-60 transition-opacity duration-1000"
               style={{ opacity: isVideoReady ? 0.6 : 0 }}
             >
@@ -101,6 +126,7 @@ export default function ContactPage() {
               <h2 className="mb-6 font-serif text-3xl font-light text-slate-800">
                 Send us a Message
               </h2>
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -112,7 +138,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -126,7 +152,7 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none transition-colors"
                     placeholder="email@example.com"
                   />
                 </div>
@@ -140,15 +166,29 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-[#CE978C] focus:outline-none transition-colors"
                     placeholder="How can we help?"
                   />
                 </div>
+
+                {status.type && (
+                  <p
+                    className={`text-sm ${
+                      status.type === "success"
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {status.msg}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-[#CE978C] px-6 py-3 text-white hover:bg-[#B8857A] transition-colors"
+                  disabled={isPending}
+                  className="w-full rounded-lg bg-[#CE978C] px-6 py-3 text-white hover:bg-[#B8857A] transition-colors disabled:opacity-50 font-medium"
                 >
-                  Send Message
+                  {isPending ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </motion.div>
@@ -166,7 +206,7 @@ export default function ContactPage() {
                 {contactInfo.map((info, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-4 rounded-lg bg-white p-6 border border-slate-100"
+                    className="flex items-start gap-4 rounded-lg bg-white p-6 border border-slate-100 hover:shadow-md transition-shadow"
                   >
                     <div className="text-2xl">{info.icon}</div>
                     <div>

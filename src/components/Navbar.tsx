@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
 import PromotionModal from "./home/PromotionModal";
 import { createClient } from "@/lib/supabase/client"; // Ensure this path is correct
+import { logout } from "@/app/actions/auth";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +27,9 @@ export default function Navbar() {
     { name: "Construction Products", slug: "construction-products" },
     { name: "Culinary", slug: "culinary" },
   ];
-
+  const handleLogout = async () => {
+    await logout();
+  };
   useEffect(() => {
     const supabase = createClient();
 
@@ -204,56 +207,64 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <div className="hidden md:flex items-center gap-4 border-r border-slate-200 pr-4 mr-2">
                 {user ? (
-                  <Link
-                    href={isAdmin ? "/admin" : "/profile"}
-                    className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700"
-                    title={isAdmin ? "Admin Dashboard" : "My Profile"}
-                  >
-                    {isAdmin ? (
-                      /* Admin Icon (Shield) */
-                      /* Admin Icon (Dashboard Grid) */
-                      <svg
-                        className="w-6 h-6 text-[#CE978C]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                        />
-                      </svg>
-                    ) : (
-                      /* Customer Icon (User) */
-                      <svg
-                        className="w-6 h-6 text-slate-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                    )}
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    {" "}
+                    {/* Use a div wrapper, not just Link */}
+                    {/* The Profile/Admin Icon */}
+                    <Link
+                      href={isAdmin ? "/admin" : "/profile"}
+                      className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
+                      title={isAdmin ? "Admin Dashboard" : "My Profile"}
+                    >
+                      {isAdmin ? (
+                        <svg
+                          className="w-6 h-6 text-[#CE978C]"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="w-6 h-6 text-slate-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                      )}
+                    </Link>
+                    {/* The Logout Button (Separated from the Link) */}
+                    <button
+                      onClick={handleLogout}
+                      className="text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 ) : (
                   <>
                     <Link
                       href="/login"
-                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C] transition-colors"
+                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
                     >
                       Login
                     </Link>
                     <Link
                       href="/register"
-                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C] transition-colors"
+                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
                     >
                       Sign Up
                     </Link>

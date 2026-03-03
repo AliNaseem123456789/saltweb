@@ -49,11 +49,11 @@ export default function RefundPolicyPage() {
             <div className="flex items-center justify-center md:justify-start gap-3 mb-4 text-[#CE978C]">
               <Globe className="w-6 h-6" />
               <h2 className="text-xl font-bold uppercase tracking-wider">
-                About Apex Global
+                About Apex Universal Exports
               </h2>
             </div>
             <p className="text-slate-500 italic">
-              Apex Global Enterprise is a diverse North American company engaged
+              Apex Universal Exports is a diverse North American company engaged
               in e-Commerce, trade, import, distribution, and export activities.
             </p>
           </div>
@@ -86,10 +86,10 @@ export default function RefundPolicyPage() {
               <p className="text-sm mb-4">
                 To start a return, you can contact us at{" "}
                 <a
-                  href="mailto:care@apexglobal.io"
+                  href="mailto:apexexports7090@gmail.com"
                   className="text-[#CE978C] font-bold hover:underline"
                 >
-                  care@apexglobal.io
+                  apexexports7090@gmail.com
                 </a>
                 .
               </p>
