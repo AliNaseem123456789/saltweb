@@ -84,11 +84,12 @@ export default function RefundPolicyPage() {
             <section className="bg-[#FAF8F5] p-6 rounded-2xl border-l-4 border-[#CE978C]">
               <h3 className="font-bold mb-2">How to start a return</h3>
               <p className="text-sm mb-4">
-                To start a return, you can contact us at{" "}
+                To start a return, you can contact us at
                 <a
                   href="mailto:apexexports7090@gmail.com"
                   className="text-[#CE978C] font-bold hover:underline"
                 >
+                  {" "}
                   apexexports7090@gmail.com
                 </a>
                 .

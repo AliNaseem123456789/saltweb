@@ -316,8 +316,8 @@ export default function PrivacyPolicyPage() {
             </div>
             <div className="mt-12 pt-8 border-t border-slate-200">
               <p className="text-xs text-slate-400">
-                Last Updated: {new Date().toLocaleDateString()}. Apex Global
-                reserves the right to update this policy at any time.
+                Last Updated: {new Date().toLocaleDateString()}. Apex Universal
+                Exports reserves the right to update this policy at any time.
               </p>
             </div>
           </section>

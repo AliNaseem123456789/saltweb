@@ -77,8 +77,8 @@ export default function ShippingPolicyPage() {
               </p>
               <div className="pt-4 border-t border-amber-200">
                 <p className="font-bold text-amber-900">
-                  In no circumstances will ApexGlobal be held responsible for
-                  such delays.
+                  In no circumstances will Apex Universal Exports be held
+                  responsible for such delays.
                 </p>
               </div>
             </section>
