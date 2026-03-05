@@ -101,8 +101,6 @@ export default function RefundPolicyPage() {
                 will not be accepted.
               </p>
             </section>
-
-            {/* Damages & Issues */}
             <section>
               <div className="flex items-center gap-3 mb-4 text-[#CE978C]">
                 <AlertCircle className="w-6 h-6" />
