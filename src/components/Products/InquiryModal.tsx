@@ -21,18 +21,7 @@ export default function InquiryModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
+  // Form State
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -43,7 +32,20 @@ export default function InquiryModal({
     state: "",
     country: "",
     postalCode: "",
+    quantity: "", // Added Quantity field
+    message: "",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -58,6 +60,8 @@ export default function InquiryModal({
       address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country} (${formData.postalCode})`,
       product_name: title,
       moq: moq,
+      quantity: formData.quantity, // Added to submission
+      message: formData.message,
     };
 
     const result = await submitInquiry(submissionData);
@@ -75,7 +79,9 @@ export default function InquiryModal({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -83,9 +89,6 @@ export default function InquiryModal({
 
   return (
     <AnimatePresence>
-      {/* FIX 1: added 'overflow-y-auto' and 'py-10' to the backdrop 
-          This allows the user to scroll the modal like a page on small screens 
-      */}
       <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-sm p-4 py-8 md:items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -93,14 +96,14 @@ export default function InquiryModal({
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 md:mb-0"
         >
-          {/* Header - Sticky on mobile so you don't lose the X button */}
+          {/* Header */}
           <div className="sticky top-0 z-20 bg-white flex items-center justify-between px-6 py-4 md:px-8 md:py-6 border-b border-slate-100">
             <div>
               <h2 className="text-xl md:text-2xl font-semibold text-slate-800">
-                {isSuccess ? "Success!" : "Personal Information"}
+                {isSuccess ? "Success!" : "Inquiry Details"}
               </h2>
               <p className="text-[10px] md:text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">
-                Inquiry: {title.slice(0, 20)}... ({moq} Units)
+                Product: {title.slice(0, 30)}...
               </p>
             </div>
             <button
@@ -145,10 +148,14 @@ export default function InquiryModal({
                     onChange={handleInputChange}
                     required
                   />
+
+                  {/* Quantity Field - Positioned next to Phone/Address */}
                   <FormField
-                    label="Address"
-                    name="address"
-                    value={formData.address}
+                    label="Order Quantity"
+                    name="quantity"
+                    type="number"
+                    placeholder="e.g. 500"
+                    value={formData.quantity}
                     onChange={handleInputChange}
                     required
                   />
@@ -181,6 +188,13 @@ export default function InquiryModal({
                   </div>
 
                   <FormField
+                    label="Address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <FormField
                     label="City"
                     name="city"
                     value={formData.city}
@@ -206,6 +220,22 @@ export default function InquiryModal({
                   />
                 </div>
 
+                {/* Message Field */}
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-slate-700">
+                    Additional Message (Optional)
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={3}
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Tell us more about your requirements..."
+                    className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-slate-200 rounded-lg outline-none focus:border-[#CE978C] transition-colors text-sm resize-none"
+                  />
+                </div>
+
+                {/* Action Buttons */}
                 <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-3 pt-4 border-t border-slate-100">
                   <button
                     type="button"
@@ -244,6 +274,7 @@ function FormField({
   value,
   onChange,
   required = false,
+  placeholder = "",
 }: any) {
   return (
     <div className="space-y-1.5">
@@ -254,6 +285,7 @@ function FormField({
         value={value}
         onChange={onChange}
         required={required}
+        placeholder={placeholder}
         className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-slate-200 rounded-lg outline-none focus:border-[#CE978C] transition-colors text-sm"
       />
     </div>

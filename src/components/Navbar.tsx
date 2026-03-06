@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getWishlistCount, getCartCount } from "@/app/actions/cart-wishlist";
 import PromotionModal from "./home/PromotionModal";
-import { createClient } from "@/lib/supabase/client"; // Ensure this path is correct
+import { createClient } from "@/lib/supabase/client";
 import { logout } from "@/app/actions/auth";
 
 export default function Navbar() {
@@ -256,7 +256,7 @@ export default function Navbar() {
                   </div>
                 ) : (
                   <>
-                    <Link
+                    {/* <Link
                       href="/login"
                       className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
                     >
@@ -267,7 +267,7 @@ export default function Navbar() {
                       className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
                     >
                       Sign Up
-                    </Link>
+                    </Link> */}
                   </>
                 )}
               </div>
@@ -311,24 +311,101 @@ export default function Navbar() {
 
           {/* Mobile Menu Drawer */}
           {isMenuOpen && (
-            <div className="border-t border-slate-200 py-6 md:hidden">
+            <div className="border-t border-slate-200 py-6 md:hidden bg-white px-4">
               <div className="flex flex-col gap-4 text-slate-700">
-                <Link href="/" onClick={() => setIsMenuOpen(false)}>
+                {/* Primary Links */}
+                <Link
+                  href="/"
+                  className="text-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Home
                 </Link>
 
-                <div className="flex flex-col gap-4 py-2 border-y border-slate-50">
-                  {user ? (
+                {/* Products Section (Accordion Style) */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Products
+                  </span>
+                  <div className="grid grid-cols-1 gap-3 pl-2 border-l-2 border-slate-100">
+                    {productCategories.map((category) => (
+                      <Link
+                        key={category.slug}
+                        href={`/products?category=${category.slug}`}
+                        className="text-slate-600 hover:text-[#CE978C]"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
                     <Link
-                      href={isAdmin ? "/admin" : "/profile"}
+                      href="/products"
+                      className="text-[#CE978C] font-semibold"
                       onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-2 text-[#CE978C] font-semibold"
                     >
-                      {isAdmin ? "Admin Dashboard" : "My Account"}
+                      View All Products
                     </Link>
+                  </div>
+                </div>
+
+                <Link
+                  href="/private-label"
+                  className="text-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Private Label
+                </Link>
+
+                <Link
+                  href="/about"
+                  className="text-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  About Us
+                </Link>
+
+                {/* Connect/Support Links */}
+                <div className="flex flex-col gap-2 pt-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Connect
+                  </span>
+                  <div className="flex flex-col gap-3 pl-2">
+                    <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
+                      Contact Us
+                    </Link>
+                    <Link href="/blog" onClick={() => setIsMenuOpen(false)}>
+                      Blog
+                    </Link>
+                    <Link href="/faq" onClick={() => setIsMenuOpen(false)}>
+                      FAQs
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Auth Section */}
+                <div className="flex flex-col gap-4 py-4 border-y border-slate-100 mt-2">
+                  {user ? (
+                    <div className="flex flex-col gap-4">
+                      <Link
+                        href={isAdmin ? "/admin" : "/profile"}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 text-[#CE978C] font-semibold"
+                      >
+                        {isAdmin ? "Admin Dashboard" : "My Account"}
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-left text-red-500 font-bold text-sm uppercase"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   ) : (
-                    <>
-                      <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <div className="flex gap-6">
+                      {/* <Link href="/login" onClick={() => setIsMenuOpen(false)}>
                         Login
                       </Link>
                       <Link
@@ -336,17 +413,18 @@ export default function Navbar() {
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Sign Up
-                      </Link>
-                    </>
+                      </Link> */}
+                    </div>
                   )}
                 </div>
 
+                {/* CTA Button */}
                 <button
                   onClick={() => {
                     setIsModalOpen(true);
                     setIsMenuOpen(false);
                   }}
-                  className="mt-6 w-full bg-[#CE978C] text-white py-5 px-8 rounded-xl font-bold text-lg uppercase tracking-wide shadow-lg"
+                  className="mt-4 w-full bg-[#CE978C] text-white py-4 px-8 rounded-xl font-bold text-lg uppercase tracking-wide shadow-lg"
                 >
                   Free samples
                 </button>
