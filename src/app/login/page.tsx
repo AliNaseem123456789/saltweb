@@ -93,7 +93,7 @@ function LoginContent() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            {/* <p className="text-sm text-slate-600 dark:text-slate-400">
               Don't have an account?{" "}
               <Link
                 href="/register"
@@ -101,7 +101,7 @@ function LoginContent() {
               >
                 Sign up
               </Link>
-            </p>
+            </p> */}
             <Link
               href="/forget-password"
               className="text-sm font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400"

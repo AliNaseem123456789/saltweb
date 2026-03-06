@@ -212,7 +212,7 @@ export default function Navbar() {
                     {/* Use a div wrapper, not just Link */}
                     {/* The Profile/Admin Icon */}
                     <Link
-                      href={isAdmin ? "/admin" : "/profile"}
+                      href={isAdmin ? "/admin/inventory" : "/profile"}
                       className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
                       title={isAdmin ? "Admin Dashboard" : "My Profile"}
                     >
@@ -387,7 +387,7 @@ export default function Navbar() {
                   {user ? (
                     <div className="flex flex-col gap-4">
                       <Link
-                        href={isAdmin ? "/admin" : "/profile"}
+                        href={isAdmin ? "/admin/inventory" : "/profile"}
                         onClick={() => setIsMenuOpen(false)}
                         className="flex items-center gap-2 text-[#CE978C] font-semibold"
                       >
