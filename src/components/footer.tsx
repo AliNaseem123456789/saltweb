@@ -196,13 +196,13 @@ export default function Footer() {
               >
                 <SiWhatsapp size={20} />
               </Link>
-              <Link
+              {/* <Link
                 href="https://www.linkedin.com/"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Linkedin size={20} />
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
