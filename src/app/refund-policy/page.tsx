@@ -86,11 +86,11 @@ export default function RefundPolicyPage() {
               <p className="text-sm mb-4">
                 To start a return, you can contact us at
                 <a
-                  href="mailto:apexexports7090@gmail.com"
+                  href="mailto:info@apexuniversal.com.pk"
                   className="text-[#CE978C] font-bold hover:underline"
                 >
                   {" "}
-                  apexexports7090@gmail.com
+                  info@apexuniversal.com.pk
                 </a>
                 .
               </p>
@@ -170,10 +170,10 @@ export default function RefundPolicyPage() {
               </p>
             </div>
             <a
-              href="mailto:apexexports7090@gmail.com"
+              href="mailto:info@apexuniversal.com.pk"
               className="px-6 py-3 bg-[#CE978C] rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2"
             >
-              <Mail className="w-4 h-4" /> apexexports7090@gmail.com
+              <Mail className="w-4 h-4" /> info@apexuniversal.com.pk
             </a>
           </div>
         </div>

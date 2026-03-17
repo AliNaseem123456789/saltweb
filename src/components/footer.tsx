@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { SiWhatsapp } from "react-icons/si";
 import { Facebook, Instagram, Twitter, Linkedin, Loader2 } from "lucide-react";
 import { subscribeToNewsletter } from "@/app/actions/newsletter";
 
@@ -175,25 +176,25 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               <Link
-                href="https://www.facebook.com/"
+                href="https://www.facebook.com/profile.php?id=100088691290295"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Facebook size={20} />
               </Link>
               <Link
-                href="https://www.instagram.com/"
+                href="https://instagram.com/apexuniversalexportsswl"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Instagram size={20} />
               </Link>
               <Link
-                href="https://www.twitter.com/"
+                href="https://wa.me/923091869829"
                 target="_blank"
-                className="text-slate-400 hover:text-[#CE978C] transition-colors"
+                className="text-green-500 hover:text-green-600 transition-colors"
               >
-                <Twitter size={20} />
+                <SiWhatsapp size={20} />
               </Link>
               <Link
                 href="https://www.linkedin.com/"

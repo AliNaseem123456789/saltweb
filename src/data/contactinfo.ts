@@ -2,8 +2,8 @@ export const contactInfo = [
   {
     icon: "📧",
     title: "Email",
-    content: "apexexports7090@gmail.com",
-    link: "mailto:apexexports7090@gmail.com",
+    content: "info@apexuniversal.com.pk",
+    link: "mailto:info@apexuniversal.com.pk",
   },
   {
     icon: "📞",

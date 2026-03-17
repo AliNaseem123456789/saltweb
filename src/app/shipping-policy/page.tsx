@@ -121,7 +121,7 @@ export default function ShippingPolicyPage() {
               href="mailto:care@apexglobal.io"
               className="px-8 py-3 bg-[#CE978C] rounded-xl font-bold hover:bg-[#b87d71] transition-all flex items-center gap-2 shadow-lg active:scale-95"
             >
-              <Mail className="w-4 h-4" /> apexexports7090@gmail.com
+              <Mail className="w-4 h-4" /> info@apexuniversal.com.pk
             </a>
           </div>
         </div>

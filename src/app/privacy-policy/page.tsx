@@ -298,10 +298,10 @@ export default function PrivacyPolicyPage() {
                 <Mail className="text-[#CE978C] w-6 h-6" />
                 <p className="font-bold">Email Us</p>
                 <a
-                  href="mailto:apexexports7090@gmail.com"
+                  href="mailto:info@apexuniversal.com.pk"
                   className="text-sm hover:text-[#CE978C] transition-colors"
                 >
-                  apexexports7090@gmail.com
+                  info@apexuniversal.com.pk
                 </a>
               </div>
               <div className="flex flex-col items-center gap-2">
