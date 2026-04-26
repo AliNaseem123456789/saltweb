@@ -37,13 +37,13 @@ export async function subscribeToNewsletter(formData: FormData) {
   // Step 3: Send the Welcome Email
   try {
     await transporter.sendMail({
-      from: `"Apex Universal Exports" <${process.env.EMAIL_USER}>`,
+      from: `"Salt Web" <${process.env.EMAIL_USER}>`,
       to: email, // This sends to the CUSTOMER'S email
-      subject: "Welcome to Apex Universal Exports",
+      subject: "Welcome to Salt Web",
       html: `
         <div style="font-family: 'serif', 'Times New Roman', serif; padding: 30px; line-height: 1.6; color: #333; border: 1px solid #CE978C; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
           <h2 style="color: #CE978C; border-bottom: 1px solid #f4f4f4; padding-bottom: 10px;">Welcome to the Collection</h2>
-          <p>Thank you for subscribing to the <strong>Apex Universal Exports</strong> newsletter.</p>
+          <p>Thank you for subscribing to the <strong>Salt Web</strong> newsletter.</p>
           <p>You are now part of a community dedicated to wellness, mineral research, and the timeless beauty of Himalayan salt crystals.</p>
           <p><strong>What to expect:</strong></p>
           <ul style="color: #555;">
@@ -54,9 +54,9 @@ export async function subscribeToNewsletter(formData: FormData) {
           <br />
           <p>We are thrilled to have you with us on this journey.</p>
           <p>Best Regards,</p>
-          <p><strong>The Apex Team</strong></p>
+          <p><strong>Salt Web</strong></p>
           <hr style="border: none; border-top: 1px solid #f4f4f4; margin-top: 20px;" />
-          <p style="font-size: 11px; color: #999; text-align: center;">You are receiving this because you signed up at apex-universal.com</p>
+          <p style="font-size: 11px; color: #999; text-align: center;">You are receiving this because you signed up at alinaseem21102002@gmail.com</p>
         </div>
       `,
     });

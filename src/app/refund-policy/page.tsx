@@ -49,12 +49,12 @@ export default function RefundPolicyPage() {
             <div className="flex items-center justify-center md:justify-start gap-3 mb-4 text-[#CE978C]">
               <Globe className="w-6 h-6" />
               <h2 className="text-xl font-bold uppercase tracking-wider">
-                About Apex Universal Exports
+                About Salt Web
               </h2>
             </div>
             <p className="text-slate-500 italic">
-              Apex Universal Exports is a diverse North American company engaged
-              in e-Commerce, trade, import, distribution, and export activities.
+              Salt web is a diverse company engaged in e-Commerce, trade,
+              import, distribution, and export activities.
             </p>
           </div>
 
@@ -86,11 +86,11 @@ export default function RefundPolicyPage() {
               <p className="text-sm mb-4">
                 To start a return, you can contact us at
                 <a
-                  href="mailto:info@apexuniversal.com.pk"
+                  href="mailto:alinaseem21102002@gmail.com"
                   className="text-[#CE978C] font-bold hover:underline"
                 >
                   {" "}
-                  info@apexuniversal.com.pk
+                  alinaseem21102002@gmail.com
                 </a>
                 .
               </p>
@@ -170,10 +170,10 @@ export default function RefundPolicyPage() {
               </p>
             </div>
             <a
-              href="mailto:info@apexuniversal.com.pk"
+              href="mailto:alinaseem21102002@gmail.com"
               className="px-6 py-3 bg-[#CE978C] rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2"
             >
-              <Mail className="w-4 h-4" /> info@apexuniversal.com.pk
+              <Mail className="w-4 h-4" /> alinaseem21102002@gmail.com
             </a>
           </div>
         </div>

@@ -27,9 +27,13 @@ export default function Navbar() {
     { name: "Construction Products", slug: "construction-products" },
     { name: "Culinary", slug: "culinary" },
   ];
+
   const handleLogout = async () => {
     await logout();
+    // Refresh the page or redirect after logout
+    window.location.href = "/";
   };
+
   useEffect(() => {
     const supabase = createClient();
 
@@ -60,11 +64,16 @@ export default function Navbar() {
     getUserData();
     fetchCounts();
 
-    window.addEventListener("wishlist-updated", fetchCounts);
-    window.addEventListener("cart-updated", fetchCounts);
+    // Custom event listeners for updating counts
+    const handleWishlistUpdate = () => fetchCounts();
+    const handleCartUpdate = () => fetchCounts();
+
+    window.addEventListener("wishlist-updated", handleWishlistUpdate);
+    window.addEventListener("cart-updated", handleCartUpdate);
+
     return () => {
-      window.removeEventListener("wishlist-updated", fetchCounts);
-      window.removeEventListener("cart-updated", fetchCounts);
+      window.removeEventListener("wishlist-updated", handleWishlistUpdate);
+      window.removeEventListener("cart-updated", handleCartUpdate);
     };
   }, []);
 
@@ -77,8 +86,8 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#CE978C] overflow-hidden">
                 <Image
-                  src="/logo/logo.jpg"
-                  alt="Apex Global Logo"
+                  src="/logo/logo.png"
+                  alt="Salt Web"
                   width={40}
                   height={40}
                   className="object-cover"
@@ -86,7 +95,7 @@ export default function Navbar() {
                 />
               </div>
               <span className="font-serif text-2xl font-light text-slate-800">
-                Apex Universal Exports
+                Salt Web
               </span>
             </Link>
 
@@ -205,12 +214,62 @@ export default function Navbar() {
 
             {/* Action Buttons */}
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-4 border-r border-slate-200 pr-4 mr-2">
+              {/* Wishlist Button */}
+              <Link
+                href="/wishlist"
+                className="relative p-2 rounded-full hover:bg-slate-100 transition-colors"
+                aria-label="Wishlist"
+              >
+                <svg
+                  className="w-6 h-6 text-slate-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart Button */}
+              <Link
+                href="/cart"
+                className="relative p-2 rounded-full hover:bg-slate-100 transition-colors"
+                aria-label="Cart"
+              >
+                <svg
+                  className="w-6 h-6 text-slate-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M17 13l1.5 6M9 21h6M12 21v-6"
+                  />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-[#CE978C] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+
+              <div className="hidden md:flex items-center gap-4 border-l border-slate-200 pl-4">
                 {user ? (
                   <div className="flex items-center gap-3">
-                    {" "}
-                    {/* Use a div wrapper, not just Link */}
-                    {/* The Profile/Admin Icon */}
+                    {/* Profile/Admin Icon */}
                     <Link
                       href={isAdmin ? "/admin/inventory" : "/profile"}
                       className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
@@ -218,7 +277,7 @@ export default function Navbar() {
                     >
                       {isAdmin ? (
                         <svg
-                          className="w-6 h-6 text-[#CE978C]"
+                          className="w-5 h-5 text-[#CE978C]"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -232,7 +291,7 @@ export default function Navbar() {
                         </svg>
                       ) : (
                         <svg
-                          className="w-6 h-6 text-slate-600"
+                          className="w-5 h-5 text-slate-600"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -246,7 +305,6 @@ export default function Navbar() {
                         </svg>
                       )}
                     </Link>
-                    {/* The Logout Button (Separated from the Link) */}
                     <button
                       onClick={handleLogout}
                       className="text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-700 transition-colors"
@@ -255,20 +313,20 @@ export default function Navbar() {
                     </button>
                   </div>
                 ) : (
-                  <>
-                    {/* <Link
+                  <div className="flex items-center gap-3">
+                    <Link
                       href="/login"
-                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
+                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C] transition-colors"
                     >
                       Login
                     </Link>
                     <Link
                       href="/register"
-                      className="text-sm font-medium text-slate-700 hover:text-[#CE978C]"
+                      className="text-sm font-medium bg-[#CE978C] text-white px-4 py-2 rounded-full hover:bg-[#b8857a] transition-colors"
                     >
                       Sign Up
-                    </Link> */}
-                  </>
+                    </Link>
+                  </div>
                 )}
               </div>
 
@@ -382,6 +440,60 @@ export default function Navbar() {
                   </div>
                 </div>
 
+                {/* Wishlist & Cart in Mobile */}
+                <div className="flex gap-4 py-2">
+                  <Link
+                    href="/wishlist"
+                    className="flex items-center gap-2 text-slate-700"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      />
+                    </svg>
+                    Wishlist
+                    {wishlistCount > 0 && (
+                      <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+                  <Link
+                    href="/cart"
+                    className="flex items-center gap-2 text-slate-700"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M17 13l1.5 6M9 21h6M12 21v-6"
+                      />
+                    </svg>
+                    Cart
+                    {cartCount > 0 && (
+                      <span className="bg-[#CE978C] text-white text-xs rounded-full px-2 py-0.5">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+
                 {/* Auth Section */}
                 <div className="flex flex-col gap-4 py-4 border-y border-slate-100 mt-2">
                   {user ? (
@@ -404,16 +516,21 @@ export default function Navbar() {
                       </button>
                     </div>
                   ) : (
-                    <div className="flex gap-6">
-                      {/* <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <div className="flex flex-col gap-3">
+                      <Link
+                        href="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="text-slate-700 font-medium"
+                      >
                         Login
                       </Link>
                       <Link
                         href="/register"
                         onClick={() => setIsMenuOpen(false)}
+                        className="bg-[#CE978C] text-white text-center px-4 py-2 rounded-full font-medium"
                       >
                         Sign Up
-                      </Link> */}
+                      </Link>
                     </div>
                   )}
                 </div>

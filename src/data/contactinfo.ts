@@ -2,19 +2,19 @@ export const contactInfo = [
   {
     icon: "📧",
     title: "Email",
-    content: "info@apexuniversal.com.pk",
-    link: "mailto:info@apexuniversal.com.pk",
+    content: "alinaseem21102002@gmail.com",
+    link: "mailto:alinaseem21102002@gmail.com",
   },
   {
     icon: "📞",
     title: "Phone",
-    content: "+92 309 1869829",
-    link: "tel:+15551234567",
+    content: "+123456789",
+    link: "tel:+123456789",
   },
   {
     icon: "📍",
     title: "Address",
-    content: "Kacha Pakka Noor Shah Rd, sahiwal, Pakistan",
+    content: "xyz Rd, Karachi, Pakistan",
     link: null,
   },
 ];

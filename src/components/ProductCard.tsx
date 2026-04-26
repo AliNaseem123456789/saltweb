@@ -2,19 +2,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Heart, ShoppingBag } from "lucide-react";
 
 export default function ProductCard({
   product,
   index = 0,
   isInWishlist = false,
+  onWishlistToggle,
+  onAddToCart,
+  isLoading = false,
+  isCartLoading = false,
 }: {
   product: any;
   index?: number;
   isInWishlist?: boolean;
+  onWishlistToggle?: (
+    productId: string,
+    isCurrentlyInWishlist: boolean,
+  ) => void;
+  onAddToCart?: (productId: string) => void;
+  isLoading?: boolean;
+  isCartLoading?: boolean;
 }) {
   const hasHoverImage = Boolean(product.hover_image_url);
 
-  // Helper to build your Supabase URL (keeping your specific logic)
   const getImageUrl = (path: string) => {
     if (!path) return null;
     if (path.startsWith("http")) return path;
@@ -22,7 +33,39 @@ export default function ProductCard({
   };
 
   const mainImage = getImageUrl(product.image_folder);
-  const hoverImage = product.hover_image_url; // or use same folder logic if needed
+  const hoverImage = product.hover_image_url;
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Wishlist button clicked!", {
+      productId: product.id,
+      isInWishlist,
+    });
+    if (onWishlistToggle && !isLoading) {
+      onWishlistToggle(product.id, isInWishlist);
+    }
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Add to cart clicked!", product.id);
+    if (onAddToCart && !isCartLoading) {
+      onAddToCart(product.id);
+    }
+  };
+
+  const isOutOfStock = product.stock_quantity === 0;
+  const isLowStock = product.stock_quantity > 0 && product.stock_quantity <= 5;
+
+  console.log("ProductCard rendering:", {
+    productId: product.id,
+    productName: product.name,
+    isInWishlist,
+    hasWishlistHandler: !!onWishlistToggle,
+    hasCartHandler: !!onAddToCart,
+  });
 
   return (
     <motion.div
@@ -41,15 +84,50 @@ export default function ProductCard({
       className="group relative w-full overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-500 hover:shadow-xl border border-slate-50"
     >
       <Link href={`/products/${product.id}`} className="block">
-        {/* FIX: Using aspect-square (1:1) or aspect-[4/5] (Portrait) 
-            ensures all boxes are EXACTLY the same size.
-        */}
         <div className="relative aspect-square w-full overflow-hidden bg-[#FAF8F5]">
-          {isInWishlist && (
-            <div className="absolute top-3 right-3 z-30 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-sm">
-              <span className="text-red-500 text-xs">❤️</span>
+          {/* TEST BUTTON - A simple visible button to confirm rendering */}
+          <div className="absolute top-1 left-1 z-50 bg-yellow-500 text-black text-xs p-1 rounded">
+            Test: {product.name.substring(0, 10)}
+          </div>
+
+          {/* Stock Status Badge */}
+          {isOutOfStock && (
+            <div className="absolute top-3 left-3 z-40 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+              Out of Stock
             </div>
           )}
+          {isLowStock && !isOutOfStock && (
+            <div className="absolute top-3 left-3 z-40 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+              Only {product.stock_quantity} left
+            </div>
+          )}
+
+          {/* Wishlist Button - Simplified with inline styles to ensure visibility */}
+          <button
+            onClick={handleWishlistClick}
+            disabled={isLoading}
+            style={{
+              position: "absolute",
+              top: "12px",
+              right: "12px",
+              zIndex: 9999,
+              backgroundColor: "white",
+              padding: "8px",
+              borderRadius: "9999px",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            aria-label={
+              isInWishlist ? "Remove from wishlist" : "Add to wishlist"
+            }
+          >
+            <span style={{ fontSize: "20px" }}>
+              {isInWishlist ? "❤️" : "🤍"}
+            </span>
+          </button>
 
           {/* Hover Image Layer */}
           {hasHoverImage && (
@@ -71,10 +149,10 @@ export default function ProductCard({
             variants={{
               hover: {
                 opacity: hasHoverImage ? 0 : 1,
-                scale: 1.1,
+                scale: 1.05,
               },
             }}
-            transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {mainImage ? (
               <Image
@@ -91,6 +169,36 @@ export default function ProductCard({
               </div>
             )}
           </motion.div>
+
+          {/* Add to Cart Button */}
+          {onAddToCart && !isOutOfStock && (
+            <button
+              onClick={handleAddToCart}
+              disabled={isCartLoading}
+              style={{
+                position: "absolute",
+                bottom: "0",
+                left: "0",
+                right: "0",
+                zIndex: 30,
+                backgroundColor: "#CE978C",
+                color: "white",
+                padding: "12px",
+                fontWeight: "600",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              {isCartLoading ? "Adding..." : "Add to Cart"}
+            </button>
+          )}
+
+          {/* Disabled Add to Cart for Out of Stock */}
+          {isOutOfStock && (
+            <div className="absolute bottom-0 left-0 right-0 z-30 bg-gray-400 text-white py-3 font-semibold text-center">
+              Out of Stock
+            </div>
+          )}
         </div>
 
         {/* Text Content */}
@@ -98,15 +206,26 @@ export default function ProductCard({
           <h2 className="mb-2 line-clamp-1 text-lg font-bold text-slate-800 transition-colors group-hover:text-[#CE978C]">
             {product.name}
           </h2>
+
+          {/* Price Display */}
+          {product.price && (
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xl font-bold text-[#CE978C]">
+                ${Number(product.price).toFixed(2)}
+              </span>
+              {product.original_price &&
+                Number(product.original_price) > Number(product.price) && (
+                  <span className="text-sm text-gray-400 line-through">
+                    ${Number(product.original_price).toFixed(2)}
+                  </span>
+                )}
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#CE978C]">
               View Details →
             </span>
-            {/* {product.price && (
-              <span className="text-slate-900 font-semibold">
-                ${product.price}
-              </span>
-            )} */}
           </div>
         </div>
       </Link>

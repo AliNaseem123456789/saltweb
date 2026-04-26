@@ -170,39 +170,38 @@ export default function Footer() {
               Our Story
             </h3>
             <p className="mb-4 text-sm text-slate-600 leading-relaxed">
-              Apex Universal Exports is a diverse North American company
-              dedicated to bringing you the finest Himalayan salt products
-              directly from the source.
+              Salt Web is a diverse North American company dedicated to bringing
+              you the finest Himalayan salt products directly from the source.
             </p>
             <div className="flex gap-4">
               <Link
-                href="https://www.facebook.com/profile.php?id=100088691290295"
+                href="https://www.facebook.com"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Facebook size={20} />
               </Link>
               <Link
-                href="https://instagram.com/apexuniversalexportsswl"
+                href="https://instagram.com"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Instagram size={20} />
               </Link>
               <Link
-                href="https://wa.me/923091869829"
+                href="https://wa.me"
                 target="_blank"
                 className="text-green-500 hover:text-green-600 transition-colors"
               >
                 <SiWhatsapp size={20} />
               </Link>
-              {/* <Link
+              <Link
                 href="https://www.linkedin.com/"
                 target="_blank"
                 className="text-slate-400 hover:text-[#CE978C] transition-colors"
               >
                 <Linkedin size={20} />
-              </Link> */}
+              </Link>
             </div>
           </div>
         </div>
@@ -210,8 +209,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 border-t border-slate-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 uppercase tracking-widest">
           <div>
-            © {new Date().getFullYear()} Apex Universal Exports. All rights
-            reserved.
+            © {new Date().getFullYear()} ASalt Web. All rights reserved.
           </div>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-800">

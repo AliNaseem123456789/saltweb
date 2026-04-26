@@ -154,7 +154,7 @@ export default function CinematicHero() {
                 className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none"
               >
                 <p className="text-[#E07A5F] tracking-[0.8em] text-[10px] md:text-xs font-bold mb-4 uppercase">
-                  Apex Universal Operations
+                  Salt Web
                 </p>
                 <h2 className="text-white text-3xl md:text-5xl font-light italic tracking-tight">
                   {gallerySequences[index].text}
@@ -177,12 +177,12 @@ export default function CinematicHero() {
                   ESTABLISHED 1963
                 </motion.span>
                 <h1 className="text-white text-7xl md:text-9xl font-bold tracking-tighter leading-[0.8]">
-                  APEX <br />
+                  Salt <br />
                   <span
                     className="text-transparent"
                     style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
                   >
-                    GLOBAL
+                    Web
                   </span>
                 </h1>
               </motion.div>

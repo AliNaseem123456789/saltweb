@@ -86,18 +86,17 @@ export default function PrivacyPolicyPage() {
             <div className="flex items-center gap-4 mb-6 text-[#CE978C]">
               <Globe className="w-10 h-10" />
               <h2 className="text-3xl font-bold tracking-tight">
-                About Apex Universal Exports
+                About Salt Web
               </h2>
             </div>
             <p className="text-lg bg-[#FAF8F5] p-6 rounded-2xl border-l-4 border-[#CE978C] mb-8">
-              Apex Universal Exports is a diverse North American company engaged
-              in e-Commerce, trade, import, distribution, and export activities.
+              Salt Web is a diverse company engaged in e-Commerce, trade,
+              import, distribution, and export activities.
             </p>
             <p className="text-slate-600">
-              This Privacy Policy describes how{" "}
-              <strong>www.apexUniversalExports.com</strong> (the “Site” or “we”)
-              collects, uses, and discloses your Personal Information when you
-              visit or make a purchase from the Site.
+              This Privacy Policy describes how <strong>www.xyz.com</strong>{" "}
+              (the “Site” or “we”) collects, uses, and discloses your Personal
+              Information when you visit or make a purchase from the Site.
             </p>
           </section>
 
@@ -298,25 +297,25 @@ export default function PrivacyPolicyPage() {
                 <Mail className="text-[#CE978C] w-6 h-6" />
                 <p className="font-bold">Email Us</p>
                 <a
-                  href="mailto:info@apexuniversal.com.pk"
+                  href="mailto:alinaseem21102002@gmail.com"
                   className="text-sm hover:text-[#CE978C] transition-colors"
                 >
-                  info@apexuniversal.com.pk
+                  alinaseem21102002@gmail.com
                 </a>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <MapPin className="text-[#CE978C] w-6 h-6" />
                 <p className="font-bold">Visit Us</p>
                 <p className="text-sm leading-relaxed text-slate-500">
-                  Kacha Pakka Noor Shah Rd,
+                  xyz Rd,
                   <br />
-                  sahiwal, Pakistan
+                  karachi, Pakistan
                 </p>
               </div>
             </div>
             <div className="mt-12 pt-8 border-t border-slate-200">
               <p className="text-xs text-slate-400">
-                Last Updated: {new Date().toLocaleDateString()}. Apex Universal
+                Last Updated: {new Date().toLocaleDateString()}. Salt Web
                 Exports reserves the right to update this policy at any time.
               </p>
             </div>

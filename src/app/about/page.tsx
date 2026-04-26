@@ -18,7 +18,7 @@ export default function AboutPage() {
         >
           <Image
             src="/blogs/interior.avif"
-            alt="Apex Global Legacy"
+            alt="Salt Web"
             fill
             priority
             className="object-cover"
@@ -42,9 +42,9 @@ export default function AboutPage() {
                   A Legacy of <br /> <span className="italic">Excellence</span>
                 </h1>
                 <p className="text-lg leading-relaxed text-slate-600 md:text-xl font-light">
-                  For over two decades, Apex Global has been the definitive
-                  bridge between the ancient salt ranges of Pakistan and the
-                  global wellness market.
+                  For over two decades, Salt Web has been the definitive bridge
+                  between the ancient salt ranges of Pakistan and the global
+                  wellness market.
                 </p>
               </div>
             </motion.div>
@@ -87,8 +87,8 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-lg text-slate-600 font-light leading-relaxed">
                 <p>
-                  Apex Universal Exports is a premier wholesale supplier and
-                  exporter specializing in the extraction, manufacturing, and
+                  Salt Web is a premier wholesale supplier and exporter
+                  specializing in the extraction, manufacturing, and
                   distribution of 100% natural Himalayan Pink Salt.
                 </p>
                 <p>
@@ -145,7 +145,7 @@ export default function AboutPage() {
       <AnimatedSection className="px-6 py-24 bg-white">
         <div className="mx-auto max-w-7xl text-center">
           <h2 className="font-serif text-4xl text-slate-900 mb-16">
-            The Apex Advantage
+            The Advantage
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[

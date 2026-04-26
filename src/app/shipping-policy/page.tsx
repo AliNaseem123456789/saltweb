@@ -43,12 +43,12 @@ export default function ShippingPolicyPage() {
             <div className="flex items-center gap-3 mb-4 text-[#CE978C]">
               <Globe className="w-6 h-6" />
               <h2 className="text-xl font-bold uppercase tracking-wider">
-                About Apex Universal Exports
+                About Salt Web
               </h2>
             </div>
             <p className="text-slate-500 italic">
-              Apex Universal Exports is a diverse North American company engaged
-              in e-Commerce, trade, import, distribution, and export activities.
+              Salt Web is a diverse North American company engaged in
+              e-Commerce, trade, import, distribution, and export activities.
             </p>
           </div>
           <div className="space-y-12">
@@ -77,8 +77,8 @@ export default function ShippingPolicyPage() {
               </p>
               <div className="pt-4 border-t border-amber-200">
                 <p className="font-bold text-amber-900">
-                  In no circumstances will Apex Universal Exports be held
-                  responsible for such delays.
+                  In no circumstances will Salt Web be held responsible for such
+                  delays.
                 </p>
               </div>
             </section>
@@ -118,10 +118,10 @@ export default function ShippingPolicyPage() {
               </p>
             </div>
             <a
-              href="mailto:care@apexglobal.io"
+              href="mailto:alinaseem21102002@gmail.com"
               className="px-8 py-3 bg-[#CE978C] rounded-xl font-bold hover:bg-[#b87d71] transition-all flex items-center gap-2 shadow-lg active:scale-95"
             >
-              <Mail className="w-4 h-4" /> info@apexuniversal.com.pk
+              <Mail className="w-4 h-4" /> alinaseem21102002@gmail.com
             </a>
           </div>
         </div>
